@@ -1,5 +1,3 @@
-@import "./lib/DevExtreme/css/dx.dark.css";
-
 * {
     padding: 0;
     margin: 0;
@@ -10,4 +8,22 @@ body,
 html {
     width: 100%;
     height: 100%;
+}
+
+.dxdi-canvas .shape ellipse,
+.dxdi-canvas .shape line,
+.dxdi-canvas .shape path,
+.dxdi-canvas .shape rect,
+.dxdi-canvas .toolbox-item ellipse,
+.dxdi-canvas .toolbox-item line,
+.dxdi-canvas .toolbox-item path,
+.dxdi-canvas .toolbox-item rect {
+    fill: #FAFAFA;
+    stroke: #C1C1C1;
+    stroke-width: 1;
+}
+
+.dxdi-canvas text {
+    font-family: arial, helvetica, sans-serif;
+    font-size: 120%;
 }
