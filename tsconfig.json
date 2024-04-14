@@ -1,9 +1,17 @@
 {
     "compilerOptions": {
-        "target": "ES5",
+        "strict": true,
+        "target": "ES6",
         "sourceMap": true,
+        "outDir": "src/dist",
     },
     "include": [
         "**/*"
     ],
+    "lib": [
+        "dom",
+        "es2015",
+        "es5",
+        "es6"
+    ]
 }

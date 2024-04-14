@@ -1,13 +1,10 @@
-
-import { FunctionProps } from "./lib/dx-utils/FunctionProps.js";
 import { Utils } from "./lib/dx-utils/Utils.js";
 import { EntryModel } from "./lib/models/EntryModel.js";
-
-const main = (): void => {
+const main = () => {
     const store = new DevExpress.data.ArrayStore({
         key: 'dataNode.ID',
         data: [],
-        onInserting(data: any) {
+        onInserting(data) {
             if (!data.dataNode) {
                 let type = data.type;
                 switch (type) {
@@ -18,7 +15,6 @@ const main = (): void => {
             }
         },
     });
-
     const diagram = $('#diagrama').dxDiagram({
         toolbox: {
             groups: [{ category: "process" }]
@@ -26,43 +22,37 @@ const main = (): void => {
         onRequestEditOperation(e) {
             // console.log(e);
             if (e.operation == "changeConnection" && e.reason == "checkUIElementAvailability") {
-
             }
         },
         onItemClick(e) {
-            console.log(e.item)
+            console.log(e.item);
         },
         customShapes: [{
-            type: "entry",
-            title: "entry",
-            baseType: "rectangle",
-            category: "process",
-            defaultHeight: 2,
-            defaultWidth: 1.5,
-            allowResize: false,
-
-            connectionPoints: [
-                { x: 1, y: 0.5 }
-            ],
-            toolboxTemplate: (a, b) => { },
-            template: (container, data: any) => {
-                let shapeContainer: SVGSVGElement = data[0];
-                let parentElement: SVGGElement = shapeContainer.parentElement as unknown as SVGGElement
-                parentElement.id = "dx_custom_shape_entry";
-
-                let headerContainer = Utils.getNewSVGComponent("rect");
-                headerContainer.addClass("custom-shape-rect");
-                headerContainer.attr({ x: '0', y: '0', width: "100%", height: "30" });
-                headerContainer.appendTo(shapeContainer);
-
-
-                let headerText = Utils.getNewSVGComponent("text");
-                headerText.attr({ x: '50%', y: '20', })
-                headerText.text("Entry");
-
-                headerText.appendTo(shapeContainer)
-            },
-        }],
+                type: "entry",
+                title: "entry",
+                baseType: "rectangle",
+                category: "process",
+                defaultHeight: 2,
+                defaultWidth: 1.5,
+                allowResize: false,
+                connectionPoints: [
+                    { x: 1, y: 0.5 }
+                ],
+                toolboxTemplate: (a, b) => { },
+                template: (container, data) => {
+                    let shapeContainer = data[0];
+                    let parentElement = shapeContainer.parentElement;
+                    parentElement.id = "dx_custom_shape_entry";
+                    let headerContainer = Utils.getNewSVGComponent("rect");
+                    headerContainer.addClass("custom-shape-rect");
+                    headerContainer.attr({ x: '0', y: '0', width: "100%", height: "30" });
+                    headerContainer.appendTo(shapeContainer);
+                    let headerText = Utils.getNewSVGComponent("text");
+                    headerText.attr({ x: '50%', y: '20', });
+                    headerText.text("Entry");
+                    headerText.appendTo(shapeContainer);
+                },
+            }],
         nodes: {
             dataSource: store,
             itemsExpr(data, value) {
@@ -70,15 +60,8 @@ const main = (): void => {
             },
         },
     }).dxDiagram('instance');
-
-
-
-
-}
-
+};
 main();
-
-
 /*
 
 {
@@ -101,7 +84,7 @@ main();
                     // console.log("-----------------");
 
 
-                    // 
+                    //
 
 
                     // const svgNS = 'http://www.w3.org/2000/svg';
@@ -360,4 +343,4 @@ const handleChange = function (field, value) {
     currentEmployee[field] = value;
 };
 */
-
+//# sourceMappingURL=index.js.map
