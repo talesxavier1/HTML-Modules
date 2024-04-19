@@ -1,0 +1,31 @@
+.dxdi-canvas .shape ellipse,
+.dxdi-canvas .shape line,
+.dxdi-canvas .shape path,
+.dxdi-canvas .shape rect,
+.dxdi-canvas .toolbox-item ellipse,
+.dxdi-canvas .toolbox-item line,
+.dxdi-canvas .toolbox-item path,
+.dxdi-canvas .toolbox-item rect {
+    fill: #FAFAFA;
+    stroke: #C1C1C1;
+    stroke-width: 1;
+}
+
+.dxdi-canvas text {
+    font-family: arial, helvetica, sans-serif;
+    font-size: 120%;
+}
+
+.dxdi-canvas .shape.container>rect:first-child {
+    fill: #FAFAFA;
+    stroke: #C1C1C1;
+    stroke-width: 1;
+}
+
+.dxdi-canvas .shape.container>rect:first-child:hover {
+    stroke: #2d2ac7;
+}
+
+#dx_custom_shape_entry>rect:hover {
+    stroke: #2d2ac7;
+}

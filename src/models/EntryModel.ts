@@ -7,12 +7,12 @@ export interface IEntryModel {
 
 
 export class EntryModel extends ShapeModel implements IEntryModel {
+
     name: string;
     path: string;
 
-    constructor() {
-        super();
-        this.type = "entry";
+    constructor(ID?: string) {
+        super("entry", ID);
         this.name = "";
         this.path = "";
     }
