@@ -1,6 +1,7 @@
 import { DxDefaultValues } from "./DxDefaultValues.js";
 export class InstanceProps {
     constructor(args) {
+        var _a;
         this.getInstance = () => {
             return this.instance;
         };
@@ -45,7 +46,7 @@ export class InstanceProps {
         let xDefaultValues = new DxDefaultValues();
         this.instance = args.instance;
         this.defaultValue = xDefaultValues.getDefaultValue(args.componentName);
-        this.componentValueField = xDefaultValues.getValueField(args.componentName);
+        this.componentValueField = (_a = xDefaultValues.getValueField(args.componentName)) !== null && _a !== void 0 ? _a : "";
         this.tagName = args.tagName;
     }
 }

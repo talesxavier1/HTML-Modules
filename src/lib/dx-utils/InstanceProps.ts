@@ -1,21 +1,24 @@
+import { DxInstanceType } from "./Consts.js";
 import { DxDefaultValues } from "./DxDefaultValues.js";
+
+
 
 export class InstanceProps {
 
-    private instance: JQuery;
-    private componentValueField;
+    private instance: any;
+    private componentValueField: string;
     private defaultValue: any;
     private tagName: string;
 
-    constructor(args: { componentName: string, instance: JQuery, tagName: string }) {
+    constructor(args: { componentName: string, instance: DxInstanceType, tagName: string }) {
         let xDefaultValues = new DxDefaultValues();
         this.instance = args.instance;
         this.defaultValue = xDefaultValues.getDefaultValue(args.componentName);
-        this.componentValueField = xDefaultValues.getValueField(args.componentName);
+        this.componentValueField = xDefaultValues.getValueField(args.componentName) ?? "";
         this.tagName = args.tagName;
     }
 
-    getInstance = (): JQuery => {
+    getInstance = (): DxInstanceType => {
         return this.instance;
     }
 
