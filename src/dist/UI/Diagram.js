@@ -134,10 +134,10 @@ export class Diagram {
                     },
                     connectionPoints: [{ x: 0, y: 0 }]
                 },
-                /* Start Error */
+                /* Start Exception */
                 {
-                    type: "start_error",
-                    title: "Start Error",
+                    type: "start_exception",
+                    title: "Start Exception",
                     category: "process",
                     defaultText: "",
                     allowResize: false,
@@ -160,6 +160,39 @@ export class Diagram {
                             </g>
                             <path d="M 647.974 269.204 L 647.217 269.215 C 630.298 269.626 609.316 270.037 588.155 270.448 C 568.388 270.837 548.466 271.231 531.536 271.62 C 541.282 242.847 560.168 214.253 578.474 186.54 C 595.044 161.465 612.169 135.531 622.292 109.744 L 622.498 109.245 C 622.595 109.017 622.685 108.788 622.778 108.578 C 626.48 105.336 627.292 101.258 624.866 97.436 C 621.863 92.705 614.485 89.401 606.902 89.401 C 602.472 89.401 598.249 90.488 594.726 92.545 C 558.474 113.666 532.474 131.182 510.575 149.195 C 447.491 197.431 374.625 246.618 287.817 299.551 C 287.42 299.8 287.093 300.04 287.162 300.04 C 281.529 303.411 279.557 309.253 282.382 314.238 C 285.083 319.005 291.35 321.852 299.133 321.852 C 333.363 321.852 369.651 321.899 406.303 322.423 C 358.514 387.019 311.585 436.604 259.052 478.061 C 255.111 481.173 253.674 484.996 254.957 488.875 C 256.017 495.367 263.489 500.399 272.177 500.399 C 275.693 500.399 279.231 499.569 282.387 497.982 C 407.604 435.4 539.696 367.976 657.419 292.432 C 658.262 291.896 659.023 291.314 659.722 290.67 C 665.082 287.219 666.975 281.574 664.288 276.715 C 661.696 272.012 655.59 269.204 647.974 269.204 Z M 451.692 316.392 C 454.569 312.37 454.222 307.932 450.744 304.223 C 447.148 300.395 440.685 297.916 434.269 297.916 C 433.405 297.916 432.546 297.963 431.705 298.048 C 401.737 297.42 372.391 297.213 346.217 297.129 C 415.341 253.981 475.107 213.24 528.576 172.848 C 529.926 172.18 531.079 171.428 532.087 170.567 C 533.22 169.59 534.398 168.63 535.563 167.682 L 539.227 164.81 C 539.882 164.323 540.395 163.821 540.89 163.318 C 547.272 158.184 554.042 153.075 561.318 147.9 C 555.731 157.218 549.879 166.563 544.125 175.713 C 523.198 209.096 501.542 243.608 491.678 278.686 C 491.551 279.162 491.473 279.631 491.414 280.076 C 489.249 283.931 489.816 288.419 492.979 291.773 C 496.117 295.086 501.437 296.987 507.594 296.987 L 508.371 296.971 C 523.727 296.593 543.694 296.215 563.568 295.842 C 575.741 295.602 587.877 295.38 598.914 295.15 C 517.693 345.216 431.857 390.954 359.991 427.837 C 391.281 395.475 421.472 358.758 451.692 316.392 Z" style="fill: rgb(7, 7, 12);"></path>
                         </svg>
+                    `).appendTo(shapeContainer).on("mouseover", () => {
+                            $(`#${idEllipse}`).css("stroke", '#2d2ac7');
+                        }).on("mouseout", () => {
+                            $(`#${idEllipse}`).css("stroke", '#DEDEDE');
+                        });
+                    }
+                },
+                /* End Exception */
+                {
+                    type: "end_exception",
+                    title: "End Exception",
+                    category: "process",
+                    defaultText: "",
+                    allowResize: false,
+                    defaultWidth: 0.50,
+                    defaultHeight: 0.50,
+                    allowEditText: false,
+                    connectionPoints: [
+                        { x: 1, y: 0.5 },
+                        { x: 0, y: 0.5 }
+                    ],
+                    template: (container, data) => {
+                        let shapeContainer = $(data);
+                        let parentElement = shapeContainer.parent();
+                        parentElement.attr("id", "dx_custom_shape_start");
+                        let idEllipse = Utils.getGuid();
+                        $(`
+                    <svg viewBox="0 0 215 215" xmlns="http://www.w3.org/2000/svg">
+                        <g transform="matrix(1.078574, 0, 0, 1.203558, -162.934113, -32.48341)">
+                            <line style="fill: rgb(216, 216, 216); stroke-linecap: round; stroke-width: 17.5275px; stroke: rgb(0, 0, 0);" x1="204.446" y1="116.604" x2="297.02" y2="116.012"></line>
+                            <ellipse id="${idEllipse}" style="fill: none; stroke: rgb(222, 222, 222); stroke-width: 8.76373px;" cx="250.733" cy="116.308" rx="92.715" ry="83.087"></ellipse>
+                        </g>
+                    </svg>
                     `).appendTo(shapeContainer).on("mouseover", () => {
                             $(`#${idEllipse}`).css("stroke", '#2d2ac7');
                         }).on("mouseout", () => {
@@ -229,6 +262,72 @@ export class Diagram {
                         textHeader.appendTo(shapeContainer);
                     },
                     connectionPoints: [{ x: 0, y: 0 }]
+                },
+                /* Start Process */
+                {
+                    type: "start_process",
+                    title: "Start Process",
+                    category: "process",
+                    defaultText: "",
+                    allowResize: false,
+                    defaultWidth: 0.50,
+                    defaultHeight: 0.50,
+                    allowEditText: false,
+                    connectionPoints: [
+                        { x: 1, y: 0.5 },
+                        { x: 0, y: 0.5 }
+                    ],
+                    template: (container, data) => {
+                        let shapeContainer = $(data);
+                        let parentElement = shapeContainer.parent();
+                        parentElement.attr("id", "dx_custom_shape_start");
+                        let idEllipse = Utils.getGuid();
+                        $(`
+                        <svg viewBox="0 0 215 215" xmlns="http://www.w3.org/2000/svg">
+                            <g transform="matrix(1.078574, 0, 0, 1.203558, -162.934113, -32.48341)">
+                                <path d="M 181.197 155.358 L 320.269 155.358 L 320.269 72.271 L 181.197 72.271 L 181.197 155.358 Z M 189.377 80.797 L 189.377 78.663 L 312.088 78.663 L 312.088 80.797 L 250.733 122.366 L 189.377 80.797 Z M 312.088 89.259 L 312.088 143.049 L 286.654 118.212 L 280.258 122.2 L 307.663 148.967 L 193.804 148.967 L 221.21 122.2 L 214.811 118.212 L 189.377 143.049 L 189.377 89.259 L 250.733 130.828 L 312.088 89.259 Z" fill-rule="evenodd" style="stroke: rgb(0, 0, 0); fill-opacity: 0.99; fill: rgb(3, 3, 3);"></path>
+                                <ellipse id="${idEllipse}" style="fill: none; stroke: rgb(222, 222, 222); stroke-width: 8.76373px;" cx="250.733" cy="116.308" rx="92.715" ry="83.087"></ellipse>
+                            </g>
+                        </svg>
+                    `).appendTo(shapeContainer).on("mouseover", () => {
+                            $(`#${idEllipse}`).css("stroke", '#2d2ac7');
+                        }).on("mouseout", () => {
+                            $(`#${idEllipse}`).css("stroke", '#DEDEDE');
+                        });
+                    }
+                },
+                /* End Process */
+                {
+                    type: "end_process",
+                    title: "End Process",
+                    category: "process",
+                    defaultText: "",
+                    allowResize: false,
+                    defaultWidth: 0.50,
+                    defaultHeight: 0.50,
+                    allowEditText: false,
+                    connectionPoints: [
+                        { x: 1, y: 0.5 },
+                        { x: 0, y: 0.5 }
+                    ],
+                    template: (container, data) => {
+                        let shapeContainer = $(data);
+                        let parentElement = shapeContainer.parent();
+                        parentElement.attr("id", "dx_custom_shape_start");
+                        let idEllipse = Utils.getGuid();
+                        $(`
+                        <svg viewBox="0 0 215 215" xmlns="http://www.w3.org/2000/svg">
+                            <g transform="matrix(1.078574, 0, 0, 1.203558, -162.934113, -32.48341)">
+                                <ellipse id="${idEllipse}" style="fill: none; stroke: rgb(222, 222, 222); stroke-width: 8.76373px;" cx="250.733" cy="116.308" rx="92.715" ry="83.087"></ellipse>
+                                <path d="M 320.269 86.211 L 320.269 153.531 L 286.648 120.698 L 280.259 124.693 L 314.207 157.851 L 187.257 157.851 L 221.206 124.693 L 214.817 120.698 L 181.196 153.53 L 181.196 86.211 L 250.728 133.321 L 320.269 86.211 Z M 320.264 74.764 L 320.264 77.742 L 250.731 124.853 L 181.199 77.742 L 181.199 74.764 L 320.264 74.764 Z" fill-rule="evenodd" style="fill: rgb(6, 6, 6);"></path>
+                            </g>
+                        </svg>
+                    `).appendTo(shapeContainer).on("mouseover", () => {
+                            $(`#${idEllipse}`).css("stroke", '#2d2ac7');
+                        }).on("mouseout", () => {
+                            $(`#${idEllipse}`).css("stroke", '#DEDEDE');
+                        });
+                    }
                 },
             ]
         };
