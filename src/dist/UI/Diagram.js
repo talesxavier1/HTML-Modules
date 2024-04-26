@@ -46,7 +46,7 @@ export class Diagram {
                 {
                     type: "entry",
                     title: "entry",
-                    category: "process",
+                    category: "Process",
                     defaultHeight: 2,
                     defaultWidth: 1.5,
                     allowResize: false,
@@ -79,7 +79,7 @@ export class Diagram {
                     type: "processContainer",
                     title: "Process Container",
                     baseType: "verticalContainer",
-                    category: "process",
+                    category: "Process",
                     defaultHeight: 5,
                     defaultWidth: 10,
                     minHeight: 3.5,
@@ -134,11 +134,77 @@ export class Diagram {
                     },
                     connectionPoints: [{ x: 0, y: 0 }]
                 },
+                /* Start Process */
+                {
+                    type: "start_process",
+                    title: "Start Process",
+                    category: "Process",
+                    defaultText: "",
+                    allowResize: false,
+                    defaultWidth: 0.50,
+                    defaultHeight: 0.50,
+                    allowEditText: false,
+                    connectionPoints: [
+                        { x: 1, y: 0.5 },
+                        { x: 0, y: 0.5 }
+                    ],
+                    template: (container, data) => {
+                        let shapeContainer = $(data);
+                        let parentElement = shapeContainer.parent();
+                        parentElement.attr("id", "dx_custom_shape_start");
+                        let idEllipse = Utils.getGuid();
+                        $(`
+                                    <svg viewBox="0 0 215 215" xmlns="http://www.w3.org/2000/svg">
+                                        <g transform="matrix(1.078574, 0, 0, 1.203558, -162.934113, -32.48341)">
+                                            <path d="M 181.197 155.358 L 320.269 155.358 L 320.269 72.271 L 181.197 72.271 L 181.197 155.358 Z M 189.377 80.797 L 189.377 78.663 L 312.088 78.663 L 312.088 80.797 L 250.733 122.366 L 189.377 80.797 Z M 312.088 89.259 L 312.088 143.049 L 286.654 118.212 L 280.258 122.2 L 307.663 148.967 L 193.804 148.967 L 221.21 122.2 L 214.811 118.212 L 189.377 143.049 L 189.377 89.259 L 250.733 130.828 L 312.088 89.259 Z" fill-rule="evenodd" style="stroke: rgb(0, 0, 0); fill-opacity: 0.99; fill: rgb(3, 3, 3);"></path>
+                                            <ellipse id="${idEllipse}" style="fill: none; stroke: rgb(222, 222, 222); stroke-width: 8.76373px;" cx="250.733" cy="116.308" rx="92.715" ry="83.087"></ellipse>
+                                        </g>
+                                    </svg>
+                                `).appendTo(shapeContainer).on("mouseover", () => {
+                            $(`#${idEllipse}`).css("stroke", '#2d2ac7');
+                        }).on("mouseout", () => {
+                            $(`#${idEllipse}`).css("stroke", '#DEDEDE');
+                        });
+                    }
+                },
+                /* End Process */
+                {
+                    type: "end_process",
+                    title: "End Process",
+                    category: "Process",
+                    defaultText: "",
+                    allowResize: false,
+                    defaultWidth: 0.50,
+                    defaultHeight: 0.50,
+                    allowEditText: false,
+                    connectionPoints: [
+                        { x: 1, y: 0.5 },
+                        { x: 0, y: 0.5 }
+                    ],
+                    template: (container, data) => {
+                        let shapeContainer = $(data);
+                        let parentElement = shapeContainer.parent();
+                        parentElement.attr("id", "dx_custom_shape_start");
+                        let idEllipse = Utils.getGuid();
+                        $(`
+                                    <svg viewBox="0 0 215 215" xmlns="http://www.w3.org/2000/svg">
+                                        <g transform="matrix(1.078574, 0, 0, 1.203558, -162.934113, -32.48341)">
+                                            <ellipse id="${idEllipse}" style="fill: none; stroke: rgb(222, 222, 222); stroke-width: 8.76373px;" cx="250.733" cy="116.308" rx="92.715" ry="83.087"></ellipse>
+                                            <path d="M 320.269 86.211 L 320.269 153.531 L 286.648 120.698 L 280.259 124.693 L 314.207 157.851 L 187.257 157.851 L 221.206 124.693 L 214.817 120.698 L 181.196 153.53 L 181.196 86.211 L 250.728 133.321 L 320.269 86.211 Z M 320.264 74.764 L 320.264 77.742 L 250.731 124.853 L 181.199 77.742 L 181.199 74.764 L 320.264 74.764 Z" fill-rule="evenodd" style="fill: rgb(6, 6, 6);"></path>
+                                        </g>
+                                    </svg>
+                                `).appendTo(shapeContainer).on("mouseover", () => {
+                            $(`#${idEllipse}`).css("stroke", '#2d2ac7');
+                        }).on("mouseout", () => {
+                            $(`#${idEllipse}`).css("stroke", '#DEDEDE');
+                        });
+                    }
+                },
                 /* Start Exception */
                 {
                     type: "start_exception",
                     title: "Start Exception",
-                    category: "process",
+                    category: "Exception",
                     defaultText: "",
                     allowResize: false,
                     defaultWidth: 0.50,
@@ -171,7 +237,7 @@ export class Diagram {
                 {
                     type: "end_exception",
                     title: "End Exception",
-                    category: "process",
+                    category: "Exception",
                     defaultText: "",
                     allowResize: false,
                     defaultWidth: 0.50,
@@ -205,7 +271,7 @@ export class Diagram {
                     type: "exceptionSubprocess",
                     title: "Exception Subprocess",
                     baseType: "verticalContainer",
-                    category: "process",
+                    category: "Exception",
                     defaultHeight: 2,
                     defaultWidth: 4,
                     minHeight: 2,
@@ -262,73 +328,7 @@ export class Diagram {
                         textHeader.appendTo(shapeContainer);
                     },
                     connectionPoints: [{ x: 0, y: 0 }]
-                },
-                /* Start Process */
-                {
-                    type: "start_process",
-                    title: "Start Process",
-                    category: "process",
-                    defaultText: "",
-                    allowResize: false,
-                    defaultWidth: 0.50,
-                    defaultHeight: 0.50,
-                    allowEditText: false,
-                    connectionPoints: [
-                        { x: 1, y: 0.5 },
-                        { x: 0, y: 0.5 }
-                    ],
-                    template: (container, data) => {
-                        let shapeContainer = $(data);
-                        let parentElement = shapeContainer.parent();
-                        parentElement.attr("id", "dx_custom_shape_start");
-                        let idEllipse = Utils.getGuid();
-                        $(`
-                        <svg viewBox="0 0 215 215" xmlns="http://www.w3.org/2000/svg">
-                            <g transform="matrix(1.078574, 0, 0, 1.203558, -162.934113, -32.48341)">
-                                <path d="M 181.197 155.358 L 320.269 155.358 L 320.269 72.271 L 181.197 72.271 L 181.197 155.358 Z M 189.377 80.797 L 189.377 78.663 L 312.088 78.663 L 312.088 80.797 L 250.733 122.366 L 189.377 80.797 Z M 312.088 89.259 L 312.088 143.049 L 286.654 118.212 L 280.258 122.2 L 307.663 148.967 L 193.804 148.967 L 221.21 122.2 L 214.811 118.212 L 189.377 143.049 L 189.377 89.259 L 250.733 130.828 L 312.088 89.259 Z" fill-rule="evenodd" style="stroke: rgb(0, 0, 0); fill-opacity: 0.99; fill: rgb(3, 3, 3);"></path>
-                                <ellipse id="${idEllipse}" style="fill: none; stroke: rgb(222, 222, 222); stroke-width: 8.76373px;" cx="250.733" cy="116.308" rx="92.715" ry="83.087"></ellipse>
-                            </g>
-                        </svg>
-                    `).appendTo(shapeContainer).on("mouseover", () => {
-                            $(`#${idEllipse}`).css("stroke", '#2d2ac7');
-                        }).on("mouseout", () => {
-                            $(`#${idEllipse}`).css("stroke", '#DEDEDE');
-                        });
-                    }
-                },
-                /* End Process */
-                {
-                    type: "end_process",
-                    title: "End Process",
-                    category: "process",
-                    defaultText: "",
-                    allowResize: false,
-                    defaultWidth: 0.50,
-                    defaultHeight: 0.50,
-                    allowEditText: false,
-                    connectionPoints: [
-                        { x: 1, y: 0.5 },
-                        { x: 0, y: 0.5 }
-                    ],
-                    template: (container, data) => {
-                        let shapeContainer = $(data);
-                        let parentElement = shapeContainer.parent();
-                        parentElement.attr("id", "dx_custom_shape_start");
-                        let idEllipse = Utils.getGuid();
-                        $(`
-                        <svg viewBox="0 0 215 215" xmlns="http://www.w3.org/2000/svg">
-                            <g transform="matrix(1.078574, 0, 0, 1.203558, -162.934113, -32.48341)">
-                                <ellipse id="${idEllipse}" style="fill: none; stroke: rgb(222, 222, 222); stroke-width: 8.76373px;" cx="250.733" cy="116.308" rx="92.715" ry="83.087"></ellipse>
-                                <path d="M 320.269 86.211 L 320.269 153.531 L 286.648 120.698 L 280.259 124.693 L 314.207 157.851 L 187.257 157.851 L 221.206 124.693 L 214.817 120.698 L 181.196 153.53 L 181.196 86.211 L 250.728 133.321 L 320.269 86.211 Z M 320.264 74.764 L 320.264 77.742 L 250.731 124.853 L 181.199 77.742 L 181.199 74.764 L 320.264 74.764 Z" fill-rule="evenodd" style="fill: rgb(6, 6, 6);"></path>
-                            </g>
-                        </svg>
-                    `).appendTo(shapeContainer).on("mouseover", () => {
-                            $(`#${idEllipse}`).css("stroke", '#2d2ac7');
-                        }).on("mouseout", () => {
-                            $(`#${idEllipse}`).css("stroke", '#DEDEDE');
-                        });
-                    }
-                },
+                }
             ]
         };
         this.componentInstanceModel.addInstance(new InstanceProps({
@@ -336,7 +336,7 @@ export class Diagram {
             componentName: "dxDiagram",
             instance: $('#diagrama').dxDiagram({
                 toolbox: {
-                    groups: [{ category: "process" }, { category: "containers" }]
+                    groups: [{ category: "Process" }, { category: "Exception" }, { category: "Connectors" }]
                 },
                 onRequestEditOperation(e) {
                     // console.log(e);
