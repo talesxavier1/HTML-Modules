@@ -20,6 +20,8 @@ export class Diagram {
                 case "entry":
                     Object.assign(data, new EntryModel(data.ID));
                     break;
+                case "processContainer":
+                    Object.assign(data, new EntryModel(data.ID));
             }
         },
         errorHandler(e: any) {
@@ -27,7 +29,9 @@ export class Diagram {
         }
     });
 
+
     setDiagramOptions = (strDiagramProps: string, diagramData: Array<any>) => {
+        return;
         let diagramProps = this.componentInstanceModel.getInstanceProps("diagrama");
         let diagramInstance = diagramProps.getInstance() as DevExpress.ui.dxDiagram;
         diagramInstance.import(strDiagramProps, false);
@@ -38,6 +42,7 @@ export class Diagram {
     }
 
     private shapeClicked = (event: DevExpress.ui.dxDiagram.ItemClickEvent) => {
+        return;
         let diagramProps = this.componentInstanceModel.getInstanceProps("diagrama");
         let diagramInstance = diagramProps.getInstance() as DevExpress.ui.dxDiagram;
 
@@ -369,9 +374,8 @@ export class Diagram {
                 type: "multicast_in",
                 title: "Multicast In",
                 category: "Process",
-                // baseType: "diamond",
                 defaultText: "",
-                // allowResize: false,
+                allowResize: false,
                 defaultWidth: 0.50,
                 defaultHeight: 0.50,
                 allowEditText: false,
@@ -523,7 +527,6 @@ export class Diagram {
                 defaultHeight: 1,
                 minWidth: 1.5,
                 minHeight: 1,
-                allowEditText: false,
                 connectionPoints: [
                     { x: 1, y: 0.5 },
                     { x: 0, y: 0.5 }
@@ -547,17 +550,15 @@ export class Diagram {
                 },
                 template: (container, data: any) => {
                     let shapeContainer = $(data);
-                    shapeContainer.on("click", () => {
-                        debugger
-                    })
                     let parentElement = shapeContainer.parent();
+                    parentElement.attr("id", "multicast_out");
                     const componentsID = {
                         rectID: Utils.getGuid(),
                         iconID: Utils.getGuid(),
+                        textID: Utils.getGuid(),
                     };
                     parentElement.attr({
-                        "data-custom-shape-infos": JSON.stringify(componentsID),
-                        "id": "multicast_out"
+                        "data-custom-shape-infos": JSON.stringify(componentsID)
                     });
 
                     let rect = Utils.getNewSVGComponent("rect");
@@ -575,7 +576,7 @@ export class Diagram {
                         $(`#${componentsID.rectID}`).css("stroke", '#2d2ac7');
                     }).on("mouseout", () => {
                         $(`#${componentsID.rectID}`).css("stroke", '#DEDEDE');
-                    })
+                    });
 
                     let icon = $(`
                         <svg x="5" y="5" width="800px" height="800px" viewBox="0 0 900 900" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -591,17 +592,76 @@ export class Diagram {
                         "y": "5"
                     });
 
-                    let foreignObject = $(`
-                    <svg height="100%" width="100%" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-                        <text x="100" y="0">
-                            <tspan x="100" dy="1.2em">very long text</tspan>
-                            <tspan id="tttttt" x="100" dy="1.2em">I would like aaaaaaaaaaaaaaaaaaaaaaaatsssssssssso linebreak</tspan>
-                        </text>
-                    </svg>
-                    `).appendTo(shapeContainer)
 
-                    $("#tttttt").on("resize", () => {
-                        debugger
+
+                }
+            },
+            /* Script */
+            {
+                type: "script",
+                title: "Script",
+                category: "Process",
+                defaultText: "",
+                defaultWidth: 1.5,
+                defaultHeight: 1,
+                minWidth: 1.5,
+                minHeight: 1,
+                connectionPoints: [
+                    { x: 1, y: 0.5 },
+                    { x: 0, y: 0.5 }
+                ],
+                toolboxTemplate: (container, data: any) => {
+                    let shapeContainer = $(data);
+                    let parentElement = shapeContainer.parent();
+                    parentElement.children().remove();
+
+                    $(`
+                        <svg viewBox="0 0 2500 2500" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M 400 400 L 400 62.5 C 400 41.8 383.225 25 362.5 25 L 93.325 25 C 97.575 32.35 100 40.9 100 50 L 100 450 C 100 463.8 111.2 475 125 475 C 138.8 475 150 463.8 150 450 L 150 412.5 C 150 405.6 155.6 400 162.5 400 L 400 400 Z M 425 400 L 487.5 400 C 494.4 400 500 405.6 500 412.5 L 500 437.5 C 500 472.025 472.025 500 437.5 500 L 125 500 C 97.4 500 75 477.625 75 450 L 75 100 L 50 100 C 22.4 100 0 77.625 0 50 C 0 22.375 22.4 0 50 0 L 362.5 0 C 397.025 0 425 27.975 425 62.5 L 425 400 Z M 175 425 L 175 450 C 175 459.1 172.575 467.65 168.325 475 L 437.5 475 C 458.225 475 475 458.2 475 437.5 L 475 425 L 175 425 Z M 75 75 L 75 50 C 75 36.2 63.8 25 50 25 C 36.2 25 25 36.2 25 50 C 25 63.8 36.2 75 50 75 L 75 75 Z M 162.5 125 C 155.6 125 150 119.4 150 112.5 C 150 105.6 155.6 100 162.5 100 L 337.5 100 C 344.4 100 350 105.6 350 112.5 C 350 119.4 344.4 125 337.5 125 L 162.5 125 Z M 162.5 200 C 155.6 200 150 194.4 150 187.5 C 150 180.6 155.6 175 162.5 175 L 337.5 175 C 344.4 175 350 180.6 350 187.5 C 350 194.4 344.4 200 337.5 200 L 162.5 200 Z M 162.5 275 C 155.6 275 150 269.4 150 262.5 C 150 255.6 155.6 250 162.5 250 L 337.5 250 C 344.4 250 350 255.6 350 262.5 C 350 269.4 344.4 275 337.5 275 L 162.5 275 Z M 162.5 350 C 155.6 350 150 344.4 150 337.5 C 150 330.6 155.6 325 162.5 325 L 287.5 325 C 294.4 325 300 330.6 300 337.5 C 300 344.4 294.4 350 287.5 350 L 162.5 350 Z" style="stroke: rgb(3, 3, 3); fill: rgb(3, 3, 3);"></path>
+                        </svg>
+                    `).appendTo(parentElement).attr({
+                        "x": (container.position as any).x * 100,
+                        "y": (container.position as any).y * 72,
+                    });
+                },
+                template: (container, data: any) => {
+                    let shapeContainer = $(data);
+                    let parentElement = shapeContainer.parent();
+                    parentElement.attr("id", "script");
+                    const componentsID = {
+                        rectID: Utils.getGuid(),
+                        iconID: Utils.getGuid(),
+                    };
+                    parentElement.attr({
+                        "data-custom-shape-infos": JSON.stringify(componentsID)
+                    });
+
+                    let rect = Utils.getNewSVGComponent("rect");
+                    rect.attr({
+                        "id": componentsID.rectID,
+                        "width": "100%",
+                        "height": "100%",
+                        "rx": "5",
+                        "ry": "5",
+                        "style": `
+                            troke: #DEDEDE;
+                            fill: rgb(250, 250, 250);
+                        `
+                    }).appendTo(shapeContainer).on("mouseover", () => {
+                        $(`#${componentsID.rectID}`).css("stroke", '#2d2ac7');
+                    }).on("mouseout", () => {
+                        $(`#${componentsID.rectID}`).css("stroke", '#DEDEDE');
+                    });
+
+                    let icon = $(`
+                        <svg viewBox="0 0 2500 2500" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M 400 400 L 400 62.5 C 400 41.8 383.225 25 362.5 25 L 93.325 25 C 97.575 32.35 100 40.9 100 50 L 100 450 C 100 463.8 111.2 475 125 475 C 138.8 475 150 463.8 150 450 L 150 412.5 C 150 405.6 155.6 400 162.5 400 L 400 400 Z M 425 400 L 487.5 400 C 494.4 400 500 405.6 500 412.5 L 500 437.5 C 500 472.025 472.025 500 437.5 500 L 125 500 C 97.4 500 75 477.625 75 450 L 75 100 L 50 100 C 22.4 100 0 77.625 0 50 C 0 22.375 22.4 0 50 0 L 362.5 0 C 397.025 0 425 27.975 425 62.5 L 425 400 Z M 175 425 L 175 450 C 175 459.1 172.575 467.65 168.325 475 L 437.5 475 C 458.225 475 475 458.2 475 437.5 L 475 425 L 175 425 Z M 75 75 L 75 50 C 75 36.2 63.8 25 50 25 C 36.2 25 25 36.2 25 50 C 25 63.8 36.2 75 50 75 L 75 75 Z M 162.5 125 C 155.6 125 150 119.4 150 112.5 C 150 105.6 155.6 100 162.5 100 L 337.5 100 C 344.4 100 350 105.6 350 112.5 C 350 119.4 344.4 125 337.5 125 L 162.5 125 Z M 162.5 200 C 155.6 200 150 194.4 150 187.5 C 150 180.6 155.6 175 162.5 175 L 337.5 175 C 344.4 175 350 180.6 350 187.5 C 350 194.4 344.4 200 337.5 200 L 162.5 200 Z M 162.5 275 C 155.6 275 150 269.4 150 262.5 C 150 255.6 155.6 250 162.5 250 L 337.5 250 C 344.4 250 350 255.6 350 262.5 C 350 269.4 344.4 275 337.5 275 L 162.5 275 Z M 162.5 350 C 155.6 350 150 344.4 150 337.5 C 150 330.6 155.6 325 162.5 325 L 287.5 325 C 294.4 325 300 330.6 300 337.5 C 300 344.4 294.4 350 287.5 350 L 162.5 350 Z" style="stroke: rgb(3, 3, 3); fill: rgb(3, 3, 3);"></path>
+                        </svg>
+                    `);
+                    icon.appendTo(shapeContainer).attr({
+                        "id": componentsID.iconID,
+                        "x": "-20",
+                        "y": "5"
                     });
                 }
             },
@@ -719,8 +779,83 @@ export class Diagram {
                 },
                 connectionPoints: [{ x: 0, y: 0 }]
             },
+            /* Condition */
+            {
+                type: "condition",
+                title: "Condition",
+                category: "Process",
+                allowResize: false,
+                defaultWidth: 0.50,
+                defaultHeight: 0.50,
+                allowEditText: false,
+                defaultText: "",
+                // toolboxTemplate: (a, b) => { },
+                template: (container, data: any) => {
+                    let shapeContainer = $(data);
+                    let parentElement = shapeContainer.parent();
+                    parentElement.children().remove();
+                    parentElement.append(shapeContainer);
+                    const componentsID = {
+                        rectID: Utils.getGuid(),
+                    };
+                    parentElement.attr({
+                        "data-custom-shape-infos": JSON.stringify(componentsID)
+                    });
+
+                    $(`
+                        <svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
+                            <rect id="${componentsID.rectID}" width="340" height="340" style="transform-box: fill-box; transform-origin: 50% 50%; stroke: rgb(222, 222, 222); fill: rgb(250, 250, 250); stroke-width: 10px;" transform="matrix(0.707107, 0.707107, -0.707107, 0.707107, 80, 80)"></rect>
+                        </svg>
+                   `).appendTo(shapeContainer).on("mouseover", () => {
+                        $(`#${componentsID.rectID}`).css("stroke", '#2d2ac7');
+                    }).on("mouseout", () => {
+                        $(`#${componentsID.rectID}`).css("stroke", '#DEDEDE');
+                    });
+                },
+                connectionPoints: [{ x: 0.5, y: 1 }, { x: 1, y: 0.5 }, { x: 0, y: 0.5 }, { x: 0.5, y: 0 }]
+            },
 
         ]
+    }
+
+    private onRequestEditOperation = (event: DevExpress.ui.dxDiagram.RequestEditOperationEvent) => {
+        if (event.operation == "addShapeFromToolbox") { return }
+        console.log(event)
+        let aa = (event.args as any)?.shape?.containerId;
+        if (aa) {
+            let a: any = (this.componentInstanceModel.getInstanceProps("diagrama").getInstance() as DevExpress.ui.dxDiagram).getItemById(aa);
+            if (a && a.type == "processContainer") {
+                event.allowed = false;
+            }
+        }
+        //
+        // let args = event.args as any;
+        // if (event.operation == "changeConnection") {
+        //     let from = args?.connector?.fromKey
+        //     let to = args?.connector?.toKey
+
+        //     if (from && to) {
+        //         let nodeFrom: any = (() => {
+        //             let result;
+        //             this.nodeStore.byKey(from).done((val: any) => result = val);
+        //             return result;
+        //         })();
+
+
+        //         let nodeTo: any = (() => {
+        //             let result;
+        //             this.nodeStore.byKey(to).done((val: any) => result = val);
+        //             return result;
+        //         })();
+
+        //         if (nodeFrom.type == "converter" && nodeTo.type == "script") {
+        //             event.allowed = false;
+        //         }
+
+        //     }
+
+        //     // console.log("from:", from, "\n", "to:", to, "\n")
+        // }
     }
 
     constructor() {
@@ -732,9 +867,7 @@ export class Diagram {
                 toolbox: {
                     groups: [{ category: "Process" }, { category: "Exception" }]
                 },
-                onRequestEditOperation(e) {
-                    // console.log(e);
-                },
+                onRequestEditOperation: this.onRequestEditOperation,
                 onItemClick: this.shapeClicked,
                 customShapes: this.customShapes.customShapes,
                 nodes: {
@@ -746,12 +879,12 @@ export class Diagram {
                         key: 'ID',
                         data: [],
                     }),
-                    keyExpr: "ID"
+                    keyExpr: "ID",
                 },
                 showGrid: false,
                 snapToGrid: false,
                 simpleView: true,
-                readOnly: false
+                readOnly: false,
 
             }).dxDiagram('instance')
         }));

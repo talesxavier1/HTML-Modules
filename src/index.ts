@@ -13,8 +13,9 @@ const main = (): void => {
 
 
 
-const diagramProps: any = { "page": { "width": 16782, "height": 23812, "pageColor": -1, "pageWidth": 8391, "pageHeight": 11906, "pageLandscape": false }, "connectors": [], "shapes": [{ "key": "50", "dataKey": "8dbdd544-879d-4b9b-ad17-4189c78011db", "locked": false, "zIndex": 0, "type": "converter", "text": "", "x": 1188, "y": 8970, "width": 7944, "height": 4944 }] }
 
-const diagramData: any = [{ "type": "converter", "text": "", "ID": "8dbdd544-879d-4b9b-ad17-4189c78011db" }]
+const diagramProps: any = { "page": { "width": 16782, "height": 23812, "pageColor": -1, "pageWidth": 8391, "pageHeight": 11906, "pageLandscape": false }, "connectors": [], "shapes": [{ "key": "51", "dataKey": "6a7236d9-cc54-59cd-dc7d-62da9851fc26", "locked": false, "zIndex": 0, "type": "converter", "text": "", "x": 11454, "y": 13744, "width": 2160, "height": 1440 }, { "key": "52", "dataKey": "d2d5ba70-f767-c173-2b1b-d856fdac871a", "locked": false, "zIndex": 0, "type": "condition", "text": "", "x": 7472, "y": 11451, "width": 720, "height": 720 }] }
+
+const diagramData: any = [{ "ID": "6a7236d9-cc54-59cd-dc7d-62da9851fc26", "type": "converter", "text": "" }, { "type": "condition", "text": "", "ID": "d2d5ba70-f767-c173-2b1b-d856fdac871a" }]
 
 main();
