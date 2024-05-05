@@ -1,6 +1,6 @@
 import { Utils } from "../lib/dx-utils/Utils.js";
 
-type ShapeType = "entry";
+type ShapeType = "sender" | "processContainer" | "reciver" | "condition" | "exceptionSubprocess" | "endException" | "script" | "dataConverter" | "startException" | "multicastOut" | "multicastIn" | "endProcess" | "startProcess";
 export interface IShapeModel {
     ID: string
     shapeType: ShapeType
@@ -9,6 +9,8 @@ export interface IShapeModel {
 
 export class ShapeModel implements IShapeModel {
     ID: string;
+    type: string;
+    text: string;
     shapeType: ShapeType;
     private _initialized: boolean
 
@@ -16,6 +18,8 @@ export class ShapeModel implements IShapeModel {
         this.ID = ID ? ID : Utils.getGuid();
         this.shapeType = shapeType;
         this._initialized = true;
+        this.type = shapeType;
+        this.text = "";
     }
 
     get initialized(): boolean {
