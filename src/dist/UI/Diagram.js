@@ -1,44 +1,35 @@
 import { ComponentInstanceModel } from "../lib/dx-utils/ComponentInstanceModel.js";
 import { InstanceProps } from "../lib/dx-utils/InstanceProps.js";
 import { Utils } from "../lib/dx-utils/Utils.js";
-import { EntryModel } from "../models/EntryModel.js";
+import { SenderModel } from "../models/SenderModel.js";
+import { ProcessContainerModel } from "../models/ProcessContainerModel.js";
+import { ReciverModel } from "../models/ReciverModel.js";
+import { DataConverterModel } from "../models/DataConverterModel.js";
+import { ExceptionSubprocessModel } from "../models/ExceptionSubprocessModel.js";
+import { ScriptModel } from "../models/ScriptModel.js";
+import { EndExceptioModel } from "../models/EndExceptionModel.js";
+import { StartExceptionModel } from "../models/startExceptionModel.js";
+import { MultcastOutModel } from "../models/MulticastOutModel.js";
+import { MultcastInModel } from "../models/MulticastInModel.js";
+import { EndProcessModel } from "../models/EndProcessModel.js";
+import { StartProcessModel } from "../models/StartProcessModel.js";
+import { ConditionModel } from "../models/ConditionModel.js";
 export class Diagram {
     constructor() {
         this.componentInstanceModel = new ComponentInstanceModel(new Object);
-        this.nodeStore = new DevExpress.data.ArrayStore({
-            key: 'ID',
-            data: [],
-            onInserting(data) {
-                if (data._initialized) {
-                    return;
-                }
-                switch (data.type) {
-                    case "entry":
-                        Object.assign(data, new EntryModel(data.ID));
-                        break;
-                    case "processContainer":
-                        Object.assign(data, new EntryModel(data.ID));
-                }
-            },
-            errorHandler(e) {
-                console.error(e);
-            }
-        });
+        this.nodeStore = new NodeStore("ID");
         this.setDiagramOptions = (strDiagramProps, diagramData) => {
-            return;
             let diagramProps = this.componentInstanceModel.getInstanceProps("diagrama");
             let diagramInstance = diagramProps.getInstance();
             diagramInstance.import(strDiagramProps, false);
             diagramData.forEach((VAL) => {
-                this.nodeStore.update(VAL.ID, VAL);
+                this.nodeStore.store.update(VAL.ID, VAL);
             });
         };
         this.shapeClicked = (event) => {
-            return;
             let diagramProps = this.componentInstanceModel.getInstanceProps("diagrama");
             let diagramInstance = diagramProps.getInstance();
-            let data = [];
-            this.nodeStore.load().done((res) => data = res);
+            let data = this.nodeStore.getAll();
             console.clear();
             console.log("export", diagramInstance.export());
             console.log("\n\n\n");
@@ -47,59 +38,7 @@ export class Diagram {
         this.customShapes = {
             customShapes: [
                 /* Sender */
-                {
-                    type: "sender",
-                    title: "Sender",
-                    category: "Process",
-                    defaultHeight: 2,
-                    defaultWidth: 1.5,
-                    allowResize: false,
-                    allowEditText: false,
-                    connectionPoints: [
-                        { x: 1, y: 0.5 },
-                        { x: 0, y: 0.5 }
-                    ],
-                    toolboxTemplate: (container, data) => {
-                        let shapeContainer = $(data);
-                        let parentElement = shapeContainer.parent();
-                        parentElement.children().remove();
-                        shapeContainer.appendTo(parentElement);
-                        $(`
-                        <svg  viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
-                            <g transform="matrix(0.070778, 0, 0, -0.067442, 1.70092, 498.174286)" fill="#000000" stroke="none">
-                                <path d="M1485 7330 c-112 -29 -179 -58 -257 -109 -167 -111 -285 -268 -348 -466 -28 -88 -39 -284 -20 -377 21 -109 82 -278 101 -278 4 0 10 -11 13 -25 4 -14 11 -25 16 -25 6 0 10 -5 10 -12 0 -6 6 -18 14 -27 93 -103 120 -130 126 -126 4 3 15 -7 24 -20 9 -14 21 -23 25 -20 5 3 12 -2 15 -11 4 -9 9 -14 12 -11 3 3 14 -3 25 -14 11 -11 24 -17 29 -14 6 4 10 1 10 -5 0 -6 5 -8 10 -5 6 3 10 1 10 -5 0 -6 5 -8 10 -5 6 3 10 1 10 -5 0 -6 5 -8 10 -5 6 3 10 1 10 -6 0 -7 3 -10 6 -6 4 3 13 -1 21 -9 9 -8 22 -13 29 -10 8 3 14 1 14 -5 0 -6 7 -9 15 -5 8 3 15 1 15 -5 0 -6 9 -8 20 -4 12 4 20 2 20 -5 0 -7 8 -10 20 -7 11 3 20 1 20 -5 0 -6 13 -8 30 -6 17 3 30 1 30 -4 0 -4 38 -8 85 -8 51 0 85 4 85 10 0 6 15 8 40 4 24 -4 40 -3 40 3 0 6 11 8 25 5 14 -2 25 0 25 6 0 6 9 8 20 5 12 -3 20 0 20 6 0 7 4 10 9 7 12 -8 71 14 71 26 0 5 5 6 10 3 6 -3 10 -1 10 5 0 6 5 8 10 5 6 -3 10 -1 10 5 0 6 5 8 10 5 6 -3 10 -1 10 5 0 6 5 8 10 5 6 -3 10 -1 10 5 0 6 4 9 10 5 5 -3 18 3 29 14 11 11 22 17 25 14 3 -3 8 2 12 11 3 9 10 14 14 11 5 -3 16 5 24 17 9 12 16 18 16 13 0 -5 23 13 50 40 28 27 50 55 50 62 0 7 9 17 20 23 11 6 20 15 20 20 0 6 9 19 20 30 11 11 20 27 20 35 0 8 5 15 12 15 6 0 9 3 5 6 -3 4 0 12 7 19 7 7 30 64 52 127 38 111 39 115 39 263 0 127 -3 162 -23 229 -86 299 -330 529 -625 592 -97 20 -284 18 -372 -6z" style="fill: rgb(1, 1, 1);"></path>
-                                <path d="M935 5349 c-131 -21 -170 -30 -237 -54 -384 -138 -632 -450 -678 -851 -8 -70 -10 -435 -8 -1229 l3 -1130 22 -57 c33 -86 70 -145 132 -205 103 -101 222 -143 408 -143 l102 0 4 -627 c2 -544 5 -634 19 -673 31 -87 50 -130 59 -130 5 0 9 -6 9 -14 0 -8 8 -21 17 -28 10 -7 23 -22 28 -32 6 -10 14 -18 18 -17 4 1 19 -12 33 -29 14 -16 30 -28 35 -24 5 3 9 0 9 -6 0 -6 5 -8 10 -5 6 3 10 1 10 -6 0 -7 3 -10 6 -6 3 3 15 -4 26 -15 11 -11 26 -17 34 -14 8 3 14 2 14 -3 0 -14 88 -34 120 -28 17 4 30 2 30 -3 0 -6 189 -10 520 -10 331 0 520 4 520 10 0 5 13 7 30 3 33 -6 120 14 120 29 0 5 4 6 10 3 12 -7 70 22 70 36 0 6 5 7 10 4 6 -3 10 -1 10 5 0 6 4 9 9 6 5 -4 21 9 37 26 15 18 29 31 32 28 3 -3 10 4 16 15 6 11 19 26 29 33 22 17 48 67 78 152 l24 65 3 632 3 633 102 0 c186 0 305 42 408 143 62 60 99 119 132 205 l22 57 3 1130 c2 793 0 1160 -8 1229 -55 479 -408 836 -885 895 -105 13 -1441 13 -1520 0z" style="fill: rgb(1, 1, 1);"></path>
-                                <path d="M5627 4490 c-65 -17 -112 -47 -169 -109 -66 -71 -88 -127 -88 -225 0 -113 23 -150 206 -336 l157 -160 -1066 0 -1067 0 0 -330 0 -330 1067 0 1066 0 -157 -160 c-183 -186 -206 -223 -206 -336 0 -100 22 -154 91 -229 77 -82 136 -109 239 -109 143 -1 122 -18 750 609 l555 555 -555 555 c-477 475 -563 558 -611 579 -63 29 -155 40 -212 26z" style="fill: rgb(1, 1, 1);"></path>
-                            </g>
-                        </svg>
-                    `).appendTo(shapeContainer);
-                    },
-                    template: (container, data) => {
-                        let shapeContainer = $(data);
-                        let parentElement = shapeContainer.parent();
-                        parentElement.id = "entry";
-                        const componentsID = {
-                            rectID: Utils.getGuid(),
-                            headerLineID: Utils.getGuid(),
-                            textHeaderID: Utils.getGuid(),
-                        };
-                        parentElement.attr({
-                            "data-custom-shape-infos": JSON.stringify(componentsID)
-                        });
-                        $(`<svg  viewBox="369 -38 355 500" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
-                            <g transform="matrix(1.453345, 0, 0, 1.576864, -353.899658, -122.17749)" style="">
-                                <rect id="${componentsID.rectID}" class="shape-hover" x="497.748" y="53.256" width="243.576" height="317.085" style="fill: rgb(250, 250, 250); stroke: #DEDEDE;"></rect>
-                                <line id="${componentsID.headerLineID}" style="fill: rgb(216, 216, 216); stroke: #DEDEDE;" x1="499" y1="100" x2="740" y2="100"></line>
-                                <text id="${componentsID.textHeaderID}" style="white-space: pre; fill: rgb(51, 51, 51); font-family: Arial, sans-serif; font-size: 30px;" x="620" y="90">Sender</text>
-                            </g>
-                        </svg>
-                    `).appendTo(shapeContainer).on("mouseover", () => {
-                            $(`#${componentsID.rectID}`).css("stroke", '#2d2ac7');
-                        }).on("mouseout", () => {
-                            $(`#${componentsID.rectID}`).css("stroke", '#DEDEDE');
-                        });
-                    }
-                },
+                new SenderCustonShape().shape,
                 /* Reciver */
                 {
                     type: "reciver",
@@ -242,7 +181,7 @@ export class Diagram {
                 },
                 /* Start Process */
                 {
-                    type: "start_process",
+                    type: "startProcess",
                     title: "Start Process",
                     category: "Process",
                     defaultText: "",
@@ -294,7 +233,7 @@ export class Diagram {
                 },
                 /* End Process */
                 {
-                    type: "end_process",
+                    type: "endProcess",
                     title: "End Process",
                     category: "Process",
                     defaultText: "",
@@ -346,7 +285,7 @@ export class Diagram {
                 },
                 /* Multicast In */
                 {
-                    type: "multicast_in",
+                    type: "multicastIn",
                     title: "Multicast In",
                     category: "Process",
                     defaultText: "",
@@ -398,7 +337,7 @@ export class Diagram {
                 },
                 /* Multicast Out */
                 {
-                    type: "multicast_out",
+                    type: "multicastOut",
                     title: "Multicast Out",
                     category: "Process",
                     defaultText: "",
@@ -450,7 +389,7 @@ export class Diagram {
                 },
                 /* Start Exception */
                 {
-                    type: "start_exception",
+                    type: "startException",
                     title: "Start Exception",
                     category: "Exception",
                     defaultText: "",
@@ -489,7 +428,7 @@ export class Diagram {
                 },
                 /* Data Converter */
                 {
-                    type: "converter",
+                    type: "dataConverter",
                     title: "Data Converter",
                     category: "Process",
                     defaultText: "",
@@ -628,7 +567,7 @@ export class Diagram {
                 },
                 /* End Exception */
                 {
-                    type: "end_exception",
+                    type: "endException",
                     title: "End Exception",
                     category: "Exception",
                     defaultText: "",
@@ -783,7 +722,7 @@ export class Diagram {
             if (aa) {
                 let a = this.componentInstanceModel.getInstanceProps("diagrama").getInstance().getItemById(aa);
                 if (a && a.type == "processContainer") {
-                    event.allowed = false;
+                    //event.allowed = false;
                 }
             }
             //
@@ -820,7 +759,7 @@ export class Diagram {
                 onItemClick: this.shapeClicked,
                 customShapes: this.customShapes.customShapes,
                 nodes: {
-                    dataSource: this.nodeStore,
+                    dataSource: this.nodeStore.store,
                     keyExpr: "ID"
                 },
                 edges: {
@@ -836,6 +775,138 @@ export class Diagram {
                 readOnly: false,
             }).dxDiagram('instance')
         }));
+    }
+}
+class NodeStore {
+    constructor(key) {
+        this.onInserting = (data) => {
+            if (data.initialized) {
+                return;
+            }
+            switch (data.type) {
+                case "sender":
+                    Object.assign(data, new SenderModel(data.ID));
+                    break;
+                case "processContainer":
+                    Object.assign(data, new ProcessContainerModel(data.ID));
+                    break;
+                case "reciver":
+                    Object.assign(data, new ReciverModel(data.ID));
+                    break;
+                case "condition":
+                    Object.assign(data, new ConditionModel(data.ID));
+                    break;
+                case "exceptionSubprocess":
+                    Object.assign(data, new ExceptionSubprocessModel(data.ID));
+                    break;
+                case "endException":
+                    Object.assign(data, new EndExceptioModel(data.ID));
+                    break;
+                case "script":
+                    Object.assign(data, new ScriptModel(data.ID));
+                    break;
+                case "dataConverter":
+                    Object.assign(data, new DataConverterModel(data.ID));
+                    break;
+                case "startException":
+                    Object.assign(data, new StartExceptionModel(data.ID));
+                    break;
+                case "multicastOut":
+                    Object.assign(data, new MultcastOutModel(data.ID));
+                    break;
+                case "multicastIn":
+                    Object.assign(data, new MultcastInModel(data.ID));
+                    break;
+                case "endProcess":
+                    Object.assign(data, new EndProcessModel(data.ID));
+                    break;
+                case "startProcess":
+                    Object.assign(data, new StartProcessModel(data.ID));
+                    break;
+                default:
+                    new Error(`[Erro] tipo "${data.type}" não encontrado.`);
+            }
+        };
+        this.errorHandler = (Error) => {
+            debugger;
+        };
+        this.getAll = () => {
+            let data = [];
+            this._store.load().done((res) => data = res);
+            return data;
+        };
+        this._store = new DevExpress.data.ArrayStore({
+            key: key,
+            data: [],
+            onInserting: this.onInserting,
+            errorHandler: this.errorHandler
+        });
+    }
+    get store() {
+        return this._store;
+    }
+}
+class SenderCustonShape {
+    constructor() {
+        this.toolboxTemplate = (container, data) => {
+            let shapeContainer = $(data);
+            let parentElement = shapeContainer.parent();
+            parentElement.children().remove();
+            shapeContainer.appendTo(parentElement);
+            $(`
+            <svg  viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
+                <g transform="matrix(0.070778, 0, 0, -0.067442, 1.70092, 498.174286)" fill="#000000" stroke="none">
+                    <path d="M1485 7330 c-112 -29 -179 -58 -257 -109 -167 -111 -285 -268 -348 -466 -28 -88 -39 -284 -20 -377 21 -109 82 -278 101 -278 4 0 10 -11 13 -25 4 -14 11 -25 16 -25 6 0 10 -5 10 -12 0 -6 6 -18 14 -27 93 -103 120 -130 126 -126 4 3 15 -7 24 -20 9 -14 21 -23 25 -20 5 3 12 -2 15 -11 4 -9 9 -14 12 -11 3 3 14 -3 25 -14 11 -11 24 -17 29 -14 6 4 10 1 10 -5 0 -6 5 -8 10 -5 6 3 10 1 10 -5 0 -6 5 -8 10 -5 6 3 10 1 10 -5 0 -6 5 -8 10 -5 6 3 10 1 10 -6 0 -7 3 -10 6 -6 4 3 13 -1 21 -9 9 -8 22 -13 29 -10 8 3 14 1 14 -5 0 -6 7 -9 15 -5 8 3 15 1 15 -5 0 -6 9 -8 20 -4 12 4 20 2 20 -5 0 -7 8 -10 20 -7 11 3 20 1 20 -5 0 -6 13 -8 30 -6 17 3 30 1 30 -4 0 -4 38 -8 85 -8 51 0 85 4 85 10 0 6 15 8 40 4 24 -4 40 -3 40 3 0 6 11 8 25 5 14 -2 25 0 25 6 0 6 9 8 20 5 12 -3 20 0 20 6 0 7 4 10 9 7 12 -8 71 14 71 26 0 5 5 6 10 3 6 -3 10 -1 10 5 0 6 5 8 10 5 6 -3 10 -1 10 5 0 6 5 8 10 5 6 -3 10 -1 10 5 0 6 5 8 10 5 6 -3 10 -1 10 5 0 6 4 9 10 5 5 -3 18 3 29 14 11 11 22 17 25 14 3 -3 8 2 12 11 3 9 10 14 14 11 5 -3 16 5 24 17 9 12 16 18 16 13 0 -5 23 13 50 40 28 27 50 55 50 62 0 7 9 17 20 23 11 6 20 15 20 20 0 6 9 19 20 30 11 11 20 27 20 35 0 8 5 15 12 15 6 0 9 3 5 6 -3 4 0 12 7 19 7 7 30 64 52 127 38 111 39 115 39 263 0 127 -3 162 -23 229 -86 299 -330 529 -625 592 -97 20 -284 18 -372 -6z" style="fill: rgb(1, 1, 1);"></path>
+                    <path d="M935 5349 c-131 -21 -170 -30 -237 -54 -384 -138 -632 -450 -678 -851 -8 -70 -10 -435 -8 -1229 l3 -1130 22 -57 c33 -86 70 -145 132 -205 103 -101 222 -143 408 -143 l102 0 4 -627 c2 -544 5 -634 19 -673 31 -87 50 -130 59 -130 5 0 9 -6 9 -14 0 -8 8 -21 17 -28 10 -7 23 -22 28 -32 6 -10 14 -18 18 -17 4 1 19 -12 33 -29 14 -16 30 -28 35 -24 5 3 9 0 9 -6 0 -6 5 -8 10 -5 6 3 10 1 10 -6 0 -7 3 -10 6 -6 3 3 15 -4 26 -15 11 -11 26 -17 34 -14 8 3 14 2 14 -3 0 -14 88 -34 120 -28 17 4 30 2 30 -3 0 -6 189 -10 520 -10 331 0 520 4 520 10 0 5 13 7 30 3 33 -6 120 14 120 29 0 5 4 6 10 3 12 -7 70 22 70 36 0 6 5 7 10 4 6 -3 10 -1 10 5 0 6 4 9 9 6 5 -4 21 9 37 26 15 18 29 31 32 28 3 -3 10 4 16 15 6 11 19 26 29 33 22 17 48 67 78 152 l24 65 3 632 3 633 102 0 c186 0 305 42 408 143 62 60 99 119 132 205 l22 57 3 1130 c2 793 0 1160 -8 1229 -55 479 -408 836 -885 895 -105 13 -1441 13 -1520 0z" style="fill: rgb(1, 1, 1);"></path>
+                    <path d="M5627 4490 c-65 -17 -112 -47 -169 -109 -66 -71 -88 -127 -88 -225 0 -113 23 -150 206 -336 l157 -160 -1066 0 -1067 0 0 -330 0 -330 1067 0 1066 0 -157 -160 c-183 -186 -206 -223 -206 -336 0 -100 22 -154 91 -229 77 -82 136 -109 239 -109 143 -1 122 -18 750 609 l555 555 -555 555 c-477 475 -563 558 -611 579 -63 29 -155 40 -212 26z" style="fill: rgb(1, 1, 1);"></path>
+                </g>
+             </svg>
+        `).appendTo(shapeContainer);
+        };
+        this.template = (container, data) => {
+            let shapeContainer = $(data);
+            let parentElement = shapeContainer.parent();
+            parentElement.id = "entry";
+            const componentsID = {
+                rectID: Utils.getGuid(),
+                headerLineID: Utils.getGuid(),
+                textHeaderID: Utils.getGuid(),
+            };
+            parentElement.attr({
+                "data-custom-shape-infos": JSON.stringify(componentsID)
+            });
+            $(`
+            <svg  viewBox="369 -38 355 500" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+                <g transform="matrix(1.453345, 0, 0, 1.576864, -353.899658, -122.17749)" style="">
+                    <rect id="${componentsID.rectID}" class="shape-hover" x="497.748" y="53.256" width="243.576" height="317.085" style="fill: rgb(250, 250, 250); stroke: #DEDEDE;"></rect>
+                    <line id="${componentsID.headerLineID}" style="fill: rgb(216, 216, 216); stroke: #DEDEDE;" x1="499" y1="100" x2="740" y2="100"></line>
+                    <text id="${componentsID.textHeaderID}" style="white-space: pre; fill: rgb(51, 51, 51); font-family: Arial, sans-serif; font-size: 30px;" x="620" y="90">Sender</text>
+                </g>
+            </svg>
+        `).appendTo(shapeContainer).on("mouseover", () => {
+                $(`#${componentsID.rectID}`).css("stroke", '#2d2ac7');
+            }).on("mouseout", () => {
+                $(`#${componentsID.rectID}`).css("stroke", '#DEDEDE');
+            });
+        };
+        this._shape = {
+            type: "sender",
+            title: "Sender",
+            category: "Process",
+            defaultHeight: 2,
+            defaultWidth: 1.5,
+            allowResize: false,
+            allowEditText: false,
+            connectionPoints: [
+                { x: 1, y: 0.5 },
+                { x: 0, y: 0.5 }
+            ],
+            toolboxTemplate: this.toolboxTemplate,
+            template: this.template
+        };
+    }
+    get shape() {
+        return this._shape;
     }
 }
 //# sourceMappingURL=Diagram.js.map

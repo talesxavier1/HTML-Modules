@@ -4,6 +4,8 @@ export class ShapeModel {
         this.ID = ID ? ID : Utils.getGuid();
         this.shapeType = shapeType;
         this._initialized = true;
+        this.type = shapeType;
+        this.text = "";
     }
     get initialized() {
         return this._initialized;
