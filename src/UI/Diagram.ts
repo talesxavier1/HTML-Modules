@@ -22,6 +22,7 @@ export class Diagram {
     private nodeStore = new NodeStore("ID");
 
     setDiagramOptions = (strDiagramProps: string, diagramData: Array<any>) => {
+        return;
         let diagramProps = this.componentInstanceModel.getInstanceProps("diagrama");
         let diagramInstance = diagramProps.getInstance() as DevExpress.ui.dxDiagram;
         diagramInstance.import(strDiagramProps, false);
@@ -32,7 +33,7 @@ export class Diagram {
     }
 
     private shapeClicked = (event: DevExpress.ui.dxDiagram.ItemClickEvent) => {
-
+        return;
         let diagramProps = this.componentInstanceModel.getInstanceProps("diagrama");
         let diagramInstance = diagramProps.getInstance() as DevExpress.ui.dxDiagram;
 
@@ -62,16 +63,51 @@ export class Diagram {
         ]
     }
 
-    private onRequestEditOperation = (event: DevExpress.ui.dxDiagram.RequestEditOperationEvent) => {
+    private onRequestEditOperation = (event: any) => {
         if (event.operation == "addShapeFromToolbox") { return }
-        console.log(event)
-        let aa = (event.args as any)?.shape?.containerId;
-        if (aa) {
-            let a: any = (this.componentInstanceModel.getInstanceProps("diagrama").getInstance() as DevExpress.ui.dxDiagram).getItemById(aa);
-            if (a && a.type == "processContainer") {
-                //event.allowed = false;
+
+
+        /* ========================= SENDER ========================= */
+        /* Valida se o shape sender está sendo inserido em algum container. */
+        let valid_98441cb3 = ((param) => {
+            if (event?.args?.shape?.type != "sender") { return true }
+            let containerID = param?.args?.shape?.containerId;
+            if (containerID) { return false }
+            return true;
+        })(event);
+        if (!valid_98441cb3) { event.allowed = false; }
+
+        /* Valida se o shape sender está sendo conectado a algum shape que não seja um startProcess */
+        let valid_b41a3aa3 = ((param) => {
+            if (param.operation != "changeConnection") { return true }
+
+            let conectorFrom = param?.args?.connector?.fromKey;
+            let conectorTo = param?.args?.connector?.toKey;
+
+            let dataFrom = this.nodeStore.getByKey(conectorFrom);
+            let dataTo = this.nodeStore.getByKey(conectorTo);
+
+            let shapeTypeTo = dataTo?.shapeType;
+            let shapeTypeFrom = dataFrom?.shapeType;
+
+            if ((shapeTypeTo && shapeTypeFrom) && (shapeTypeFrom == "sender" && shapeTypeTo != "startProcess")) {
+                return false;
             }
-        }
+            return true;
+        })(event);
+        if (!valid_b41a3aa3) { event.allowed = false; }
+        /* ========================================================== */
+
+
+
+
+        // let aa = (event.args as any)?.shape?.containerId;
+        // if (aa) {
+        //     let a: any = (this.componentInstanceModel.getInstanceProps("diagrama").getInstance() as DevExpress.ui.dxDiagram).getItemById(aa);
+        //     if (a && a.type == "processContainer") {
+        //         //event.allowed = false;
+        //     }
+        // }
         //
         // let args = event.args as any;
         // if (event.operation == "changeConnection") {
@@ -115,7 +151,7 @@ export class Diagram {
                 customShapes: this.customShapes.customShapes,
                 nodes: {
                     dataSource: this.nodeStore.store,
-                    keyExpr: "ID"
+                    keyExpr: "ID",
                 },
                 edges: {
                     dataSource: new DevExpress.data.ArrayStore<TDataSource, String>({
@@ -209,6 +245,13 @@ class NodeStore {
         let data: Array<TDataSource> = []
         this._store.load().done((res: Array<TDataSource>) => data = res);
         return data;
+    }
+
+    public getByKey = (key?: string): TDataSource | null => {
+        if (!key) { return null }
+        let result;
+        this._store.byKey(key).done((VAL: TDataSource) => { result = VAL })
+        return result ?? null
     }
 
     constructor(key: string) {

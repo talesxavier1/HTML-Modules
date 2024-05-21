@@ -19,6 +19,7 @@ export class Diagram {
         this.componentInstanceModel = new ComponentInstanceModel(new Object);
         this.nodeStore = new NodeStore("ID");
         this.setDiagramOptions = (strDiagramProps, diagramData) => {
+            return;
             let diagramProps = this.componentInstanceModel.getInstanceProps("diagrama");
             let diagramInstance = diagramProps.getInstance();
             diagramInstance.import(strDiagramProps, false);
@@ -27,6 +28,7 @@ export class Diagram {
             });
         };
         this.shapeClicked = (event) => {
+            return;
             let diagramProps = this.componentInstanceModel.getInstanceProps("diagrama");
             let diagramInstance = diagramProps.getInstance();
             let data = this.nodeStore.getAll();
@@ -53,18 +55,53 @@ export class Diagram {
             ]
         };
         this.onRequestEditOperation = (event) => {
-            var _a, _b;
             if (event.operation == "addShapeFromToolbox") {
                 return;
             }
-            console.log(event);
-            let aa = (_b = (_a = event.args) === null || _a === void 0 ? void 0 : _a.shape) === null || _b === void 0 ? void 0 : _b.containerId;
-            if (aa) {
-                let a = this.componentInstanceModel.getInstanceProps("diagrama").getInstance().getItemById(aa);
-                if (a && a.type == "processContainer") {
-                    //event.allowed = false;
+            /* ========================= SENDER ========================= */
+            /* Valida se o shape sender está sendo inserido em algum container. */
+            let valid_98441cb3 = ((param) => {
+                var _a, _b, _c, _d;
+                if (((_b = (_a = event === null || event === void 0 ? void 0 : event.args) === null || _a === void 0 ? void 0 : _a.shape) === null || _b === void 0 ? void 0 : _b.type) != "sender") {
+                    return true;
                 }
+                let containerID = (_d = (_c = param === null || param === void 0 ? void 0 : param.args) === null || _c === void 0 ? void 0 : _c.shape) === null || _d === void 0 ? void 0 : _d.containerId;
+                if (containerID) {
+                    return false;
+                }
+                return true;
+            })(event);
+            if (!valid_98441cb3) {
+                event.allowed = false;
             }
+            /* Valida se o shape sender está sendo conectado a algum shape que não seja um startProcess */
+            let valid_b41a3aa3 = ((param) => {
+                var _a, _b, _c, _d;
+                if (param.operation != "changeConnection") {
+                    return true;
+                }
+                let conectorFrom = (_b = (_a = param === null || param === void 0 ? void 0 : param.args) === null || _a === void 0 ? void 0 : _a.connector) === null || _b === void 0 ? void 0 : _b.fromKey;
+                let conectorTo = (_d = (_c = param === null || param === void 0 ? void 0 : param.args) === null || _c === void 0 ? void 0 : _c.connector) === null || _d === void 0 ? void 0 : _d.toKey;
+                let dataFrom = this.nodeStore.getByKey(conectorFrom);
+                let dataTo = this.nodeStore.getByKey(conectorTo);
+                let shapeTypeTo = dataTo === null || dataTo === void 0 ? void 0 : dataTo.shapeType;
+                let shapeTypeFrom = dataFrom === null || dataFrom === void 0 ? void 0 : dataFrom.shapeType;
+                if ((shapeTypeTo && shapeTypeFrom) && (shapeTypeFrom == "sender" && shapeTypeTo != "startProcess")) {
+                    return false;
+                }
+                return true;
+            })(event);
+            if (!valid_b41a3aa3) {
+                event.allowed = false;
+            }
+            /* ========================================================== */
+            // let aa = (event.args as any)?.shape?.containerId;
+            // if (aa) {
+            //     let a: any = (this.componentInstanceModel.getInstanceProps("diagrama").getInstance() as DevExpress.ui.dxDiagram).getItemById(aa);
+            //     if (a && a.type == "processContainer") {
+            //         //event.allowed = false;
+            //     }
+            // }
             //
             // let args = event.args as any;
             // if (event.operation == "changeConnection") {
@@ -100,7 +137,7 @@ export class Diagram {
                 customShapes: this.customShapes.customShapes,
                 nodes: {
                     dataSource: this.nodeStore.store,
-                    keyExpr: "ID"
+                    keyExpr: "ID",
                 },
                 edges: {
                     dataSource: new DevExpress.data.ArrayStore({
@@ -175,6 +212,14 @@ class NodeStore {
             let data = [];
             this._store.load().done((res) => data = res);
             return data;
+        };
+        this.getByKey = (key) => {
+            if (!key) {
+                return null;
+            }
+            let result;
+            this._store.byKey(key).done((VAL) => { result = VAL; });
+            return result !== null && result !== void 0 ? result : null;
         };
         this._store = new DevExpress.data.ArrayStore({
             key: key,
