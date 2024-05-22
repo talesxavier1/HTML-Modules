@@ -20,9 +20,10 @@ export class Diagram {
     private componentInstanceModel = new ComponentInstanceModel<Object>(new Object);
 
     private nodeStore = new NodeStore("ID");
+    private edgesStore = new EdgesStore("ID");
 
     setDiagramOptions = (strDiagramProps: string, diagramData: Array<any>) => {
-        return;
+        // return;
         let diagramProps = this.componentInstanceModel.getInstanceProps("diagrama");
         let diagramInstance = diagramProps.getInstance() as DevExpress.ui.dxDiagram;
         diagramInstance.import(strDiagramProps, false);
@@ -63,39 +64,105 @@ export class Diagram {
         ]
     }
 
+    private pipelineEditOperation = (event: any, functions: Array<(event: any) => boolean>): boolean => {
+        let finalResult = true;
+        for (let _function of functions) {
+            let result = _function(event);
+            if (!result) { finalResult = false; break; }
+        }
+        return finalResult;
+    }
+
+    /*   function pipeline() {
+  
+      } */
+    // const pipeline = (value: boolean, funcs: Array<(prev) => boolean>) => funcs.reduce((Current: boolean, fn: () => boolean) => fn(Current), value);
+    // console.log(event);
+
     private onRequestEditOperation = (event: any) => {
         if (event.operation == "addShapeFromToolbox") { return }
+
+        let pipelineArray: Array<(event: any) => boolean> = [];
+
+        /* ========================= GERAL ========================== */
+        /* Valida se o conector foi conectado a algum shape */
+        let valid_f02793eb = (event: any) => {
+            let conector = event?.args?.connector;
+            if (!conector) { return true }
+
+            let conectorFrom = conector?.fromKey;
+            let conectorTo = conector?.toKey;
+            /*  console.log("------");
+             console.log("conectorFrom", conectorFrom, "conectorTo", conectorTo); */
+            if (!conectorFrom || !conectorTo) { return false }
+
+            return true;
+        };
+        pipelineArray.push(valid_f02793eb);
+        /* ========================================================== */
 
 
         /* ========================= SENDER ========================= */
         /* Valida se o shape sender está sendo inserido em algum container. */
-        let valid_98441cb3 = ((param) => {
+        let valid_98441cb3 = (event: any) => {
             if (event?.args?.shape?.type != "sender") { return true }
-            let containerID = param?.args?.shape?.containerId;
+            let containerID = event?.args?.shape?.containerId;
             if (containerID) { return false }
             return true;
-        })(event);
-        if (!valid_98441cb3) { event.allowed = false; }
+        }
+        pipelineArray.push(valid_98441cb3);
 
         /* Valida se o shape sender está sendo conectado a algum shape que não seja um startProcess */
-        let valid_b41a3aa3 = ((param) => {
-            if (param.operation != "changeConnection") { return true }
+        let valid_b41a3aa3 = (event: any) => {
+            if (event.operation != "changeConnection") { return true }
 
-            let conectorFrom = param?.args?.connector?.fromKey;
-            let conectorTo = param?.args?.connector?.toKey;
+            let conectorFrom = event?.args?.connector?.fromKey;
+            let conectorTo = event?.args?.connector?.toKey;
+            if (!conectorFrom || !conectorTo) { return true }
 
             let dataFrom = this.nodeStore.getByKey(conectorFrom);
             let dataTo = this.nodeStore.getByKey(conectorTo);
+            if (!dataFrom || !dataTo) { return true }
 
             let shapeTypeTo = dataTo?.shapeType;
             let shapeTypeFrom = dataFrom?.shapeType;
+            if (!shapeTypeTo || !shapeTypeFrom) { return true }
 
-            if ((shapeTypeTo && shapeTypeFrom) && (shapeTypeFrom == "sender" && shapeTypeTo != "startProcess")) {
+            if (shapeTypeFrom == "sender" && shapeTypeTo != "startProcess") {
                 return false;
             }
             return true;
-        })(event);
-        if (!valid_b41a3aa3) { event.allowed = false; }
+        }
+        pipelineArray.push(valid_b41a3aa3);
+
+        /* Valida se algum chape está sendo conectado ao Sender */
+        let valid_82c1c643 = (event: any) => {
+            if (event.operation != "changeConnection") { return true }
+
+            let conectorTo = event?.args?.connector?.toKey;
+            if (!conectorTo) { return true }
+
+            let dataTo = this.nodeStore.getByKey(conectorTo);
+            if (!dataTo) { return true }
+
+            let shapeTypeTo = dataTo?.shapeType;
+            if (!shapeTypeTo) { return true }
+
+            if (shapeTypeTo == "sender") {
+                return false;
+            }
+            return true;
+        }
+        pipelineArray.push(valid_82c1c643);
+
+        let resultPipeline = this.pipelineEditOperation(event, pipelineArray);
+        event.allowed = resultPipeline;
+        event.updateUI = resultPipeline;
+
+
+
+        /* Valida se o Sender está sendo conectado mais de uma vez */
+        console.log(event)
         /* ========================================================== */
 
 
@@ -143,6 +210,7 @@ export class Diagram {
             tagName: "diagrama",
             componentName: "dxDiagram",
             instance: $('#diagrama').dxDiagram({
+
                 toolbox: {
                     groups: [{ category: "Process" }, { category: "Exception" }]
                 },
@@ -154,10 +222,7 @@ export class Diagram {
                     keyExpr: "ID",
                 },
                 edges: {
-                    dataSource: new DevExpress.data.ArrayStore<TDataSource, String>({
-                        key: 'ID',
-                        data: [],
-                    }),
+                    dataSource: this.edgesStore.store,
                     keyExpr: "ID",
                 },
                 showGrid: false,
@@ -235,6 +300,45 @@ class NodeStore {
             default:
                 new Error(`[Erro] tipo "${data.type}" não encontrado.`);
         }
+    }
+
+    private errorHandler = (Error: any): void => {
+        debugger;
+    }
+
+    public getAll = (): Array<TDataSource> => {
+        let data: Array<TDataSource> = []
+        this._store.load().done((res: Array<TDataSource>) => data = res);
+        return data;
+    }
+
+    public getByKey = (key?: string): TDataSource | null => {
+        if (!key) { return null }
+        let result;
+        this._store.byKey(key).done((VAL: TDataSource) => { result = VAL })
+        return result ?? null
+    }
+
+    constructor(key: string) {
+        this._store = new DevExpress.data.ArrayStore<TDataSource, String>({
+            key: key,
+            data: [],
+            onInserting: this.onInserting,
+            errorHandler: this.errorHandler
+        });
+    }
+
+    get store(): DevExpress.data.ArrayStore<TDataSource, String> {
+        return this._store
+    }
+}
+
+class EdgesStore {
+
+    private _store: DevExpress.data.ArrayStore<TDataSource, String>;
+
+    private onInserting = (data: TDataSource): void => {
+
     }
 
     private errorHandler = (Error: any): void => {
