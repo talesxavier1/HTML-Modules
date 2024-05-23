@@ -66,38 +66,14 @@ export class Diagram {
             }
             return finalResult;
         };
-        /*   function pipeline() {
-      
-          } */
-        // const pipeline = (value: boolean, funcs: Array<(prev) => boolean>) => funcs.reduce((Current: boolean, fn: () => boolean) => fn(Current), value);
-        // console.log(event);
         this.onRequestEditOperation = (event) => {
             if (event.operation == "addShapeFromToolbox") {
                 return;
             }
             let pipelineArray = [];
-            /* ========================= GERAL ========================== */
-            /* Valida se o conector foi conectado a algum shape */
-            let valid_f02793eb = (event) => {
-                var _a;
-                let conector = (_a = event === null || event === void 0 ? void 0 : event.args) === null || _a === void 0 ? void 0 : _a.connector;
-                if (!conector) {
-                    return true;
-                }
-                let conectorFrom = conector === null || conector === void 0 ? void 0 : conector.fromKey;
-                let conectorTo = conector === null || conector === void 0 ? void 0 : conector.toKey;
-                /*  console.log("------");
-                 console.log("conectorFrom", conectorFrom, "conectorTo", conectorTo); */
-                if (!conectorFrom || !conectorTo) {
-                    return false;
-                }
-                return true;
-            };
-            pipelineArray.push(valid_f02793eb);
-            /* ========================================================== */
             /* ========================= SENDER ========================= */
             /* Valida se o shape sender está sendo inserido em algum container. */
-            let valid_98441cb3 = (event) => {
+            const valid_98441cb3 = (event) => {
                 var _a, _b, _c, _d;
                 if (((_b = (_a = event === null || event === void 0 ? void 0 : event.args) === null || _a === void 0 ? void 0 : _a.shape) === null || _b === void 0 ? void 0 : _b.type) != "sender") {
                     return true;
@@ -110,7 +86,7 @@ export class Diagram {
             };
             pipelineArray.push(valid_98441cb3);
             /* Valida se o shape sender está sendo conectado a algum shape que não seja um startProcess */
-            let valid_b41a3aa3 = (event) => {
+            const valid_b41a3aa3 = (event) => {
                 var _a, _b, _c, _d;
                 if (event.operation != "changeConnection") {
                     return true;
@@ -122,22 +98,14 @@ export class Diagram {
                 }
                 let dataFrom = this.nodeStore.getByKey(conectorFrom);
                 let dataTo = this.nodeStore.getByKey(conectorTo);
-                if (!dataFrom || !dataTo) {
-                    return true;
-                }
-                let shapeTypeTo = dataTo === null || dataTo === void 0 ? void 0 : dataTo.shapeType;
-                let shapeTypeFrom = dataFrom === null || dataFrom === void 0 ? void 0 : dataFrom.shapeType;
-                if (!shapeTypeTo || !shapeTypeFrom) {
-                    return true;
-                }
-                if (shapeTypeFrom == "sender" && shapeTypeTo != "startProcess") {
+                if ((dataFrom === null || dataFrom === void 0 ? void 0 : dataFrom.shapeType) == "sender" && (dataTo === null || dataTo === void 0 ? void 0 : dataTo.shapeType) != "startProcess") {
                     return false;
                 }
                 return true;
             };
             pipelineArray.push(valid_b41a3aa3);
             /* Valida se algum chape está sendo conectado ao Sender */
-            let valid_82c1c643 = (event) => {
+            const valid_82c1c643 = (event) => {
                 var _a, _b;
                 if (event.operation != "changeConnection") {
                     return true;
@@ -147,54 +115,45 @@ export class Diagram {
                     return true;
                 }
                 let dataTo = this.nodeStore.getByKey(conectorTo);
-                if (!dataTo) {
-                    return true;
-                }
-                let shapeTypeTo = dataTo === null || dataTo === void 0 ? void 0 : dataTo.shapeType;
-                if (!shapeTypeTo) {
-                    return true;
-                }
-                if (shapeTypeTo == "sender") {
+                if ((dataTo === null || dataTo === void 0 ? void 0 : dataTo.shapeType) == "sender") {
                     return false;
                 }
                 return true;
             };
             pipelineArray.push(valid_82c1c643);
+            /* Valida se o sender está sendo conectado a mais de um shape */
+            const valid_a5476ac6 = (event) => {
+                var _a;
+                if (event.operation != "changeConnectorPoints") {
+                    return true;
+                }
+                let connector = (_a = event === null || event === void 0 ? void 0 : event.args) === null || _a === void 0 ? void 0 : _a.connector;
+                if (!connector) {
+                    return true;
+                }
+                let fromID = connector === null || connector === void 0 ? void 0 : connector.fromKey;
+                if (!fromID) {
+                    return true;
+                }
+                let fromShape = this.nodeStore.getByKey(fromID);
+                if ((fromShape === null || fromShape === void 0 ? void 0 : fromShape.shapeType) != "sender") {
+                    return true;
+                }
+                let connectorsFrom = this.edgesStore.getByFromId(fromID);
+                if (connectorsFrom.length == 0) {
+                    return true;
+                }
+                let connectorID = connector.key;
+                let validConnector = connectorsFrom.some(VALUE => VALUE.ID == connectorID);
+                // console.log("validConnector", validConnector)
+                return validConnector;
+            };
+            pipelineArray.push(valid_a5476ac6);
+            /* ========================================================== */
             let resultPipeline = this.pipelineEditOperation(event, pipelineArray);
             event.allowed = resultPipeline;
             event.updateUI = resultPipeline;
-            /* Valida se o Sender está sendo conectado mais de uma vez */
-            console.log(event);
-            /* ========================================================== */
-            // let aa = (event.args as any)?.shape?.containerId;
-            // if (aa) {
-            //     let a: any = (this.componentInstanceModel.getInstanceProps("diagrama").getInstance() as DevExpress.ui.dxDiagram).getItemById(aa);
-            //     if (a && a.type == "processContainer") {
-            //         //event.allowed = false;
-            //     }
-            // }
-            //
-            // let args = event.args as any;
-            // if (event.operation == "changeConnection") {
-            //     let from = args?.connector?.fromKey
-            //     let to = args?.connector?.toKey
-            //     if (from && to) {
-            //         let nodeFrom: any = (() => {
-            //             let result;
-            //             this.nodeStore.byKey(from).done((val: any) => result = val);
-            //             return result;
-            //         })();
-            //         let nodeTo: any = (() => {
-            //             let result;
-            //             this.nodeStore.byKey(to).done((val: any) => result = val);
-            //             return result;
-            //         })();
-            //         if (nodeFrom.type == "converter" && nodeTo.type == "script") {
-            //             event.allowed = false;
-            //         }
-            //     }
-            //     // console.log("from:", from, "\n", "to:", to, "\n")
-            // }
+            // console.log(event);
         };
         this.componentInstanceModel.addInstance(new InstanceProps({
             tagName: "diagrama",
@@ -311,6 +270,12 @@ class EdgesStore {
             let data = [];
             this._store.load().done((res) => data = res);
             return data;
+        };
+        this.getByFromId = (ID) => {
+            let query = this._store.createQuery().filter(["from", ID]);
+            let result = [];
+            query.enumerate().done((values) => result = values);
+            return result;
         };
         this.getByKey = (key) => {
             if (!key) {

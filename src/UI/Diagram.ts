@@ -73,47 +73,23 @@ export class Diagram {
         return finalResult;
     }
 
-    /*   function pipeline() {
-  
-      } */
-    // const pipeline = (value: boolean, funcs: Array<(prev) => boolean>) => funcs.reduce((Current: boolean, fn: () => boolean) => fn(Current), value);
-    // console.log(event);
-
     private onRequestEditOperation = (event: any) => {
         if (event.operation == "addShapeFromToolbox") { return }
 
         let pipelineArray: Array<(event: any) => boolean> = [];
 
-        /* ========================= GERAL ========================== */
-        /* Valida se o conector foi conectado a algum shape */
-        let valid_f02793eb = (event: any) => {
-            let conector = event?.args?.connector;
-            if (!conector) { return true }
-
-            let conectorFrom = conector?.fromKey;
-            let conectorTo = conector?.toKey;
-            /*  console.log("------");
-             console.log("conectorFrom", conectorFrom, "conectorTo", conectorTo); */
-            if (!conectorFrom || !conectorTo) { return false }
-
-            return true;
-        };
-        pipelineArray.push(valid_f02793eb);
-        /* ========================================================== */
-
-
         /* ========================= SENDER ========================= */
         /* Valida se o shape sender está sendo inserido em algum container. */
-        let valid_98441cb3 = (event: any) => {
+        const valid_98441cb3 = (event: any) => {
             if (event?.args?.shape?.type != "sender") { return true }
             let containerID = event?.args?.shape?.containerId;
             if (containerID) { return false }
             return true;
-        }
+        };
         pipelineArray.push(valid_98441cb3);
 
         /* Valida se o shape sender está sendo conectado a algum shape que não seja um startProcess */
-        let valid_b41a3aa3 = (event: any) => {
+        const valid_b41a3aa3 = (event: any) => {
             if (event.operation != "changeConnection") { return true }
 
             let conectorFrom = event?.args?.connector?.fromKey;
@@ -122,87 +98,60 @@ export class Diagram {
 
             let dataFrom = this.nodeStore.getByKey(conectorFrom);
             let dataTo = this.nodeStore.getByKey(conectorTo);
-            if (!dataFrom || !dataTo) { return true }
 
-            let shapeTypeTo = dataTo?.shapeType;
-            let shapeTypeFrom = dataFrom?.shapeType;
-            if (!shapeTypeTo || !shapeTypeFrom) { return true }
-
-            if (shapeTypeFrom == "sender" && shapeTypeTo != "startProcess") {
+            if (dataFrom?.shapeType == "sender" && dataTo?.shapeType != "startProcess") {
                 return false;
             }
             return true;
-        }
+        };
         pipelineArray.push(valid_b41a3aa3);
 
         /* Valida se algum chape está sendo conectado ao Sender */
-        let valid_82c1c643 = (event: any) => {
+        const valid_82c1c643 = (event: any) => {
             if (event.operation != "changeConnection") { return true }
 
             let conectorTo = event?.args?.connector?.toKey;
             if (!conectorTo) { return true }
 
             let dataTo = this.nodeStore.getByKey(conectorTo);
-            if (!dataTo) { return true }
 
-            let shapeTypeTo = dataTo?.shapeType;
-            if (!shapeTypeTo) { return true }
-
-            if (shapeTypeTo == "sender") {
+            if (dataTo?.shapeType == "sender") {
                 return false;
             }
             return true;
         }
         pipelineArray.push(valid_82c1c643);
 
-        let resultPipeline = this.pipelineEditOperation(event, pipelineArray);
-        event.allowed = resultPipeline;
-        event.updateUI = resultPipeline;
+        /* Valida se o sender está sendo conectado a mais de um shape */
+        const valid_a5476ac6 = (event: any) => {
+            if (event.operation != "changeConnectorPoints") { return true }
+            let connector = event?.args?.connector;
+            if (!connector) { return true; }
 
+            let fromID = connector?.fromKey;
+            if (!fromID) { return true; }
 
+            let fromShape = this.nodeStore.getByKey(fromID);
+            if (fromShape?.shapeType != "sender") { return true; }
 
-        /* Valida se o Sender está sendo conectado mais de uma vez */
-        console.log(event)
+            let connectorsFrom = this.edgesStore.getByFromId(fromID);
+            if (connectorsFrom.length == 0) { return true; }
+
+            let connectorID = connector.key;
+
+            let validConnector = connectorsFrom.some(VALUE => VALUE.ID == connectorID);
+            // console.log("validConnector", validConnector)
+            return validConnector;
+        };
+        pipelineArray.push(valid_a5476ac6);
         /* ========================================================== */
 
 
 
-
-        // let aa = (event.args as any)?.shape?.containerId;
-        // if (aa) {
-        //     let a: any = (this.componentInstanceModel.getInstanceProps("diagrama").getInstance() as DevExpress.ui.dxDiagram).getItemById(aa);
-        //     if (a && a.type == "processContainer") {
-        //         //event.allowed = false;
-        //     }
-        // }
-        //
-        // let args = event.args as any;
-        // if (event.operation == "changeConnection") {
-        //     let from = args?.connector?.fromKey
-        //     let to = args?.connector?.toKey
-
-        //     if (from && to) {
-        //         let nodeFrom: any = (() => {
-        //             let result;
-        //             this.nodeStore.byKey(from).done((val: any) => result = val);
-        //             return result;
-        //         })();
-
-
-        //         let nodeTo: any = (() => {
-        //             let result;
-        //             this.nodeStore.byKey(to).done((val: any) => result = val);
-        //             return result;
-        //         })();
-
-        //         if (nodeFrom.type == "converter" && nodeTo.type == "script") {
-        //             event.allowed = false;
-        //         }
-
-        //     }
-
-        //     // console.log("from:", from, "\n", "to:", to, "\n")
-        // }
+        let resultPipeline = this.pipelineEditOperation(event, pipelineArray);
+        event.allowed = resultPipeline;
+        event.updateUI = resultPipeline;
+        // console.log(event);
     }
 
     constructor() {
@@ -312,6 +261,7 @@ class NodeStore {
         return data;
     }
 
+
     public getByKey = (key?: string): TDataSource | null => {
         if (!key) { return null }
         let result;
@@ -335,9 +285,9 @@ class NodeStore {
 
 class EdgesStore {
 
-    private _store: DevExpress.data.ArrayStore<TDataSource, String>;
+    private _store: DevExpress.data.ArrayStore<any, String>;
 
-    private onInserting = (data: TDataSource): void => {
+    private onInserting = (data: any): void => {
 
     }
 
@@ -345,21 +295,29 @@ class EdgesStore {
         debugger;
     }
 
-    public getAll = (): Array<TDataSource> => {
-        let data: Array<TDataSource> = []
-        this._store.load().done((res: Array<TDataSource>) => data = res);
+    public getAll = (): Array<any> => {
+        let data: Array<any> = []
+        this._store.load().done((res: Array<any>) => data = res);
         return data;
     }
 
-    public getByKey = (key?: string): TDataSource | null => {
+    public getByFromId = (ID: string): Array<any> => {
+        let query = this._store.createQuery().filter(["from", ID]);
+
+        let result: Array<any> = [];
+        query.enumerate().done((values: Array<any>) => result = values);
+        return result;
+    }
+
+    public getByKey = (key?: string): any | null => {
         if (!key) { return null }
         let result;
-        this._store.byKey(key).done((VAL: TDataSource) => { result = VAL })
+        this._store.byKey(key).done((VAL: any) => { result = VAL })
         return result ?? null
     }
 
     constructor(key: string) {
-        this._store = new DevExpress.data.ArrayStore<TDataSource, String>({
+        this._store = new DevExpress.data.ArrayStore<any, String>({
             key: key,
             data: [],
             onInserting: this.onInserting,
@@ -367,7 +325,7 @@ class EdgesStore {
         });
     }
 
-    get store(): DevExpress.data.ArrayStore<TDataSource, String> {
+    get store(): DevExpress.data.ArrayStore<any, String> {
         return this._store
     }
 }
