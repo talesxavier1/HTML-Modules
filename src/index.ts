@@ -1,7 +1,5 @@
 
 import { Diagram } from "./UI/Diagram.js";
-import { Utils } from "./lib/dx-utils/Utils.js";
-import { SenderModel } from "./models/SenderModel.js";
 
 const main = (): void => {
     let diagram = new Diagram();

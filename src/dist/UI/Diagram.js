@@ -20,7 +20,6 @@ export class Diagram {
         this.nodeStore = new NodeStore("ID");
         this.edgesStore = new EdgesStore("ID");
         this.setDiagramOptions = (strDiagramProps, diagramData) => {
-            // return;
             let diagramProps = this.componentInstanceModel.getInstanceProps("diagrama");
             let diagramInstance = diagramProps.getInstance();
             diagramInstance.import(strDiagramProps, false);
@@ -40,19 +39,19 @@ export class Diagram {
         };
         this.customShapes = {
             customShapes: [
-                new SenderCustonShape().shape, /* Sender */
-                new ReciverCustonShape().shape, /* Reciver */
-                new ProcessContainerCustonShape().shape, /* Process Container */
-                new StartProcessCustonShape().shape, /* Start Process */
-                new EndProcessCustonShape().shape, /* End Process */
-                new MulticastInCustonShape().shape, /* Multicast In */
-                new MulticastOutCustonShape().shape, /* Multicast Out */
-                new StartExceptionCustonShape().shape, /* Start Exception */
-                new DataConverterCustonShape().shape, /* Data Converter */
-                new ScriptCustonShape().shape, /* Script */
-                new EndExceptionCustonShape().shape, /* End Exception */
-                new ExceptionSubprocessCustonShape().shape, /* Exception Subprocess */
-                new ConditionCustonShape().shape, /* Condition */
+                new SenderCustonShape().shape,
+                new ReciverCustonShape().shape,
+                new ProcessContainerCustonShape().shape,
+                new StartProcessCustonShape().shape,
+                new EndProcessCustonShape().shape,
+                new MulticastInCustonShape().shape,
+                new MulticastOutCustonShape().shape,
+                new StartExceptionCustonShape().shape,
+                new DataConverterCustonShape().shape,
+                new ScriptCustonShape().shape,
+                new EndExceptionCustonShape().shape,
+                new ExceptionSubprocessCustonShape().shape,
+                new ConditionCustonShape().shape,
             ]
         };
         this.pipelineEditOperation = (event, functions) => {
@@ -71,8 +70,6 @@ export class Diagram {
                 return;
             }
             let pipelineArray = [];
-            /* ========================= SENDER ========================= */
-            /* Valida se o shape sender está sendo inserido em algum container. */
             const valid_98441cb3 = (event) => {
                 var _a, _b, _c, _d;
                 if (((_b = (_a = event === null || event === void 0 ? void 0 : event.args) === null || _a === void 0 ? void 0 : _a.shape) === null || _b === void 0 ? void 0 : _b.type) != "sender") {
@@ -85,7 +82,6 @@ export class Diagram {
                 return true;
             };
             pipelineArray.push(valid_98441cb3);
-            /* Valida se o shape sender está sendo conectado a algum shape que não seja um startProcess */
             const valid_b41a3aa3 = (event) => {
                 var _a, _b, _c, _d;
                 if (event.operation != "changeConnection") {
@@ -104,7 +100,6 @@ export class Diagram {
                 return true;
             };
             pipelineArray.push(valid_b41a3aa3);
-            /* Valida se algum chape está sendo conectado ao Sender */
             const valid_82c1c643 = (event) => {
                 var _a, _b;
                 if (event.operation != "changeConnection") {
@@ -121,7 +116,6 @@ export class Diagram {
                 return true;
             };
             pipelineArray.push(valid_82c1c643);
-            /* Valida se o sender está sendo conectado a mais de um shape */
             const valid_a5476ac6 = (event) => {
                 var _a;
                 if (event.operation != "changeConnectorPoints") {
@@ -145,15 +139,12 @@ export class Diagram {
                 }
                 let connectorID = connector.key;
                 let validConnector = connectorsFrom.some(VALUE => VALUE.ID == connectorID);
-                // console.log("validConnector", validConnector)
                 return validConnector;
             };
             pipelineArray.push(valid_a5476ac6);
-            /* ========================================================== */
             let resultPipeline = this.pipelineEditOperation(event, pipelineArray);
             event.allowed = resultPipeline;
             event.updateUI = resultPipeline;
-            // console.log(event);
         };
         this.componentInstanceModel.addInstance(new InstanceProps({
             tagName: "diagrama",
@@ -181,7 +172,6 @@ export class Diagram {
         }));
     }
 }
-// #endregion
 class NodeStore {
     constructor(key) {
         this.onInserting = (data) => {
@@ -296,7 +286,6 @@ class EdgesStore {
         return this._store;
     }
 }
-// #region CustonShape
 class SenderCustonShape {
     constructor() {
         this.toolboxTemplate = (container, data) => {
@@ -1126,5 +1115,4 @@ class ConditionCustonShape {
         return this._shape;
     }
 }
-// #endregion
 //# sourceMappingURL=Diagram.js.map
