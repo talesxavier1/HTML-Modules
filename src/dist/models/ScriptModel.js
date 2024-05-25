@@ -1,4 +1,3 @@
-//
 import { ShapeModel } from "./ShapeModel.js";
 export class ScriptModel extends ShapeModel {
     constructor(ID) {

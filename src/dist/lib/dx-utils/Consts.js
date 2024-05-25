@@ -18,6 +18,5 @@ const ListdxComponentValue = [
     { componentName: "dxPopup", defaultValue: false, valueField: "visible" },
     { componentName: "dxLoadIndicator", defaultValue: true, valueField: "visible" },
 ];
-//#endregion
 export { ListdxComponentValue, DxComponentValue };
 //# sourceMappingURL=Consts.js.map

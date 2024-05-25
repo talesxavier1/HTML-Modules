@@ -4,6 +4,7 @@
         "target": "ES6",
         "sourceMap": true,
         "outDir": "src/dist",
+        "removeComments": true,
     },
     "include": [
         "**/*"
