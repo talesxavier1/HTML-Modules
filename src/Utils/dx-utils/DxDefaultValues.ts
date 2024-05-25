@@ -1,4 +1,4 @@
-import { DxComponentValue, ListdxComponentValue } from "./Consts.js";
+import { DxComponentValue, ListdxComponentValue } from "./Consts.ts";
 
 export class DxDefaultValues {
     private ARRAY_COMPONENTS: Array<DxComponentValue> = ListdxComponentValue;

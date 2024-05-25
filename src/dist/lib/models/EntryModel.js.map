@@ -1,1 +1,0 @@
-{"version":3,"file":"EntryModel.js","sourceRoot":"","sources":["../../../lib/models/EntryModel.ts"],"names":[],"mappings":"AAAA,OAAO,EAAe,UAAU,EAAE,MAAM,iBAAiB,CAAA;AAQzD,MAAM,OAAO,UAAW,SAAQ,UAAU;IAItC;QACI,KAAK,EAAE,CAAC;QACR,IAAI,CAAC,IAAI,GAAG,OAAO,CAAC;QACpB,IAAI,CAAC,IAAI,GAAG,EAAE,CAAC;QACf,IAAI,CAAC,IAAI,GAAG,EAAE,CAAC;IACnB,CAAC;CACJ"}

@@ -1,5 +1,6 @@
 
-import { Diagram } from "./UI/Diagram.js";
+import { Diagram } from "./UI/Diagram.ts";
+
 
 const main = (): void => {
     let diagram = new Diagram();
@@ -7,6 +8,7 @@ const main = (): void => {
     diagram.setDiagramOptions(JSON.stringify(diagramProps), diagramData);
 
 }
+
 
 
 

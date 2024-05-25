@@ -5,6 +5,9 @@
         "sourceMap": true,
         "outDir": "src/dist",
         "removeComments": true,
+        "allowImportingTsExtensions": true,
+        "moduleResolution": "bundler",
+        "noEmit": true
     },
     "include": [
         "**/*"
@@ -14,5 +17,8 @@
         "es2015",
         "es5",
         "es6"
+    ],
+    "files": [
+        "./src/index.ts"
     ]
 }

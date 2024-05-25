@@ -1,20 +1,19 @@
-import { ComponentInstanceModel } from "../lib/dx-utils/ComponentInstanceModel.js";
-import { InstanceProps } from "../lib/dx-utils/InstanceProps.js";
-import { Utils } from "../lib/dx-utils/Utils.js";
-import { SenderModel } from "../models/SenderModel.js";
-import { ProcessContainerModel } from "../models/ProcessContainerModel.js";
-import { ReciverModel } from "../models/ReciverModel.js";
-import { DataConverterModel } from "../models/DataConverterModel.js";
-import { ExceptionSubprocessModel } from "../models/ExceptionSubprocessModel.js";
-import { ScriptModel } from "../models/ScriptModel.js";
-import { EndExceptioModel } from "../models/EndExceptionModel.js";
-import { StartExceptionModel } from "../models/startExceptionModel.js";
-import { MultcastOutModel } from "../models/MulticastOutModel.js";
-import { MultcastInModel } from "../models/MulticastInModel.js";
-import { EndProcessModel } from "../models/EndProcessModel.js";
-import { StartProcessModel } from "../models/StartProcessModel.js";
-import { ConditionModel } from "../models/ConditionModel.js";
-
+import { ComponentInstanceModel } from "../Utils/dx-utils/ComponentInstanceModel.ts";
+import { InstanceProps } from "../Utils/dx-utils/InstanceProps.ts";
+import { Utils } from "../Utils/Utils.ts";
+import { SenderModel } from "../models/SenderModel.ts";
+import { ProcessContainerModel } from "../models/ProcessContainerModel.ts";
+import { ReciverModel } from "../models/ReciverModel.ts";
+import { DataConverterModel } from "../models/DataConverterModel.ts";
+import { ExceptionSubprocessModel } from "../models/ExceptionSubprocessModel.ts";
+import { ScriptModel } from "../models/ScriptModel.ts";
+import { EndExceptioModel } from "../models/EndExceptionModel.ts";
+import { StartExceptionModel } from "../models/startExceptionModel.ts";
+import { MultcastOutModel } from "../models/MulticastOutModel.ts";
+import { MultcastInModel } from "../models/MulticastInModel.ts";
+import { EndProcessModel } from "../models/EndProcessModel.ts";
+import { StartProcessModel } from "../models/StartProcessModel.ts";
+import { ConditionModel } from "../models/ConditionModel.ts";
 
 export class Diagram {
     private componentInstanceModel = new ComponentInstanceModel<Object>(new Object);
