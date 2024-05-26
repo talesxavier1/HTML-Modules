@@ -1,4 +1,4 @@
-import { ShapeModel } from "./ShapeModel.js"
+import { ShapeModel } from "./ShapeModel"
 
 export interface IStartExceptionModel {
 }

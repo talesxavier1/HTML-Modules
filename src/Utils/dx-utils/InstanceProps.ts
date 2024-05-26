@@ -1,5 +1,5 @@
-import { DxInstanceType } from "./Consts.js";
-import { DxDefaultValues } from "./DxDefaultValues.js";
+import { DxInstanceType } from "./Consts";
+import { DxDefaultValues } from "./DxDefaultValues";
 
 
 

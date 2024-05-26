@@ -1,5 +1,5 @@
-import { InstanceProps } from "./InstanceProps.js";
-import { FunctionProps } from "./FunctionProps.js";
+import { InstanceProps } from "./InstanceProps";
+import { FunctionProps } from "./FunctionProps";
 
 export class ComponentInstanceModel<T> {
     private ARRAY_COMPONENTS_INSTANCES: Array<InstanceProps> = [];
