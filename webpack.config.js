@@ -56,9 +56,8 @@ module.exports = (env, argv) => {
                         to: 'index.html',
                         transform(content) {
                             let lineBreak = os.platform() == 'win32' ? "\r\n" : "\n"
-                            console.log("content", content.toString());
 
-                            let contentSplit = content.toString().split("\r\n");
+                            let contentSplit = content.toString().split(lineBreak);
 
                             let contentSemImportsDev = contentSplit.filter(VALUE => !(VALUE.indexOf(`data-env="dev"`) > -1));
 
@@ -69,7 +68,7 @@ module.exports = (env, argv) => {
                                 }
                                 return copyValue;
                             });
-                            return Buffer.from(contentHomolDescomentado.join("\r\n"));
+                            return Buffer.from(contentHomolDescomentado.join(lineBreak));
                         }
                     },
 
