@@ -1,17 +1,8 @@
 
-/// <reference path="./lib/DevExtreme/ts/jquery.d.ts" />
-/// <reference path="./lib/DevExtreme/ts/knockout.d.ts" />
-/// <reference path="./lib/DevExtreme/ts/globalize.d.ts" />
-/// <reference path="./lib/DevExtreme/ts/cldr.js.d.ts" />
-/// <reference path="./lib/DevExtreme/ts/cldr.js-event.d.ts" />
-/// <reference path="./lib/DevExtreme/ts/cldr.js-supplemental.d.ts" />
-/// <reference path="./lib/DevExtreme/ts/dx.all.d.ts" />
-
 import { Diagram } from "./UI/Diagram";
 
 const main = (): void => {
     let diagram = new Diagram();
-
     diagram.setDiagramOptions(JSON.stringify(diagramProps), diagramData);
 
 }
