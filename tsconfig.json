@@ -42,6 +42,7 @@
 // }
 {
     "compilerOptions": {
+        "baseUrl": "src",
         "outDir": "src/dist",
         "module": "es6",
         "target": "es5",
