@@ -20,4 +20,4 @@ jobs:
               run: npm install
         
             - name: RUN WEBPACK
-              run: npx webpack --mode=production --progress -c .\webpack.config.js
+              run: npx webpack --mode=production --progress
