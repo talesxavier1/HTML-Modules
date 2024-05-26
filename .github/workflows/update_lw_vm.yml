@@ -22,14 +22,31 @@ jobs:
             - name: RUN WEBPACK
               run: npx webpack --mode=production
 
-            - name: UPDATE LOCAL WEB VM001
+            - name: print out example job
+              uses: appleboy/ssh-action@v0.1.10
               env:
                 SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY_LOCAL_WEB_VM001 }}
                 VM_IP: ${{ vars.LOCAL_WEB_IP_VM_001 }}
                 VM_USER: ${{ vars.LOCAL_WEB_USER_MV_001 }}
                 VM_PATH: ${{ vars.LOCAL_WEB_DEV_PATH_MV_001 }}
-              run: |
-                mkdir -p ~/.ssh
-                echo "${{ env.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
-                chmod 600 ~/.ssh/id_rsa
-                scp -o StrictHostKeyChecking=no -r dist/* ${{ env.VM_USER }}@${{ env.VM_IP }}:${{ env.VM_PATH }}
+                VM_PORT: ${{ vars.LOCAL_WEB_PORT_MV_001 }}
+              with:
+                host: ${{ env.VM_IP }}
+                username: ${{ env.VM_USER }}
+                key: ${{ env.SSH_PRIVATE_KEY }}
+                port: ${{ env.LOCAL_WEB_PORT_MV_001 }}
+                command_timeout: 30m
+                script: | 
+                  echo "Nice Job!!!"
+
+            # - name: UPDATE LOCAL WEB VM001
+            #   env:
+            #     SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY_LOCAL_WEB_VM001 }}
+            #     VM_IP: ${{ vars.LOCAL_WEB_IP_VM_001 }}
+            #     VM_USER: ${{ vars.LOCAL_WEB_USER_MV_001 }}
+            #     VM_PATH: ${{ vars.LOCAL_WEB_DEV_PATH_MV_001 }}
+            #   run: |
+            #     mkdir -p ~/.ssh
+            #     echo "${{ env.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+            #     chmod 600 ~/.ssh/id_rsa
+            #     scp -o StrictHostKeyChecking=no -r dist/* ${{ env.VM_USER }}@${{ env.VM_IP }}:${{ env.VM_PATH }}
