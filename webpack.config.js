@@ -54,10 +54,13 @@ module.exports = (env, argv) => {
                         from: './src/index.html',
                         to: 'index.html',
                         transform(content) {
+                            console.log("content", content.toString());
 
                             let contentSplit = content.toString().split("\r\n");
+                            console.log("contentSplit", contentSplit.join("\r\n"));
 
                             let contentSemImportsDev = contentSplit.filter(VALUE => !(VALUE.indexOf(`data-env="dev"`) > -1));
+                            console.log("contentSemImportsDev", contentSemImportsDev.join("\r\n"));
 
                             let contentHomolDescomentado = contentSemImportsDev.map(VALUE => {
                                 let copyValue = VALUE;
@@ -66,7 +69,7 @@ module.exports = (env, argv) => {
                                 }
                                 return copyValue;
                             });
-                            console.log("contentHomolDescomentado", contentHomolDescomentado.join("\r\n"))
+                            console.log("contentHomolDescomentado", contentHomolDescomentado.join("\r\n"));
                             return Buffer.from(contentHomolDescomentado.join("\r\n"));
                         }
                     },
