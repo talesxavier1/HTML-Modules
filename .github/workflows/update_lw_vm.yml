@@ -20,7 +20,7 @@ jobs:
               run: npm install
         
             - name: RUN WEBPACK
-              run: npx webpack --mode=production --progress
+              run: npx webpack --mode=production
 
             - name: UPDATE LOCAL WEB VM001
               env:
@@ -30,6 +30,6 @@ jobs:
                 VM_PATH: ${{ vars.LOCAL_WEB_DEV_PATH_MV_001 }}
               run: |
                 mkdir -p ~/.ssh
-                echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+                echo "${{ env.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
                 chmod 600 ~/.ssh/id_rsa
                 scp -o StrictHostKeyChecking=no -r dist/* ${{ env.VM_USER }}@${{ env.VM_IP }}:${{ env.VM_PATH }}
