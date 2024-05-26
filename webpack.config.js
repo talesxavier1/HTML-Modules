@@ -3,6 +3,7 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const webpack = require('webpack');
 const fs = require('fs');
+const os = require('os');
 
 
 module.exports = (env, argv) => {
@@ -54,13 +55,12 @@ module.exports = (env, argv) => {
                         from: './src/index.html',
                         to: 'index.html',
                         transform(content) {
+                            let lineBreak = os.platform() == 'win32' ? "\r\n" : "\n"
                             console.log("content", content.toString());
 
                             let contentSplit = content.toString().split("\r\n");
-                            console.log("contentSplit", contentSplit.join("\r\n"));
 
                             let contentSemImportsDev = contentSplit.filter(VALUE => !(VALUE.indexOf(`data-env="dev"`) > -1));
-                            console.log("contentSemImportsDev", contentSemImportsDev.join("\r\n"));
 
                             let contentHomolDescomentado = contentSemImportsDev.map(VALUE => {
                                 let copyValue = VALUE;
@@ -69,7 +69,6 @@ module.exports = (env, argv) => {
                                 }
                                 return copyValue;
                             });
-                            console.log("contentHomolDescomentado", contentHomolDescomentado.join("\r\n"));
                             return Buffer.from(contentHomolDescomentado.join("\r\n"));
                         }
                     },
