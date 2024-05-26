@@ -1,19 +1,19 @@
-import { ComponentInstanceModel } from "../Utils/dx-utils/ComponentInstanceModel.ts";
-import { InstanceProps } from "../Utils/dx-utils/InstanceProps.ts";
-import { Utils } from "../Utils/Utils.ts";
-import { SenderModel } from "../models/SenderModel.ts";
-import { ProcessContainerModel } from "../models/ProcessContainerModel.ts";
-import { ReciverModel } from "../models/ReciverModel.ts";
-import { DataConverterModel } from "../models/DataConverterModel.ts";
-import { ExceptionSubprocessModel } from "../models/ExceptionSubprocessModel.ts";
-import { ScriptModel } from "../models/ScriptModel.ts";
-import { EndExceptioModel } from "../models/EndExceptionModel.ts";
-import { StartExceptionModel } from "../models/startExceptionModel.ts";
-import { MultcastOutModel } from "../models/MulticastOutModel.ts";
-import { MultcastInModel } from "../models/MulticastInModel.ts";
-import { EndProcessModel } from "../models/EndProcessModel.ts";
-import { StartProcessModel } from "../models/StartProcessModel.ts";
-import { ConditionModel } from "../models/ConditionModel.ts";
+import { ComponentInstanceModel } from "../Utils/dx-utils/ComponentInstanceModel";
+import { InstanceProps } from "../Utils/dx-utils/InstanceProps";
+import { Utils } from "../Utils/Utils";
+import { SenderModel } from "../models/SenderModel";
+import { ProcessContainerModel } from "../models/ProcessContainerModel";
+import { ReciverModel } from "../models/ReciverModel";
+import { DataConverterModel } from "../models/DataConverterModel";
+import { ExceptionSubprocessModel } from "../models/ExceptionSubprocessModel";
+import { ScriptModel } from "../models/ScriptModel";
+import { EndExceptioModel } from "../models/EndExceptionModel";
+import { StartExceptionModel } from "../models/startExceptionModel";
+import { MultcastOutModel } from "../models/MulticastOutModel";
+import { MultcastInModel } from "../models/MulticastInModel";
+import { EndProcessModel } from "../models/EndProcessModel";
+import { StartProcessModel } from "../models/StartProcessModel";
+import { ConditionModel } from "../models/ConditionModel";
 
 export class Diagram {
     private componentInstanceModel = new ComponentInstanceModel<Object>(new Object);
@@ -145,7 +145,13 @@ export class Diagram {
         pipelineArray.push(valid_a5476ac6);
         /* ========================================================== */
 
-
+        $("#buttonContainer").dxButton({
+            text: "Clique Me",
+            type: "success",
+            onClick: function () {
+                alert("O botão foi clicado!");
+            }
+        });
 
         let resultPipeline = this.pipelineEditOperation(event, pipelineArray);
         event.allowed = resultPipeline;

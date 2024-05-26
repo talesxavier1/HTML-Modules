@@ -1,4 +1,4 @@
-import { Utils } from "../Utils/Utils.js";
+import { Utils } from "../Utils/Utils";
 
 type ShapeType = "sender" | "processContainer" | "reciver" | "condition" | "exceptionSubprocess" | "endException" | "script" | "dataConverter" | "startException" | "multicastOut" | "multicastIn" | "endProcess" | "startProcess";
 export interface IShapeModel {

@@ -1,4 +1,4 @@
-import { ShapeModel } from "./ShapeModel.ts"
+import { ShapeModel } from "./ShapeModel"
 
 export interface IProcessConatinerModel {
     name: string

@@ -5,41 +5,57 @@ const webpack = require('webpack');
 const fs = require('fs');
 
 module.exports = {
+    devtool: 'source-map',
     entry: {
         "main": ["./src/index.ts", "./src/index.css"],
     },
     output: {
-        filename: "content.js",
-        path: path.resolve(__dirname, "./dist")
+        chunkFilename: '[name].js',
+        filename: '[name].js',
+        path: path.resolve(__dirname, "./dist"),
     },
     module: {
-        rules: [{
-            test: /\.css$/,
-            use: [
-                MiniCssExtractPlugin.loader, "css-loader"
-            ]
-        }, {
-            test: /\.ts?$/,
-            use: 'ts-loader',
-            exclude: /node_modules/
-        },]
+        rules: [
+            {
+                test: /\.css$/,
+                use: [
+                    MiniCssExtractPlugin.loader, "css-loader"
+                ]
+            },
+            // {
+            //     test: /\.ts$/,
+            //     exclude: [/node_modules/],
+            //     loader: 'ts-loader'
+            // }
+            {
+                test: /\.ts$/,
+                exclude: /node_modules/,
+                use: {
+                    loader: 'babel-loader',
+                    options: {
+                        presets: [
+                            '@babel/preset-env',
+                            '@babel/preset-typescript'
+                        ]
+                    }
+                }
+            }
+        ]
     },
     resolve: {
-        extensions: ['.ts', '.js'],
+        extensions: ['.ts']
     },
     plugins: [
         new MiniCssExtractPlugin({
-            filename: "content.css"
+            filename: "index.css"
         }),
-        /*
         new CopyWebpackPlugin({
             patterns: [
-                { from: './lib/DevExtreme/Lib/js/localization/dx.messages.pt.js', to: 'dx/dx.messages.pt.js' },
-                { from: './lib/DevExtreme/Lib/js/dx.all.js', to: 'dx/dx.all.js' },
-                { from: './JsonViewer', to: 'JsonViewer' },
-                { from: './lib/jquery/dist/jquery.min.js', to: 'jquery' },
+                { from: './src/lib/jquery', to: './lib/jquery' },
+                { from: './src/lib/DevExtreme/js', to: './lib/DevExtreme/js' },
+                { from: './src/lib/DevExtreme/css', to: './lib/DevExtreme/css' },
                 {
-                    from: './index.html',
+                    from: './src/index.html',
                     to: 'index.html',
                     transform(content) {
 
@@ -58,9 +74,9 @@ module.exports = {
                         return Buffer.from(contentHomolDescomentado.join("\r\n"));
                     }
                 },
+
             ]
         })
-        */
     ]
 }
 
