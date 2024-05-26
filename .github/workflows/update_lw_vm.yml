@@ -19,5 +19,5 @@ jobs:
             - name: Install dependencies
               run: npm install
         
-            - name: Run tests
-              run: echo "foi"
+            - name: RUN WEBPACK
+              run: npx webpack --mode=production --progress -c .\webpack.config.js
