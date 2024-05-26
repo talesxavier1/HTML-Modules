@@ -53,5 +53,5 @@ jobs:
                 echo "${{ env.SSH_PRIVATE_KEY }}" | tr -d '\r' > ~/.ssh/id_rsa
                 chmod 600 ~/.ssh/id_rsa
                 ssh-keyscan -H ${{ env.VM_IP }} >> ~/.ssh/known_hosts
-                rm -r ${{ env.VM_PATH }}*
+                rm -rf ${{ env.VM_PATH }}/*
                 scp -o StrictHostKeyChecking=no -r dist/* ${{ env.VM_USER }}@${{ env.VM_IP }}:${{ env.VM_PATH }}
