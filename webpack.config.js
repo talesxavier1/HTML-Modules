@@ -66,7 +66,7 @@ module.exports = (env, argv) => {
                                 }
                                 return copyValue;
                             });
-
+                            console.log("contentHomolDescomentado", contentHomolDescomentado.join("\r\n"))
                             return Buffer.from(contentHomolDescomentado.join("\r\n"));
                         }
                     },
