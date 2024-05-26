@@ -25,7 +25,7 @@ jobs:
             - name: UPDATE LOCAL WEB VM001
               env:
                 SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY_LOCAL_WEB_VM001 }}
-                VM_IP: ${{ vars.LOCAL_WEB_IP_MV_001 }}
+                VM_IP: ${{ vars.LOCAL_WEB_IP_VM_001 }}
                 VM_USER: ${{ vars.LOCAL_WEB_USER_MV_001 }}
                 VM_PATH: ${{ vars.LOCAL_WEB_DEV_PATH_MV_001 }}
               run: |
