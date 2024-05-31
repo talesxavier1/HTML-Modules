@@ -34,15 +34,7 @@ export class Diagram {
 
     private shapeClicked = (event: DevExpress.ui.dxDiagram.ItemClickEvent) => {
         return;
-        let diagramProps = this.componentInstanceModel.getInstanceProps("diagrama");
-        let diagramInstance = diagramProps.getInstance() as DevExpress.ui.dxDiagram;
 
-        let data = this.nodeStore.getAll();
-
-        console.clear()
-        console.log("export", diagramInstance.export());
-        console.log("\n\n\n")
-        console.log("data", JSON.stringify(data));
     }
 
     private customShapes: DevExpress.ui.dxDiagramOptions = {
@@ -77,7 +69,75 @@ export class Diagram {
 
         let pipelineArray: Array<(event: any) => boolean> = [];
 
+        /* ========================= GLOBAL ========================= */
+        /* Shapes que só podem ter apenas uma conexão */
+        const valid_a36f7f08 = (event: any) => {
+            if (event.operation != "changeConnectorPoints") { return true }
+            let connector = event?.args?.connector;
+            if (!connector) { return true; }
+
+            let fromID = connector?.fromKey;
+            if (!fromID) { return true; }
+
+            let fromShape = this.nodeStore.getByKey(fromID);
+            if (!["sender", "startProcess"].includes(fromShape?.shapeType ?? "")) {
+                return true;
+            }
+
+            let connectorsFrom = this.edgesStore.getByFromId(fromID);
+            if (connectorsFrom.length == 0) { return true; }
+
+            let connectorID = connector.key;
+
+            let validConnector = connectorsFrom.some(VALUE => VALUE.ID == connectorID);
+
+            return validConnector;
+        }
+        pipelineArray.push(valid_a36f7f08);
+
+        /* Shapes que podem ser incluidos apenas em um processContainer */
+        let shapes_d869dda3 = ["startProcess", "endProcess", "exceptionSubprocess"];
+        const valid_d869dda3 = (event: any) => {
+            console.log(event);
+            if (!["addShape", "moveShape"].includes(event.operation)) { return true }
+
+            let shapeType = event?.args?.shape?.type ?? "";
+            if (!shapes_d869dda3.includes(shapeType)) { return true }
+
+            let containerID = event?.args?.shape?.containerId;
+            if (!containerID) { return false; }
+
+            let container = event.component.getItemById(containerID);
+            if (!container || container.type != "processContainer") { return false; }
+
+            return true;
+        }
+        pipelineArray.push(valid_d869dda3);
+
+        //     ,
+        /* Shapes que podem ser incluidos apenas em containers */
+        let shapes_8ee49461 = ["multicastIn", "dataConverter", "script", "condition", "multicastOut"];
+        const valid_8ee49461 = (event: any) => {
+            console.log(event);
+            if (!["addShape", "moveShape"].includes(event.operation)) { return true }
+
+            let shapeType = event?.args?.shape?.type ?? "";
+            if (!shapes_8ee49461.includes(shapeType)) { return true }
+
+            let containerID = event?.args?.shape?.containerId;
+            if (!containerID) { return false; }
+
+            let container = event.component.getItemById(containerID);
+            if (!container) { return false; }
+
+            return true;
+        }
+        pipelineArray.push(valid_8ee49461);
+        /* ========================================================== */
+
+
         /* ========================= SENDER ========================= */
+        // #region SENDER
         /* Valida se o shape sender está sendo inserido em algum container. */
         const valid_98441cb3 = (event: any) => {
             if (event?.args?.shape?.type != "sender") { return true }
@@ -105,7 +165,7 @@ export class Diagram {
         };
         pipelineArray.push(valid_b41a3aa3);
 
-        /* Valida se algum chape está sendo conectado ao Sender */
+        /* Valida se algum shape está sendo conectado ao Sender */
         const valid_82c1c643 = (event: any) => {
             if (event.operation != "changeConnection") { return true }
 
@@ -120,29 +180,71 @@ export class Diagram {
             return true;
         }
         pipelineArray.push(valid_82c1c643);
+        // #endregion
+        /* ========================================================== */
 
-        /* Valida se o sender está sendo conectado a mais de um shape */
-        const valid_a5476ac6 = (event: any) => {
+        /* ====================== START MESSAGE ===================== */
+        // #region START MESSAGE
+        /* Valida se o Start Mesage está sendo incluido em um bloco de processo */
+        // const valid_d869dda3 = (event: any) => {
+        //     if (event?.args?.shape?.type != "startProcess") { return true }
+
+        //     let containerID = event?.args?.shape?.containerId;
+        //     if (!containerID) { return false; }
+
+        //     let container = event.component.getItemById(containerID);
+        //     if (!container || container.type != "processContainer") { return false; }
+
+        //     return true;
+        // }
+        // pipelineArray.push(valid_d869dda3);
+
+        /* Valida se o Start Message está sendo conectado a algum shape diferente de:
+            - multicastIn
+            - dataConverter
+            - condition
+            - script
+        */
+        const valid_50e77487 = (event: any) => {
             if (event.operation != "changeConnectorPoints") { return true }
-            let connector = event?.args?.connector;
-            if (!connector) { return true; }
+            if (!event?.args?.connector) { return true }
 
-            let fromID = connector?.fromKey;
-            if (!fromID) { return true; }
+            let fromKey = event?.args?.connector?.fromKey;
+            if (!fromKey) { return true }
+            let fromShape = event.component.getItemByKey(fromKey);
+            if (!fromShape || fromShape.type != "startProcess") { return true }
 
-            let fromShape = this.nodeStore.getByKey(fromID);
-            if (fromShape?.shapeType != "sender") { return true; }
+            let toKey = event?.args?.connector?.toKey;
+            if (!toKey) { return true }
+            let toShape = event.component.getItemByKey(toKey);
+            if (!toShape) { return true }
 
-            let connectorsFrom = this.edgesStore.getByFromId(fromID);
-            if (connectorsFrom.length == 0) { return true; }
+            if (!["multicastIn", "dataConverter", "condition", "script"].includes(toShape.type)) { return false }
 
-            let connectorID = connector.key;
+            return true;
+        }
+        pipelineArray.push(valid_50e77487);
 
-            let validConnector = connectorsFrom.some(VALUE => VALUE.ID == connectorID);
-            // console.log("validConnector", validConnector)
-            return validConnector;
-        };
-        pipelineArray.push(valid_a5476ac6);
+
+
+        // const valid_509b4d80 = (event: any) => {
+        //     console.log(event);
+
+        //     return true;
+        // }
+        // pipelineArray.push(valid_509b4d80);
+
+
+
+        /*
+        -bedd-4d97-bada-b9e6476d1c64
+        -434a-44d0-a8f2-199d770f6fa0
+        -05c4-4029-91f3-a4fad6a5bbb7
+        -240c-4770-9ae3-e02e4b261794
+        71439209-0dc5-4eca-b283-9b376c949216
+        e29c1e84-4c24-4472-9050-64c8d93964dc
+        */
+        // #endregion
         /* ========================================================== */
 
         $("#buttonContainer").dxButton({
@@ -152,6 +254,7 @@ export class Diagram {
                 alert("O botão foi clicado!");
             }
         });
+
 
         let resultPipeline = this.pipelineEditOperation(event, pipelineArray);
         event.allowed = resultPipeline;
@@ -173,19 +276,40 @@ export class Diagram {
                 customShapes: this.customShapes.customShapes,
                 nodes: {
                     dataSource: this.nodeStore.store,
-                    keyExpr: "ID",
+                    keyExpr: "ID"
                 },
                 edges: {
                     dataSource: this.edgesStore.store,
-                    keyExpr: "ID",
+                    keyExpr: "ID"
                 },
                 showGrid: false,
                 snapToGrid: false,
                 simpleView: true,
                 readOnly: false,
-
+                contextToolbox: {
+                    enabled: false
+                }
             }).dxDiagram('instance')
         }));
+
+        this.componentInstanceModel.addInstance(new InstanceProps({
+            "componentName": "dxButton",
+            "instance": $("#botao01").dxButton({
+                text: "LOG DIA",
+                onClick: () => {
+                    let diagramProps = this.componentInstanceModel.getInstanceProps("diagrama");
+                    let diagramInstance = diagramProps.getInstance() as DevExpress.ui.dxDiagram;
+
+                    let data = this.nodeStore.getAll();
+
+                    console.clear()
+                    console.log("export", diagramInstance.export());
+                    console.log("\n\n\n")
+                    console.log("data", JSON.stringify(data));
+                }
+            }).dxButton("instance"),
+            tagName: "botao01"
+        }))
     }
 }
 
