@@ -29,7 +29,8 @@ jobs:
               uses: actions/upload-artifact@v2
               with:
                 name: finalDist
-                path: src/dist
+                path: src/dist*
+
 
     update-dev-env:
       needs: start-main
@@ -41,12 +42,11 @@ jobs:
           uses: actions/download-artifact@v2
           with:
            name: finalDist
-      
+           
         - name: log
           run: |
               echo 'dev'
               echo echo $(ls)
-              echo echo $(ls dist)
 
     update-prod-env:
       needs: start-main
