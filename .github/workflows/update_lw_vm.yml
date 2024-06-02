@@ -8,7 +8,7 @@ on:
         branches:
           - main
 jobs:
-    build:
+    start-main:
         runs-on: ubuntu-latest
         steps:
             - name: Check out the repository
@@ -23,22 +23,11 @@ jobs:
         
             - name: RUN WEBPACK
               run: npx webpack --mode=production
-
-            - name: Definir ambiente
-              id: set_env_vars
-              run: |
-                if [ "${{ github.ref == 'refs/heads/main' }}" = "true" ]; then
-                  echo "VM_PATH=$LOCAL_WEB_PROD_PATH_MV_001" >> $GITHUB_ENV
-                else
-                  echo "VM_PATH=$LOCAL_WEB_DEV_PATH_MV_001" >> $GITHUB_ENV
-                fi
-
-            - name: UPDATE LOCAL WEB VM001
-              env:
-                USER_NAME: ${{ secrets.LW_VM001_USER_NAME }}
-                USER_PASS: ${{ secrets.LW_VM001_USER_PASSD }}
-                VM_IP: ${{ vars.LOCAL_WEB_IP_VM_001 }}
-                VM_USER: ${{ vars.LOCAL_WEB_USER_MV_001 }}
-                VM_PATH: ${{ steps.set_env_vars.outputs.VM_PATH }}
-              run: |
-                echo '${{ env.VM_USER }}@${{ env.VM_IP }}:${{ env.VM_PATH }}'
+    update-dev-env:
+      needs: start-main
+      runs-on: ubuntu-latest
+      if: github.event_name == 'push' && github.ref == 'refs/heads/dev'
+      steps:
+        - name: log
+          run: |
+              echo 'dev'
