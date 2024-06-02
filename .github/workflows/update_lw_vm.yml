@@ -36,17 +36,29 @@ jobs:
       needs: start-main
       runs-on: ubuntu-latest
       if: github.event_name == 'push' && github.ref == 'refs/heads/dev'
-      steps:
+      env:
+        SSH_USERNAME: ${{ secrets.LW_VM001_USER_NAME }}
+        SSH_PASSWORD: ${{ secrets.LW_VM001_USER_PASSD }}
+        VM_IP: ${{ vars.LOCAL_WEB_IP_VM_001 }}
+        VM_DEV_PATH: ${{ vars.LOCAL_WEB_DEV_PATH_MV_001 }}
 
+      steps:
         - name: Download DIST
           uses: actions/download-artifact@v2
           with:
            name: finalDist
-           
+        
         - name: log
           run: |
-              echo 'dev'
-              echo echo $(ls dist)
+               echo echo $(ls dist)
+
+        - name: Install sshpass
+          run: sudo apt-get install -y sshpass
+           
+        - name: remove current dist
+          run: |
+           sshpass -p ${{env.SSH_PASSWORD}} ssh ${{env.SSH_USERNAME}}@${{env.VM_IP}}
+           ssh ${{env.SSH_USERNAME}}@${{env.VM_IP}} "ls"
 
     update-prod-env:
       needs: start-main
