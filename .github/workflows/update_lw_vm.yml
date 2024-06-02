@@ -29,27 +29,23 @@ jobs:
               uses: actions/upload-artifact@v2
               with:
                 name: finalDist
-                path: src/dist/*
+                path: src/dist
 
     update-dev-env:
       needs: start-main
       runs-on: ubuntu-latest
       if: github.event_name == 'push' && github.ref == 'refs/heads/dev'
       steps:
-        #- name: Checkout repository
-        #  uses: actions/checkout@v2
 
         - name: Download DIST
           uses: actions/download-artifact@v2
           with:
            name: finalDist
-           run: mkdir teste
-           path: teste
-
+      
         - name: log
           run: |
               echo 'dev'
-              echo echo $(ls teste)
+              echo echo $(ls dist)
 
     update-prod-env:
       needs: start-main
