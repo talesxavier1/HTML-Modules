@@ -45,11 +45,11 @@ jobs:
            name: finalDist
            run: mkdir teste
            path: teste
-           
+
         - name: log
           run: |
               echo 'dev'
-              echo echo $(ls)
+              echo echo $(ls teste)
 
     update-prod-env:
       needs: start-main
