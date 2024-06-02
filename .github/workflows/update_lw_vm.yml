@@ -32,7 +32,7 @@ jobs:
         - name: log
           run: |
               echo 'dev'
-              echo echo $(ls)
+              echo echo '$(ls)'
     update-prod-env:
       needs: start-main
       runs-on: ubuntu-latest
