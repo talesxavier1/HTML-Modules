@@ -32,7 +32,11 @@ jobs:
         - name: log
           run: |
               echo 'dev'
+<<<<<<< HEAD
               echo echo $(ls)
+=======
+              echo ls
+>>>>>>> cc93538d5abd6943437cc2c3a2e163ae9691ae9b
     update-prod-env:
       needs: start-main
       runs-on: ubuntu-latest
@@ -41,4 +45,8 @@ jobs:
         - name: log
           run: |
               echo 'prod'
+<<<<<<< HEAD
               echo echo $(ls)
+=======
+              echo ls
+>>>>>>> cc93538d5abd6943437cc2c3a2e163ae9691ae9b
