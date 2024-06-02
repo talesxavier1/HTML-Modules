@@ -35,14 +35,10 @@ jobs:
 
             - name: UPDATE LOCAL WEB VM001
               env:
-                SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY_LOCAL_WEB_VM001 }}
+                USER_NAME: ${{ secrets.LW_VM001_USER_NAME }}
+                USER_PASS: ${{ secrets.LW_VM001_USER_PASSD }}
                 VM_IP: ${{ vars.LOCAL_WEB_IP_VM_001 }}
                 VM_USER: ${{ vars.LOCAL_WEB_USER_MV_001 }}
                 VM_PATH: ${{ steps.set_env_vars.outputs.VM_PATH }}
               run: |
-                mkdir -p ~/.ssh
-                echo "${{ env.SSH_PRIVATE_KEY }}" | tr -d '\r' > ~/.ssh/id_rsa
-                chmod 600 ~/.ssh/id_rsa
-                ssh-keyscan -H ${{ env.VM_IP }} >> ~/.ssh/known_hosts
-                ssh ${{ env.VM_USER }}@${{ env.VM_IP }} "rm -r ${{ env.VM_PATH }}/*"
-                scp -o StrictHostKeyChecking=no -r dist/* ${{ env.VM_USER }}@${{ env.VM_IP }}:${{ env.VM_PATH }}
+                echo '${{ env.VM_USER }}@${{ env.VM_IP }}:${{ env.VM_PATH }}'
