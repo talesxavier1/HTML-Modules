@@ -46,7 +46,7 @@ jobs:
         - name: log
           run: |
               echo 'dev'
-              echo echo $(ls)
+              echo echo $(ls dist)
 
     update-prod-env:
       needs: start-main
