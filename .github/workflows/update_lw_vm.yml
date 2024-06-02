@@ -58,7 +58,8 @@ jobs:
         - name: remove current dist
           run: |
            sshpass -p '${{env.SSH_PASSWORD}}' ssh -v -o StrictHostKeyChecking=no ${{env.SSH_USERNAME}}@${{env.VM_IP}} <<'ENDSSH'
-           echo $(pwd)
+           echo '----------------------------- INIT ---------------------------------------'
+           echo $(ls)
            ENDSSH
     update-prod-env:
       needs: start-main
