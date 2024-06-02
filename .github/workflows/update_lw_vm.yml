@@ -29,11 +29,7 @@ jobs:
               uses: actions/upload-artifact@v2
               with:
                 name: finalDist
-<<<<<<< HEAD
                 path: src/dist/
-=======
-                path: src/dist
->>>>>>> 8091ed2a4dd70ce0e5f13ab214eab225f9d3b881
 
     update-dev-env:
       needs: start-main
@@ -49,10 +45,7 @@ jobs:
         - name: log
           run: |
               echo 'dev'
-<<<<<<< HEAD
               echo echo $(ls)
-=======
->>>>>>> 8091ed2a4dd70ce0e5f13ab214eab225f9d3b881
               echo echo $(ls dist)
 
     update-prod-env:
