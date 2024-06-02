@@ -24,15 +24,31 @@ jobs:
             - name: RUN WEBPACK
               #run: npx webpack --mode=production
               run: npx webpack --mode=development
+
+            - name: UPLOAD DIST
+              uses: actions/upload-artifact@v2
+              with:
+                name: finalDist
+                path: src/dist/*
+
     update-dev-env:
       needs: start-main
       runs-on: ubuntu-latest
       if: github.event_name == 'push' && github.ref == 'refs/heads/dev'
       steps:
+        - name: Checkout repository
+          uses: actions/checkout@v2
+
+        - name: Download DIST
+          uses: actions/download-artifact@v2
+          with:
+           name: finalDist
+
         - name: log
           run: |
               echo 'dev'
-              echo echo '$(ls)'
+              echo echo $(ls)
+
     update-prod-env:
       needs: start-main
       runs-on: ubuntu-latest
