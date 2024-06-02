@@ -31,3 +31,13 @@ jobs:
         - name: log
           run: |
               echo 'dev'
+              ls
+    update-prod-env:
+      needs: start-main
+      runs-on: ubuntu-latest
+      if: github.event_name == 'pull_request' && github.base_ref == 'main'
+      steps:
+        - name: log
+          run: |
+              echo 'prod'
+              ls
