@@ -57,9 +57,14 @@ jobs:
            
         - name: remove current dist
           run: |
-           sshpass -p '${{env.SSH_PASSWORD}}' ssh -v -o StrictHostKeyChecking=no ${{env.SSH_USERNAME}}@${{env.VM_IP}} <<'ENDSSH'
+           sshpass -p '${{env.SSH_PASSWORD}}' ssh StrictHostKeyChecking=no ${{env.SSH_USERNAME}}@${{env.VM_IP}} <<'ENDSSH'
            rm -rf ${{env.VM_DEV_PATH}}/*
            ENDSSH
+
+        - name: move new dist
+          run: |
+            sshpass -p '${{env.SSH_PASSWORD}}' scp -o StrictHostKeyChecking=no -r dist ${{env.SSH_USERNAME}}@${{env.VM_IP}}:${{env.VM_DEV_PATH}}
+
     update-prod-env:
       needs: start-main
       runs-on: ubuntu-latest
