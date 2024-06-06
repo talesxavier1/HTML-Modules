@@ -10,6 +10,9 @@ module.exports = (env, argv) => {
     const WPMode = argv.mode;
 
     const config = {
+        devServer: {
+            hot: false
+        },
         entry: {
             "main": ["./src/index.ts", "./src/index.css"],
         },
