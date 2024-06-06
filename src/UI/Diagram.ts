@@ -114,7 +114,6 @@ export class Diagram {
         }
         pipelineArray.push(valid_d869dda3);
 
-        //     ,
         /* Shapes que podem ser incluidos apenas em containers */
         let shapes_8ee49461 = ["multicastIn", "dataConverter", "script", "condition", "multicastOut"];
         const valid_8ee49461 = (event: any) => {
@@ -206,7 +205,6 @@ export class Diagram {
             - script
         */
         const valid_50e77487 = (event: any) => {
-            if (event.operation != "changeConnectorPoints") { return true }
             if (!event?.args?.connector) { return true }
 
             let fromKey = event?.args?.connector?.fromKey;
@@ -218,6 +216,7 @@ export class Diagram {
             if (!toKey) { return true }
             let toShape = event.component.getItemByKey(toKey);
             if (!toShape) { return true }
+
 
             if (!["multicastIn", "dataConverter", "condition", "script"].includes(toShape.type)) { return false }
 
@@ -295,17 +294,73 @@ export class Diagram {
         this.componentInstanceModel.addInstance(new InstanceProps({
             "componentName": "dxButton",
             "instance": $("#botao01").dxButton({
-                text: "LOG DIA",
+                text: "copy diagramProps",
+                type: "danger",
+
                 onClick: () => {
                     let diagramProps = this.componentInstanceModel.getInstanceProps("diagrama");
                     let diagramInstance = diagramProps.getInstance() as DevExpress.ui.dxDiagram;
+                    let diagramPropsValue = diagramInstance.export();
 
+                    const tempTextArea = document.createElement('textarea');
+                    tempTextArea.value = diagramPropsValue;
+                    document.body.appendChild(tempTextArea);
+                    tempTextArea.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(tempTextArea);
+                    alert('COPIADO');
+
+                    // Exibe uma mensagem de confirmação (opcional)
+                    /*   let tempF = $("text");
+                      tempF.value = diagramInstance.export();
+                      tempF.appendTo(document.body)
+                      tempF.select();
+                      document.execCommand('copy');
+                      tempF.remove(); */
+
+                    /* 
+                                        let data = this.nodeStore.getAll();
+                    
+                                        console.clear()
+                                        console.log("export", diagramInstance.export());
+                                        console.log("\n\n\n")
+                                        console.log("data", JSON.stringify(data)); */
+                }
+            }).dxButton("instance"),
+            tagName: "botao01"
+        }))
+
+        this.componentInstanceModel.addInstance(new InstanceProps({
+            "componentName": "dxButton",
+            "instance": $("#botao02").dxButton({
+                text: "copy data",
+                type: "danger",
+                onClick: () => {
                     let data = this.nodeStore.getAll();
 
-                    console.clear()
-                    console.log("export", diagramInstance.export());
-                    console.log("\n\n\n")
-                    console.log("data", JSON.stringify(data));
+                    const tempTextArea = document.createElement('textarea');
+                    tempTextArea.value = JSON.stringify(data);
+                    document.body.appendChild(tempTextArea);
+                    tempTextArea.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(tempTextArea);
+                    alert('COPIADO');
+
+                    // Exibe uma mensagem de confirmação (opcional)
+                    /*   let tempF = $("text");
+                      tempF.value = diagramInstance.export();
+                      tempF.appendTo(document.body)
+                      tempF.select();
+                      document.execCommand('copy');
+                      tempF.remove(); */
+
+                    /* 
+                                        
+                    
+                                        console.clear()
+                                        console.log("export", diagramInstance.export());
+                                        console.log("\n\n\n")
+                                        console.log("data", JSON.stringify(data)); */
                 }
             }).dxButton("instance"),
             tagName: "botao01"

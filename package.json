@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "webpack --mode=development --progress --watch -c ./webpack.config.js"
+    "dev": "webpack-dev-server --mode=development --progress -c ./webpack.config.js"
   },
   "author": "",
   "license": "ISC",
@@ -17,7 +17,8 @@
     "mini-css-extract-plugin": "^2.8.1",
     "typescript": "^5.4.5",
     "webpack": "^5.90.3",
-    "webpack-cli": "^5.1.4"
+    "webpack-cli": "^5.1.4",
+    "webpack-dev-server": "^5.0.4"
   },
   "dependencies": {
     "copy-webpack-plugin": "^12.0.2"
