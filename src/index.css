@@ -15,6 +15,8 @@ html {
 .dx-viewport {
     width: 100%;
     height: 100%;
+    display: flex;
+    flex-direction: column;
 }
 
 #diagrama {
@@ -22,4 +24,8 @@ html {
     width: 100%;
     height: 700px;
     margin-top: 10px;
+}
+
+.dx-toast-stack {
+    z-index: 999999;
 }
