@@ -83,10 +83,14 @@ export class Diagram {
 
         /* ========================================================== */
         // #region GLOBAL
+        //TODO desc
         const valid_491a44e1 = (event: any) => {
+            if (event.operation != "changeConnection") { return true }
             let conectorFrom = event?.args?.connector?.fromKey;
             let conectorTo = event?.args?.connector?.toKey;
-            if (!conectorFrom || !conectorTo) { return false }
+            if (!conectorFrom || !conectorTo) {
+                return false
+            }
             return true;
         }
         pipelineArray.push(valid_491a44e1);
@@ -126,7 +130,9 @@ export class Diagram {
             if (!shapes_d869dda3.includes(shapeType)) { return true }
 
             let containerID = event?.args?.shape?.containerId;
-            if (!containerID) { return false; }
+            if (!containerID) {
+                return false;
+            }
 
             let container = event.component.getItemById(containerID);
             if (!container || container.type != "processContainer") { return false; }
@@ -162,7 +168,9 @@ export class Diagram {
             if (!shapes_8ee49461.includes(shapeType)) { return true }
 
             let containerID = event?.args?.shape?.containerId;
-            if (!containerID) { return false; }
+            if (!containerID) {
+                return false;
+            }
 
             let container = event.component.getItemById(containerID);
             if (!container) { return false; }
