@@ -258,6 +258,27 @@ export class Diagram {
         }
         pipelineArray.push(valid_fcf0f3f6);
 
+        /* Shapes que podem ter apenas um conector de entrada e um de saída */
+        let shapes_e28a89eb = ["script"];
+        const valid_e28a89eb = (event: any) => {
+            let fromShapeKey = event?.args?.connector?.fromKey;
+            if (!fromShapeKey) { return true }
+
+            let fromShape = event.component.getItemByKey(fromShapeKey);
+            if (!fromShape) { return true }
+            if (!shapes_e28a89eb.includes(fromShape.type)) { return true }
+
+            let connectors = fromShape?.attachedConnectorIds;
+            if (!Array.isArray(connectors) || connectors.length == 0) { return true }
+            let connectorFromShape = connectors.map(VALUE => event.component.getItemById(VALUE)).filter(VALUE => VALUE);
+
+            let connectorsOut = connectorFromShape.filter(VALUE => VALUE.fromKey == fromShape.key);
+
+            if (connectorsOut.length > 1) { return false }
+
+            return true;
+        }
+        pipelineArray.push(valid_e28a89eb);
         //#endregion
         /* ========================================================== */
 
@@ -326,6 +347,19 @@ export class Diagram {
         pipelineArray.push(valid_62b9b95d);
         // #endregion
         /* ========================================================== */
+
+        /*  const valid_e477bd88 = (event: any) => {
+             let fromShapeKey = event?.args?.connector?.fromKey;
+             if (!fromShapeKey) { return true }
+             let fromShape = event.component.getItemByKey(fromShapeKey);
+             if (!fromShape) { return true }
+ 
+             let conectorsIds = 
+ 
+             return true;
+         }
+         pipelineArray.push(valid_e477bd88); */
+
 
 
 
@@ -1273,7 +1307,7 @@ class ScriptCustonShape {
     private template = (container: any, data: any) => {
         let shapeContainer = $(data);
         let parentElement = shapeContainer.parent();
-        parentElement.attr("id", "script");
+
         const componentsID = {
             rectID: Utils.getGuid(),
             iconID: Utils.getGuid(),
