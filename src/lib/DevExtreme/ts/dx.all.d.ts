@@ -1,7 +1,7 @@
 /*!
 * DevExtreme (dx.all.d.ts)
-* Version: 23.2.5
-* Build date: Mon Mar 11 2024
+* Version: 23.2.6
+* Build date: Wed May 01 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -2720,11 +2720,11 @@ declare module DevExpress.common.grids {
      */
     filterType?: FilterType;
     /**
-     * Specifies the column&apos;s filter value displayed in the filter row.
+     * Specifies the value to display in the filter row.
      */
     filterValue?: any;
     /**
-     * Specifies values selected in the column&apos;s header filter.
+     * Sets the values in the header filter.
      */
     filterValues?: Array<any>;
     /**
@@ -2748,7 +2748,7 @@ declare module DevExpress.common.grids {
      */
     headerFilter?: ColumnHeaderFilter;
     /**
-     * Specifies the order in which columns are hidden when the UI component adapts to the screen or container size. Ignored if allowColumnResizing is true and columnResizingMode is &apos;widget&apos;.
+     * Specifies the order in which columns are hidden when the UI component adapts to the screen or container size. Ignored if allowColumnResizing is `true` and columnResizingMode is &apos;widget&apos;.
      */
     hidingPriority?: number;
     /**
@@ -2858,7 +2858,7 @@ declare module DevExpress.common.grids {
   export type ColumnChooser = {
     /**
      * Specifies whether searching is enabled in the column chooser.
-     * @deprecated 
+     * @deprecated Use DataGrid search.enabled or TreeList search.enabled instead.
      */
     allowSearch?: boolean;
     /**
@@ -2891,7 +2891,7 @@ declare module DevExpress.common.grids {
     search?: ColumnChooserSearchConfig;
     /**
      * Specifies a delay in milliseconds between when a user finishes typing in the column chooser&apos;s search panel, and when the search is executed.
-     * @deprecated 
+     * @deprecated Use DataGrid search.timeout or TreeList search.timeout instead.
      */
     searchTimeout?: number;
     /**
@@ -2989,7 +2989,7 @@ declare module DevExpress.common.grids {
   export type ColumnHeaderFilter = {
     /**
      * Specifies whether searching is enabled in the header filter.
-     * @deprecated 
+     * @deprecated Use DataGrid search.enabled, TreeList search.enabled, or Gantt search.enabled instead.
      */
     allowSearch?: boolean;
     /**
@@ -3019,7 +3019,7 @@ declare module DevExpress.common.grids {
     search?: ColumnHeaderFilterSearchConfig;
     /**
      * Specifies a comparison operation used to search header filter values.
-     * @deprecated 
+     * @deprecated Use DataGrid search.mode, TreeList search.mode, or Gantt search.mode instead.
      */
     searchMode?: SearchMode;
     /**
@@ -4064,7 +4064,7 @@ declare module DevExpress.common.grids {
   export type HeaderFilter = {
     /**
      * Specifies whether searching is enabled in the header filter.
-     * @deprecated 
+     * @deprecated Use DataGrid search.enabled or TreeList search.enabled instead.
      */
     allowSearch?: boolean;
     /**
@@ -4081,7 +4081,7 @@ declare module DevExpress.common.grids {
     search?: HeaderFilterSearchConfig;
     /**
      * Specifies a delay in milliseconds between when a user finishes typing in the header filter&apos;s search panel, and when the search is executed.
-     * @deprecated 
+     * @deprecated Use DataGrid search.timeout or TreeList search.timeout instead.
      */
     searchTimeout?: number;
     /**
@@ -12340,7 +12340,7 @@ declare module DevExpress.ui {
      */
     type?: DevExpress.ui.dxDateBox.DateType;
     /**
-     * An object or a value specifying the date and time currently selected using the date box.
+     * Specifies the currently selected date and time.
      */
     value?: Date | number | string;
   }
@@ -13460,6 +13460,9 @@ declare module DevExpress.ui {
      */
     type?: string;
   };
+
+
+
   /**
    * 
    * @deprecated 
@@ -18591,7 +18594,7 @@ declare module DevExpress.ui {
   export interface dxGanttHeaderFilter {
     /**
      * Specifies whether to enable searching in the header filter.
-     * @deprecated 
+     * @deprecated Use search.enabled instead.
      */
     allowSearch?: boolean;
     /**
@@ -18608,7 +18611,7 @@ declare module DevExpress.ui {
     search?: DevExpress.common.grids.HeaderFilterSearchConfig;
     /**
      * Specifies a delay in milliseconds between typing a search string and the search execution.
-     * @deprecated 
+     * @deprecated Use search.timeout instead.
      */
     searchTimeout?: number;
     /**
@@ -22118,7 +22121,7 @@ declare module DevExpress.ui {
     headerFilter?: {
       /**
        * Specifies whether searching is enabled in the header filter.
-       * @deprecated 
+       * @deprecated Use search.enabled instead.
        */
       allowSearch?: boolean;
       /**
@@ -22135,7 +22138,7 @@ declare module DevExpress.ui {
       search?: DevExpress.common.grids.HeaderFilterSearchConfig;
       /**
        * Specifies a delay in milliseconds between when a user finishes typing in the header filter&apos;s search panel, and when the search is executed.
-       * @deprecated 
+       * @deprecated Use search.timeout instead.
        */
       searchTimeout?: number;
       /**
@@ -22377,7 +22380,7 @@ declare module DevExpress.ui {
     headerFilter?: {
       /**
        * Specifies whether searching is enabled in the header filter.
-       * @deprecated 
+       * @deprecated Use search.enabled instead.
        */
       allowSearch?: boolean;
       /**
@@ -22394,7 +22397,7 @@ declare module DevExpress.ui {
       search?: DevExpress.common.grids.HeaderFilterSearchConfig;
       /**
        * Specifies a delay in milliseconds between when a user finishes typing in the header filter&apos;s search panel, and when the search is executed.
-       * @deprecated 
+       * @deprecated Use search.timeout instead.
        */
       searchTimeout?: number;
       /**
@@ -38760,7 +38763,7 @@ declare module DevExpress.viz {
      */
     tooltip?: DevExpress.viz.dxPolarChart.Tooltip;
     /**
-     * Indicates whether or not to display a &apos;spider web&apos;.
+     * Indicates whether to display a &apos;spider web&apos;.
      */
     useSpiderWeb?: boolean;
     /**
