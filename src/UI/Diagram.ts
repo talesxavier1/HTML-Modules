@@ -373,7 +373,11 @@ export class Diagram {
                 readOnly: false,
                 contextToolbox: {
                     enabled: false
-                }
+                },
+                /*     propertiesPanel: {
+                        tabs: [{ commands: ["connectorLineType"] }]
+                    } */
+
             }).dxDiagram('instance')
         }));
 
