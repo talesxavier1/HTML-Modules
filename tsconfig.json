@@ -1,9 +1,59 @@
+// {
+//     "compilerOptions": {
+//         "strict": true,
+//         "target": "ES6",
+//         "sourceMap": true,
+//         "outDir": "src/dist",
+//         // "removeComments": true,
+//         "allowImportingTsExtensions": true,
+//         "moduleResolution": "node",
+//         "noEmit": true
+//     },
+//     "include": [
+//         "**/*"
+//     ],
+//     "lib": [
+//         "dom",
+//         "es2015",
+//         "es5",
+//         "es6"
+//     ],
+//     "files": [
+//         "./src/index.ts"
+//     ]
+// }
+// {
+//     "compilerOptions": {
+//         "module": "commonjs",
+//         "noImplicitAny": true,
+//         "removeComments": true,
+//         "preserveConstEnums": true,
+//         "sourceMap": true,
+//         "declaration": true,
+//         "moduleResolution": "node",
+//         "allowImportingTsExtensions": true,
+//         "noEmit": true,
+//         "outDir": "./dist",
+//         "rootDir": ".",
+//     },
+//     "include": [
+//         "**/*"
+//     ],
+// }
 {
     "compilerOptions": {
-        "target": "ES5",
+        "baseUrl": "./src",
+        "outDir": "src/dist",
+        "module": "es6",
+        "target": "es5",
+        "moduleResolution": "node",
         "sourceMap": true,
+        "strict": true,
     },
     "include": [
         "**/*"
     ],
+    "exclude": [
+        "node_modules"
+    ]
 }

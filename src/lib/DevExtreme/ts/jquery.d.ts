@@ -73,7 +73,7 @@ interface JQueryAjaxSettings {
      */
     dataFilter? (data: any, ty: any): any;
     /**
-     * The type of data that you're expecting back from the server. If none is specified, jQuery will try to infer it based on the MIME type of the response (an XML MIME type will yield XML, in 1.4 JSON will yield a JavaScript object, in 1.4 script will execute the script, and anything else will be returned as a string). 
+     * The type of data that you're expecting back from the server. If none is specified, jQuery will try to infer it based on the MIME type of the response (an XML MIME type will yield XML, in 1.4 JSON will yield a JavaScript object, in 1.4 script will execute the script, and anything else will be returned as a string).
      */
     dataType?: string;
     /**
@@ -259,7 +259,7 @@ interface BaseJQueryEventObject extends Event {
     data: any;
     delegateTarget: Element;
     isDefaultPrevented(): boolean;
-    isImmediatePropogationStopped(): boolean;
+    isImmediatePropagationStopped(): boolean;
     isPropagationStopped(): boolean;
     namespace: string;
     preventDefault(): any;

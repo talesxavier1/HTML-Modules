@@ -1,0 +1,60 @@
+name: Update LocalWeb VM
+
+on:
+    push:
+        branches:
+          - dev
+    pull_request:
+        branches:
+          - main
+jobs:
+    start-main:
+        runs-on: ubuntu-latest
+        env:
+          SSH_USERNAME: ${{ secrets.LW_VM001_USER_NAME }}
+          SSH_PASSWORD: ${{ secrets.LW_VM001_USER_PASSD }}
+          VM_IP: ${{ vars.LOCAL_WEB_IP_VM_001 }}
+          VM_DEV_PATH: ${{ vars.LOCAL_WEB_DEV_PATH_MV_001 }}
+          VM_PROD_PATH: ${{vars.LOCAL_WEB_PROD_PATH_MV_001}}
+
+        steps:
+            - name: Check out the repository
+              uses: actions/checkout@v2
+
+            - name: Set up Node.js
+              uses: actions/setup-node@v2
+              with:
+                node-version: '18.18.0'
+            - name: Install dependencies
+              run: npm install
+        
+            - name: RUN WEBPACK
+              run: npx webpack --mode=production
+            #  run: npx webpack --mode=development
+          
+            - name: Install sshpass
+              run: sudo apt-get install -y sshpass
+               
+            - name: (DEV) Remove current dist
+              if: github.event_name == 'push' && github.ref == 'refs/heads/dev'
+              run: |
+               sshpass -p '${{env.SSH_PASSWORD}}' ssh -v -o StrictHostKeyChecking=no ${{env.SSH_USERNAME}}@${{env.VM_IP}} <<'ENDSSH'
+               rm -rf ${{env.VM_DEV_PATH}}/*
+               ENDSSH
+
+            - name: (PROD) Remove current dist
+              if: github.event_name == 'pull_request' && github.base_ref == 'main'
+              run: |
+                sshpass -p '${{env.SSH_PASSWORD}}' ssh -v -o StrictHostKeyChecking=no ${{env.SSH_USERNAME}}@${{env.VM_IP}} <<'ENDSSH'
+                rm -rf ${{env.VM_PROD_PATH}}/*
+                ENDSSH
+                           
+            - name: (DEV) Move new dist
+              if: github.event_name == 'push' && github.ref == 'refs/heads/dev'
+              run: |
+                  sshpass -p '${{env.SSH_PASSWORD}}' scp -v -o StrictHostKeyChecking=no -r dist ${{env.SSH_USERNAME}}@${{env.VM_IP}}:${{env.VM_DEV_PATH}}
+            
+            - name: (PROD) Move new dist
+              if: github.event_name == 'pull_request' && github.base_ref == 'main'
+              run: |
+                  sshpass -p '${{env.SSH_PASSWORD}}' scp -v -o StrictHostKeyChecking=no -r dist ${{env.SSH_USERNAME}}@${{env.VM_IP}}:${{env.VM_PROD_PATH}}
