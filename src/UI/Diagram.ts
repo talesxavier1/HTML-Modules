@@ -14,6 +14,7 @@ import { MultcastInModel } from "../models/MulticastInModel";
 import { EndProcessModel } from "../models/EndProcessModel";
 import { StartProcessModel } from "../models/StartProcessModel";
 import { ConditionModel } from "../models/ConditionModel";
+declare const Swal: any;
 
 export class Diagram {
     private componentInstanceModel = new ComponentInstanceModel<Object>(new Object);
@@ -64,6 +65,18 @@ export class Diagram {
         return finalResult;
     }
 
+    private getParentShape = (component: any, shapeKey: string): undefined | Object => {
+        let shape = component.getItemByKey(shapeKey);
+
+        let shapeConnectors = shape.attachedConnectorIds.map((VALUE: string) => component.getItemById(VALUE));
+        let connectorIn = shapeConnectors.find((VALUE: any) => VALUE.toKey == shapeKey);
+        if (!connectorIn) { return }
+
+        let parentShape = component.getItemByKey(connectorIn.fromKey);
+        return parentShape;
+    }
+
+
     // TODO nao poder adicionar mais de 
     private onRequestEditOperation = (event: any) => {
         /* Adição dos shapes no box */
@@ -79,16 +92,18 @@ export class Diagram {
 
         let pipelineArray: Array<(event: any) => boolean> = [];
 
+
+
         /* ========================================================== */
         // #region GLOBAL
         /* let container = event.component.getItemById(containerID); */
 
-        /* Conector sem início ou fim*/
+        /* connector sem início ou fim*/
         const valid_491a44e1 = (event: any) => {
             if (!event.args.connector) { return true }
-            let conectorFrom = event?.args?.connector?.fromKey;
-            let conectorTo = event?.args?.connector?.toKey;
-            if (!conectorFrom || !conectorTo) {
+            let connectorFrom = event?.args?.connector?.fromKey;
+            let connectorTo = event?.args?.connector?.toKey;
+            if (!connectorFrom || !connectorTo) {
                 return false
             }
             return true;
@@ -100,10 +115,10 @@ export class Diagram {
         const valid_c3d5bb54 = (event: any) => {
             if (!event.args.connector) { return true }
 
-            let conectorFrom = event?.args?.connector?.fromKey;
-            if (!conectorFrom) { return true }
+            let connectorFrom = event?.args?.connector?.fromKey;
+            if (!connectorFrom) { return true }
 
-            let shapeFrom = event.component.getItemByKey(conectorFrom);
+            let shapeFrom = event.component.getItemByKey(connectorFrom);
             if (shapes_c3d5bb54.includes(shapeFrom.type)) { return false }
 
             return true;
@@ -240,12 +255,12 @@ export class Diagram {
         /* Conexão entre containers */
         const valid_fcf0f3f6 = (event: any) => {
             if (event.args.connectorPosition != "end") { return true }
-            let conectorFrom = event?.args?.connector?.fromKey;
-            let conectorTo = event?.args?.connector?.toKey;
-            if (!conectorFrom || !conectorTo) { return true }
+            let connectorFrom = event?.args?.connector?.fromKey;
+            let connectorTo = event?.args?.connector?.toKey;
+            if (!connectorFrom || !connectorTo) { return true }
 
-            let fromShape = event.component.getItemByKey(conectorFrom);
-            let toShape = event.component.getItemByKey(conectorTo);
+            let fromShape = event.component.getItemByKey(connectorFrom);
+            let toShape = event.component.getItemByKey(connectorTo);
 
             let fromContainerKey = fromShape?.dataItem?.containerKey;
             let toContainerKey = toShape?.dataItem?.containerKey;
@@ -258,7 +273,7 @@ export class Diagram {
         }
         pipelineArray.push(valid_fcf0f3f6);
 
-        /* Shapes que podem ter apenas um conector de entrada e um de saída */
+        /* Shapes que podem ter apenas um connector de entrada e um de saída */
         let shapes_e28a89eb = ["script"];
         const valid_e28a89eb = (event: any) => {
             let fromShapeKey = event?.args?.connector?.fromKey;
@@ -288,12 +303,12 @@ export class Diagram {
         const valid_b41a3aa3 = (event: any) => {
             if (event.args.connectorPosition != "end") { return true }
 
-            let conectorFromKey = event?.args?.connector?.fromKey;
-            let conectorToKey = event?.args?.connector?.toKey;
-            if (!conectorFromKey || !conectorToKey) { return true }
+            let connectorFromKey = event?.args?.connector?.fromKey;
+            let connectorToKey = event?.args?.connector?.toKey;
+            if (!connectorFromKey || !connectorToKey) { return true }
 
-            let dataFrom = event.component.getItemByKey(conectorFromKey);
-            let dataTo = event.component.getItemByKey(conectorToKey);
+            let dataFrom = event.component.getItemByKey(connectorFromKey);
+            let dataTo = event.component.getItemByKey(connectorToKey);
 
             if (dataFrom?.shapeType == "sender" && dataTo?.shapeType != "startProcess") {
                 return false;
@@ -348,17 +363,24 @@ export class Diagram {
         // #endregion
         /* ========================================================== */
 
-        /*  const valid_e477bd88 = (event: any) => {
-             let fromShapeKey = event?.args?.connector?.fromKey;
-             if (!fromShapeKey) { return true }
-             let fromShape = event.component.getItemByKey(fromShapeKey);
-             if (!fromShape) { return true }
- 
-             let conectorsIds = 
- 
-             return true;
-         }
-         pipelineArray.push(valid_e477bd88); */
+
+        // const valid_c838d53c = (event: any) => {
+        //     if (!event?.args?.connector) { return true }
+        //     let shapeFromKey = event.args.connector.fromKey;
+        //     let shapeToKey = event.args.connector.toKey;
+        //     if (!shapeFromKey || !shapeToKey) { return true }
+
+        //     let toShape = event.component.getItemByKey(shapeToKey);
+        //     if (toShape.type != "multicastOut") { return true }
+
+        //     let fromShape = event.component.getItemByKey(shapeFromKey);
+        //     let parentShape = this.getParentShape(event.component, shapeFromKey);
+        //     // let currentConnectors = fromShape.attachedConnectorIds.filter((VALUE: String) => VALUE != event.args.connector.id)
+
+
+        //     return true;
+        // }
+        // pipelineArray.push(valid_c838d53c);
 
 
 
@@ -447,6 +469,18 @@ export class Diagram {
                         direction: "down-push"
                     });
 
+                    /*  swal({
+                         html: '<h1>Sweet2 with angularJS</h1>',
+                         showConfirmButton: true,
+                         customClass: 'swal2-overflow'
+                     }).then(function (isConfirm) {
+                         if (isConfirm) {
+                             console.log('confirm, do any function');
+                         } else {
+                             swal("Cancelled", "Your imaginary file is safe :)", "error");
+                         }
+                     }); */
+
                 }
             }).dxButton("instance"),
             tagName: "botao01"
@@ -480,6 +514,12 @@ export class Diagram {
                         direction: "down-push"
                     });
 
+                    Swal.fire({
+                        title: 'Error!',
+                        text: 'Do you want to continue',
+                        icon: 'error',
+                        confirmButtonText: 'Cool'
+                    })
                 }
             }).dxButton("instance"),
             tagName: "botao01"
@@ -1357,6 +1397,7 @@ class ScriptCustonShape {
         connectionPoints: [
             { x: 1, y: 0.5 },
             { x: 0, y: 0.5 }
+
         ],
         toolboxTemplate: this.toolboxTemplate,
         template: this.template
