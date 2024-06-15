@@ -10,7 +10,7 @@ import { ScriptModel } from "../models/ScriptModel";
 import { EndExceptioModel } from "../models/EndExceptionModel";
 import { StartExceptionModel } from "../models/startExceptionModel";
 import { MultcastOutModel } from "../models/MulticastOutModel";
-import { MultcastInModel } from "../models/MulticastInModel";
+import { MulticastInModel } from "../models/MulticastInModel";
 import { EndProcessModel } from "../models/EndProcessModel";
 import { StartProcessModel } from "../models/StartProcessModel";
 import { ConditionModel } from "../models/ConditionModel";
@@ -81,8 +81,9 @@ export class Diagram {
     private onRequestEditOperation = (event: any) => {
         /* Adição dos shapes no box */
         if (event.operation == "addShapeFromToolbox") { return }
-        /* Exibição dos pontos de conexão quando clica no shape. */
-        if (event.operation == "changeConnection" && !event.args.connector) { return }
+
+        console.log(event)
+
         /* connector sem toShape */
         if (event.args.connector && (!event.args.connector.toKey && !event.args.connector.fromKey)) { return }
         if (event.args.connector && !event.args.connectorPosition) { return }
@@ -90,9 +91,35 @@ export class Diagram {
         /* Remoção de shape */
         if (event.operation == "deleteConnector") { return }
 
+        /* Exibição dos pontos de conexão quando clica no shape. */
+        if (event.operation == "changeConnection" && !event.args.connector) {
+
+            if (event.args.newShape?.dataItem?.type == "multicastIn") {
+                let shapeData = this.nodeStore.getByKey(event.args.newShape.key) as MulticastInModel;
+                if (!shapeData) { return }
+                if (!shapeData.trackName) {
+                    Swal.fire({
+                        title: "Track Name",
+                        input: "text",
+                        allowOutsideClick: false,
+                        preConfirm: (value: string) => {
+                            this.nodeStore.store.update(event.args.newShape.key, {
+                                ...event.args.newShape.dataItem,
+                                trackName: value
+                            });
+                            // TODO fazer a verificação de duplicidade de track name
+                            //Swal.showValidationMessage(`
+                            //    Request failed:
+                            //`);
+                        }
+                    })
+                }
+            }
+
+            return;
+        }
+
         let pipelineArray: Array<(event: any) => boolean> = [];
-
-
 
         /* ========================================================== */
         // #region GLOBAL
@@ -398,9 +425,9 @@ export class Diagram {
         event.updateUI = resultPipeline;
 
 
-        if (event.allowed) {
-            console.log(event)
-        }
+        /*         if (event.allowed) {
+                    console.log(event)
+                } */
     }
 
     constructor() {
@@ -468,19 +495,6 @@ export class Diagram {
                         position: "top center",
                         direction: "down-push"
                     });
-
-                    /*  swal({
-                         html: '<h1>Sweet2 with angularJS</h1>',
-                         showConfirmButton: true,
-                         customClass: 'swal2-overflow'
-                     }).then(function (isConfirm) {
-                         if (isConfirm) {
-                             console.log('confirm, do any function');
-                         } else {
-                             swal("Cancelled", "Your imaginary file is safe :)", "error");
-                         }
-                     }); */
-
                 }
             }).dxButton("instance"),
             tagName: "botao01"
@@ -513,13 +527,6 @@ export class Diagram {
                         position: "top center",
                         direction: "down-push"
                     });
-
-                    Swal.fire({
-                        title: 'Error!',
-                        text: 'Do you want to continue',
-                        icon: 'error',
-                        confirmButtonText: 'Cool'
-                    })
                 }
             }).dxButton("instance"),
             tagName: "botao01"
@@ -567,7 +574,7 @@ type TDataSource =
     DataConverterModel |
     StartExceptionModel |
     MultcastOutModel |
-    MultcastInModel |
+    MulticastInModel |
     StartProcessModel |
     EndProcessModel;
 // #endregion
@@ -576,7 +583,6 @@ class NodeStore {
     private _store: DevExpress.data.ArrayStore<TDataSource, String>;
 
     private onInserting = (data: TDataSource): void => {
-        if (data.initialized) { return }
         switch (data.type) {
             case "sender":
                 Object.assign(data, new SenderModel(data.ID));
@@ -609,7 +615,7 @@ class NodeStore {
                 Object.assign(data, new MultcastOutModel(data.ID));
                 break;
             case "multicastIn":
-                Object.assign(data, new MultcastInModel(data.ID));
+                Object.assign(data, new MulticastInModel(data.ID));
                 break;
             case "endProcess":
                 Object.assign(data, new EndProcessModel(data.ID));
@@ -631,7 +637,6 @@ class NodeStore {
         this._store.load().done((res: Array<TDataSource>) => data = res);
         return data;
     }
-
 
     public getByKey = (key?: string): TDataSource | null => {
         if (!key) { return null }
