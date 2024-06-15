@@ -26,6 +26,6 @@ html {
     margin-top: 10px;
 }
 
-.dx-toast-stack {
-    z-index: 999999;
+.swal2-container {
+    z-index: 1502;
 }
