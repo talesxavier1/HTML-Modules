@@ -94,6 +94,7 @@ export class Diagram {
         /* Exibição dos pontos de conexão quando clica no shape. */
         if (event.operation == "changeConnection" && !event.args.connector) {
 
+            /* Validação de track name para multicastIn */
             if (event.args.newShape?.dataItem?.type == "multicastIn") {
                 let shapeData = this.nodeStore.getByKey(event.args.newShape.key) as MulticastInModel;
                 if (!shapeData) { return }
@@ -103,14 +104,23 @@ export class Diagram {
                         input: "text",
                         allowOutsideClick: false,
                         preConfirm: (value: string) => {
+                            if (!value) {
+                                Swal.showValidationMessage("Track name Inválido.");
+                                return;
+                            }
+
+                            let query = this.nodeStore.store.createQuery().filter(["trackName", value]);
+                            let result: Array<any> = [];
+                            query.enumerate().done((values: Array<any>) => result = values);
+                            if (result.length > 0) {
+                                Swal.showValidationMessage("Track name duplicado.");
+                                return;
+                            }
+
                             this.nodeStore.store.update(event.args.newShape.key, {
                                 ...event.args.newShape.dataItem,
                                 trackName: value
                             });
-                            // TODO fazer a verificação de duplicidade de track name
-                            //Swal.showValidationMessage(`
-                            //    Request failed:
-                            //`);
                         }
                     })
                 }
@@ -390,6 +400,119 @@ export class Diagram {
         // #endregion
         /* ========================================================== */
 
+        /* ========================================================== */
+        // #region MultiCastOut
+        /* Não permite incluir um multicastout sem ter um multcastin */
+        const valid_e16b5ea1 = (event: any) => {
+            if (event.operation != "addShape") { return true }
+            if (event?.args?.shape?.type != "multicastOut") { return true }
+
+            let multiCastIn: Array<MulticastInModel> = (() => {
+                let query = this.nodeStore.store.createQuery().filter(["type", "multicastIn"]);
+                let result: any = [];
+                query.enumerate().done((VAL: Array<MulticastInModel>) => result = VAL)
+                return result;
+            })();
+
+            if (multiCastIn.length == 0) {
+                return false;
+            }
+
+            let multiCastInSemOut = (() => {
+                if (multiCastIn.length == 0) { return [] }
+                return multiCastIn.filter(VALUE => {
+                    let result = 0;
+                    let query = this.nodeStore.store.createQuery()
+                        .filter(["type", "=", "multicastOut"])
+                        .filter(["trackNameOrigin", "=", VALUE.trackName]);
+
+                    query.count().done((VALUE: number) => result = VALUE);
+
+                    return result == 0;
+                });
+            })();
+
+            if (multiCastInSemOut.length == 0) {
+                return false;
+            }
+
+            return true;
+        }
+        pipelineArray.push(valid_e16b5ea1);
+
+
+        const valid_49840919 = (event: any) => {
+            if (event.operation != "changeConnection") { return true; }
+
+            let toShapeKey = event?.args?.connector?.toKey;
+            if (!toShapeKey) { return true; }
+
+            let result = this.nodeStore.getByKey(toShapeKey);
+            if (result?.type != "multicastOut") { return true }
+            let toShape = result as MultcastOutModel;
+
+            if (!toShape.trackNameOrigin) {
+                let multiCastIn: Array<MulticastInModel> = (() => {
+                    let query = this.nodeStore.store.createQuery().filter(["type", "multicastIn"]);
+                    let result: Array<any> = [];
+                    query.enumerate().done((values: Array<any>) => result = values);
+                    return result;
+                })();
+
+                let multiCastInSemOut = (() => {
+                    if (multiCastIn.length == 0) { return [] }
+                    return multiCastIn.filter(VALUE => {
+                        let result = 0;
+                        let query = this.nodeStore.store.createQuery()
+                            .filter(["type", "=", "multicastOut"])
+                            .filter(["trackNameOrigin", "=", VALUE.trackName]);
+
+                        query.count().done((VALUE: number) => result = VALUE);
+
+                        return result == 0;
+                    });
+                })();
+
+                let options: any = {};
+                multiCastInSemOut.forEach(VALUE => {
+                    options[VALUE.trackName] = VALUE.trackName;
+                });
+
+                Swal.fire({
+                    title: "Track Name",
+                    input: 'select',
+                    inputOptions: options,
+                    allowOutsideClick: false,
+                    preConfirm: (value: string) => {
+                        let count = (() => {
+                            let result = 0;
+                            let query = this.nodeStore.store.createQuery()
+                                .filter(["type", "=", "multicastOut"])
+                                .filter(["trackNameOrigin", "=", value]);
+
+                            query.count().done((VALUE: number) => result = VALUE);
+                            return result;
+                        })();
+
+                        if (count > 0) {
+                            Swal.showValidationMessage(`Já existe um multicastOut para o multicastIn '${value}'`);
+                        }
+                        this.nodeStore.store.update(event.args.newShape.key, {
+                            ...toShape,
+                            trackNameOrigin: value
+                        });
+                    }
+                });
+
+                return false;
+            }
+
+            return true;
+        }
+        pipelineArray.push(valid_49840919);
+        // #endregion
+        /* ========================================================== */
+
 
         // const valid_c838d53c = (event: any) => {
         //     if (!event?.args?.connector) { return true }
@@ -408,6 +531,75 @@ export class Diagram {
         //     return true;
         // }
         // pipelineArray.push(valid_c838d53c);
+
+
+        const valid_c838d53c = (event: any) => {
+            if (!event?.args?.connector) { return true }
+            let shapeToKey = event.args.connector.toKey;
+            if (!shapeToKey) { return true }
+
+            let toShape = event.component.getItemByKey(shapeToKey);
+            if (toShape.type != "multicastOut") { return true }
+
+            let multiCastIn: Array<MulticastInModel> = (() => {
+                let query = this.nodeStore.store.createQuery().filter(["type", "multicastIn"]);
+                let result: Array<any> = [];
+                query.enumerate().done((values: Array<any>) => result = values);
+                return result;
+            })();
+
+            if (multiCastIn.length) {
+                return false;
+            }
+
+
+            /*
+            
+           
+            */
+
+            let dataItem: MultcastOutModel = toShape.dataItem;
+            if (!dataItem.trackNameOrigin) {
+
+
+                Swal.fire({
+                    title: "Track Name",
+                    input: 'select',
+                    inputOptions: {
+                        'SRB': 'Serbia',
+                        'UKR': 'Ukraine',
+                        'HRV': 'Croatia'
+                    },
+                    allowOutsideClick: false,
+                    preConfirm: (value: string) => {
+                        // if (!value) {
+                        //     Swal.showValidationMessage("Track name Inválido.");
+                        //     return;
+                        // }
+
+                        // let query = this.nodeStore.store.createQuery().filter(["trackName", value]);
+
+                        // if (result.length > 0) {
+                        //     Swal.showValidationMessage("Track name duplicado.");
+                        //     return;
+                        // }
+
+                        // this.nodeStore.store.update(event.args.newShape.key, {
+                        //     ...event.args.newShape.dataItem,
+                        //     trackName: value
+                        // });
+                    }
+                });
+                return false;
+            }
+            /* let fromShape = event.component.getItemByKey(shapeFromKey); */
+            /* let parentShape = this.getParentShape(event.component, shapeFromKey); */
+            // let currentConnectors = fromShape.attachedConnectorIds.filter((VALUE: String) => VALUE != event.args.connector.id)
+
+
+            return true;
+        }
+        //pipelineArray.push(valid_c838d53c);
 
 
 

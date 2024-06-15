@@ -1,3 +1,5 @@
+@import url('https://talesxavier1.github.io/GH-CND/TypeScriptEditor/lib/DevExtreme/css/dx-diagram.min.css');
+@import url('https://talesxavier1.github.io/GH-CND/TypeScriptEditor/lib/DevExtreme/css/dx.light.css');
 @import "./UI/Driagram.css";
 
 * {
