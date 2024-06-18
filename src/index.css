@@ -1,3 +1,6 @@
+@import url('https://talesxavier1.github.io/GH-CND/TypeScriptEditor/lib/DevExtreme/css/dx-diagram.min.css');
+@import url('https://talesxavier1.github.io/GH-CND/TypeScriptEditor/lib/DevExtreme/css/dx.light.css');
+@import url('https://talesxavier1.github.io/GH-CND/TypeScriptEditor/lib/sweetalert2/sweetalert2.min.css');
 @import "./UI/Driagram.css";
 
 * {
@@ -26,6 +29,6 @@ html {
     margin-top: 10px;
 }
 
-.dx-toast-stack {
-    z-index: 999999;
+.swal2-container {
+    z-index: 1502;
 }

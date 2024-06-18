@@ -10,10 +10,11 @@ import { ScriptModel } from "../models/ScriptModel";
 import { EndExceptioModel } from "../models/EndExceptionModel";
 import { StartExceptionModel } from "../models/startExceptionModel";
 import { MultcastOutModel } from "../models/MulticastOutModel";
-import { MultcastInModel } from "../models/MulticastInModel";
+import { MulticastInModel } from "../models/MulticastInModel";
 import { EndProcessModel } from "../models/EndProcessModel";
 import { StartProcessModel } from "../models/StartProcessModel";
 import { ConditionModel } from "../models/ConditionModel";
+declare const Swal: any;
 
 export class Diagram {
     private componentInstanceModel = new ComponentInstanceModel<Object>(new Object);
@@ -64,12 +65,45 @@ export class Diagram {
         return finalResult;
     }
 
-    // TODO nao poder adicionar mais de 
+    private getParentShapes = (component: any, shapeKey: string): undefined | Array<Object> => {
+        let shapeProps = component.getItemByKey(shapeKey);
+
+        let shapeConnectors = shapeProps.attachedConnectorIds.map((VALUE: string) => component.getItemById(VALUE));
+        let connectorIn = shapeConnectors.filter((VALUE: any) => VALUE.toKey == shapeKey);
+        if (connectorIn.length == 0) { return }
+
+        let parentShapes = connectorIn.map((VALUE: any) => {
+            return component.getItemByKey(VALUE.fromKey);
+        });
+
+        parentShapes = parentShapes.map((VALUE: any) => {
+            return {
+                ...VALUE,
+                "dataItem": this.nodeStore.getByKey(VALUE.key)
+            }
+        })
+
+        return parentShapes;
+    }
+
+    private getParentTreeShapes = (component: any, shapeKey: string): undefined | Array<Object> => {
+        let parent = this.getParentShapes(component, shapeKey);
+        if (!parent) { return }
+
+        parent = parent.map((VALUE: any) => {
+            return [this.getParentTreeShapes(component, VALUE.key)]
+        }).filter(VALUE => VALUE)
+
+
+        return parent
+    }
+
     private onRequestEditOperation = (event: any) => {
         /* Adição dos shapes no box */
         if (event.operation == "addShapeFromToolbox") { return }
-        /* Exibição dos pontos de conexão quando clica no shape. */
-        if (event.operation == "changeConnection" && !event.args.connector) { return }
+
+        console.log(event)
+
         /* connector sem toShape */
         if (event.args.connector && (!event.args.connector.toKey && !event.args.connector.fromKey)) { return }
         if (event.args.connector && !event.args.connectorPosition) { return }
@@ -77,18 +111,56 @@ export class Diagram {
         /* Remoção de shape */
         if (event.operation == "deleteConnector") { return }
 
+        /* Exibição dos pontos de conexão quando clica no shape. */
+        if (event.operation == "changeConnection" && !event.args.connector) {
+
+            /* Validação de track name para multicastIn */
+            if (event.args.newShape?.dataItem?.type == "multicastIn") {
+                let shapeData = this.nodeStore.getByKey(event.args.newShape.key) as MulticastInModel;
+                if (!shapeData) { return }
+                if (!shapeData.trackName) {
+                    Swal.fire({
+                        title: "Track Name",
+                        input: "text",
+                        allowOutsideClick: false,
+                        preConfirm: (value: string) => {
+                            if (!value) {
+                                Swal.showValidationMessage("Track name Inválido.");
+                                return;
+                            }
+
+                            let query = this.nodeStore.store.createQuery().filter(["trackName", value]);
+                            let result: Array<any> = [];
+                            query.enumerate().done((values: Array<any>) => result = values);
+                            if (result.length > 0) {
+                                Swal.showValidationMessage("Track name duplicado.");
+                                return;
+                            }
+
+                            this.nodeStore.store.update(event.args.newShape.key, {
+                                ...event.args.newShape.dataItem,
+                                trackName: value
+                            });
+                        }
+                    })
+                }
+            }
+
+            return;
+        }
+
         let pipelineArray: Array<(event: any) => boolean> = [];
 
         /* ========================================================== */
         // #region GLOBAL
         /* let container = event.component.getItemById(containerID); */
 
-        /* Conector sem início ou fim*/
+        /* connector sem início ou fim*/
         const valid_491a44e1 = (event: any) => {
             if (!event.args.connector) { return true }
-            let conectorFrom = event?.args?.connector?.fromKey;
-            let conectorTo = event?.args?.connector?.toKey;
-            if (!conectorFrom || !conectorTo) {
+            let connectorFrom = event?.args?.connector?.fromKey;
+            let connectorTo = event?.args?.connector?.toKey;
+            if (!connectorFrom || !connectorTo) {
                 return false
             }
             return true;
@@ -100,10 +172,10 @@ export class Diagram {
         const valid_c3d5bb54 = (event: any) => {
             if (!event.args.connector) { return true }
 
-            let conectorFrom = event?.args?.connector?.fromKey;
-            if (!conectorFrom) { return true }
+            let connectorFrom = event?.args?.connector?.fromKey;
+            if (!connectorFrom) { return true }
 
-            let shapeFrom = event.component.getItemByKey(conectorFrom);
+            let shapeFrom = event.component.getItemByKey(connectorFrom);
             if (shapes_c3d5bb54.includes(shapeFrom.type)) { return false }
 
             return true;
@@ -240,12 +312,12 @@ export class Diagram {
         /* Conexão entre containers */
         const valid_fcf0f3f6 = (event: any) => {
             if (event.args.connectorPosition != "end") { return true }
-            let conectorFrom = event?.args?.connector?.fromKey;
-            let conectorTo = event?.args?.connector?.toKey;
-            if (!conectorFrom || !conectorTo) { return true }
+            let connectorFrom = event?.args?.connector?.fromKey;
+            let connectorTo = event?.args?.connector?.toKey;
+            if (!connectorFrom || !connectorTo) { return true }
 
-            let fromShape = event.component.getItemByKey(conectorFrom);
-            let toShape = event.component.getItemByKey(conectorTo);
+            let fromShape = event.component.getItemByKey(connectorFrom);
+            let toShape = event.component.getItemByKey(connectorTo);
 
             let fromContainerKey = fromShape?.dataItem?.containerKey;
             let toContainerKey = toShape?.dataItem?.containerKey;
@@ -258,7 +330,7 @@ export class Diagram {
         }
         pipelineArray.push(valid_fcf0f3f6);
 
-        /* Shapes que podem ter apenas um conector de entrada e um de saída */
+        /* Shapes que podem ter apenas um connector de entrada e um de saída */
         let shapes_e28a89eb = ["script"];
         const valid_e28a89eb = (event: any) => {
             let fromShapeKey = event?.args?.connector?.fromKey;
@@ -288,12 +360,12 @@ export class Diagram {
         const valid_b41a3aa3 = (event: any) => {
             if (event.args.connectorPosition != "end") { return true }
 
-            let conectorFromKey = event?.args?.connector?.fromKey;
-            let conectorToKey = event?.args?.connector?.toKey;
-            if (!conectorFromKey || !conectorToKey) { return true }
+            let connectorFromKey = event?.args?.connector?.fromKey;
+            let connectorToKey = event?.args?.connector?.toKey;
+            if (!connectorFromKey || !connectorToKey) { return true }
 
-            let dataFrom = event.component.getItemByKey(conectorFromKey);
-            let dataTo = event.component.getItemByKey(conectorToKey);
+            let dataFrom = event.component.getItemByKey(connectorFromKey);
+            let dataTo = event.component.getItemByKey(connectorToKey);
 
             if (dataFrom?.shapeType == "sender" && dataTo?.shapeType != "startProcess") {
                 return false;
@@ -348,17 +420,224 @@ export class Diagram {
         // #endregion
         /* ========================================================== */
 
-        /*  const valid_e477bd88 = (event: any) => {
-             let fromShapeKey = event?.args?.connector?.fromKey;
-             if (!fromShapeKey) { return true }
-             let fromShape = event.component.getItemByKey(fromShapeKey);
-             if (!fromShape) { return true }
- 
-             let conectorsIds = 
- 
-             return true;
-         }
-         pipelineArray.push(valid_e477bd88); */
+        /* ========================================================== */
+        // #region MultiCastOut
+        /* Não permite incluir um multicastout sem ter um multcastin */
+        const valid_e16b5ea1 = (event: any) => {
+            if (event.operation != "addShape") { return true }
+            if (event?.args?.shape?.type != "multicastOut") { return true }
+
+            let multiCastIn: Array<MulticastInModel> = (() => {
+                let query = this.nodeStore.store.createQuery().filter(["type", "multicastIn"]);
+                let result: any = [];
+                query.enumerate().done((VAL: Array<MulticastInModel>) => result = VAL)
+                return result;
+            })();
+
+            if (multiCastIn.length == 0) {
+                return false;
+            }
+
+            let multiCastInSemOut = (() => {
+                if (multiCastIn.length == 0) { return [] }
+                return multiCastIn.filter(VALUE => {
+                    let result = 0;
+                    let query = this.nodeStore.store.createQuery()
+                        .filter(["type", "=", "multicastOut"])
+                        .filter(["trackNameOrigin", "=", VALUE.trackName]);
+
+                    query.count().done((VALUE: number) => result = VALUE);
+
+                    return result == 0;
+                });
+            })();
+
+            if (multiCastInSemOut.length == 0) {
+                return false;
+            }
+
+            return true;
+        }
+        pipelineArray.push(valid_e16b5ea1);
+
+        /* Verifica se o multicastOut que está recebendo uma conexão já tem um Track name origin associado.  */
+        const valid_49840919 = (event: any) => {
+            if (event.operation != "changeConnection") { return true; }
+
+            let toShapeKey = event?.args?.connector?.toKey;
+            if (!toShapeKey) { return true; }
+
+            let result = this.nodeStore.getByKey(toShapeKey);
+            if (result?.type != "multicastOut") { return true }
+            let toShape = result as MultcastOutModel;
+
+            if (!toShape.trackNameOrigin) {
+                let multiCastIn: Array<MulticastInModel> = (() => {
+                    let query = this.nodeStore.store.createQuery().filter(["type", "multicastIn"]);
+                    let result: Array<any> = [];
+                    query.enumerate().done((values: Array<any>) => result = values);
+                    return result;
+                })();
+
+                let multiCastInSemOut = (() => {
+                    if (multiCastIn.length == 0) { return [] }
+                    return multiCastIn.filter(VALUE => {
+                        let result = 0;
+                        let query = this.nodeStore.store.createQuery()
+                            .filter(["type", "=", "multicastOut"])
+                            .filter(["trackNameOrigin", "=", VALUE.trackName]);
+
+                        query.count().done((VALUE: number) => result = VALUE);
+
+                        return result == 0;
+                    });
+                })();
+
+                let options: any = {};
+                multiCastInSemOut.forEach(VALUE => {
+                    options[VALUE.trackName] = VALUE.trackName;
+                });
+
+                Swal.fire({
+                    title: "Track name origin",
+                    input: 'select',
+                    inputOptions: options,
+                    allowOutsideClick: false,
+                    preConfirm: (value: string) => {
+                        let count = (() => {
+                            let result = 0;
+                            let query = this.nodeStore.store.createQuery()
+                                .filter(["type", "=", "multicastOut"])
+                                .filter(["trackNameOrigin", "=", value]);
+
+                            query.count().done((VALUE: number) => result = VALUE);
+                            return result;
+                        })();
+
+                        if (count > 0) {
+                            Swal.showValidationMessage(`Já existe um multicastOut para o multicastIn '${value}'`);
+                        }
+                        this.nodeStore.store.update(event.args.newShape.key, {
+                            ...toShape,
+                            trackNameOrigin: value
+                        });
+                    }
+                });
+
+                return false;
+            }
+
+            return true;
+        }
+        pipelineArray.push(valid_49840919);
+
+
+        const valid_ffe6ac0a = (event: any) => {
+            if (event.operation != "changeConnection") { return true }
+
+            let toShapeKey = event?.args?.connector?.toKey;
+            if (!toShapeKey) { return true }
+
+            let dataShape = this.nodeStore.getByKey(toShapeKey);
+            if (!dataShape || dataShape.shapeType != "multicastOut") { return true }
+
+            let parents = [];
+
+            let a = this.getParentTreeShapes(event.component, toShapeKey);
+            debugger;
+            return true;
+        }
+        pipelineArray.push(valid_ffe6ac0a);
+
+        // #endregion
+        /* ========================================================== */
+
+        // const valid_c838d53c = (event: any) => {
+        //     if (!event?.args?.connector) { return true }
+        //     let shapeFromKey = event.args.connector.fromKey;
+        //     let shapeToKey = event.args.connector.toKey;
+        //     if (!shapeFromKey || !shapeToKey) { return true }
+
+        //     let toShape = event.component.getItemByKey(shapeToKey);
+        //     if (toShape.type != "multicastOut") { return true }
+
+        //     let fromShape = event.component.getItemByKey(shapeFromKey);
+        //     let parentShape = this.getParentShape(event.component, shapeFromKey);
+        //     // let currentConnectors = fromShape.attachedConnectorIds.filter((VALUE: String) => VALUE != event.args.connector.id)
+
+
+        //     return true;
+        // }
+        // pipelineArray.push(valid_c838d53c);
+
+
+        // const valid_c838d53c = (event: any) => {
+        //     if (!event?.args?.connector) { return true }
+        //     let shapeToKey = event.args.connector.toKey;
+        //     if (!shapeToKey) { return true }
+
+        //     let toShape = event.component.getItemByKey(shapeToKey);
+        //     if (toShape.type != "multicastOut") { return true }
+
+        //     let multiCastIn: Array<MulticastInModel> = (() => {
+        //         let query = this.nodeStore.store.createQuery().filter(["type", "multicastIn"]);
+        //         let result: Array<any> = [];
+        //         query.enumerate().done((values: Array<any>) => result = values);
+        //         return result;
+        //     })();
+
+        //     if (multiCastIn.length) {
+        //         return false;
+        //     }
+
+
+        //     /*
+
+
+        //     */
+
+        //     let dataItem: MultcastOutModel = toShape.dataItem;
+        //     if (!dataItem.trackNameOrigin) {
+
+
+        //         Swal.fire({
+        //             title: "Track Name",
+        //             input: 'select',
+        //             inputOptions: {
+        //                 'SRB': 'Serbia',
+        //                 'UKR': 'Ukraine',
+        //                 'HRV': 'Croatia'
+        //             },
+        //             allowOutsideClick: false,
+        //             preConfirm: (value: string) => {
+        //                 // if (!value) {
+        //                 //     Swal.showValidationMessage("Track name Inválido.");
+        //                 //     return;
+        //                 // }
+
+        //                 // let query = this.nodeStore.store.createQuery().filter(["trackName", value]);
+
+        //                 // if (result.length > 0) {
+        //                 //     Swal.showValidationMessage("Track name duplicado.");
+        //                 //     return;
+        //                 // }
+
+        //                 // this.nodeStore.store.update(event.args.newShape.key, {
+        //                 //     ...event.args.newShape.dataItem,
+        //                 //     trackName: value
+        //                 // });
+        //             }
+        //         });
+        //         return false;
+        //     }
+        //     /* let fromShape = event.component.getItemByKey(shapeFromKey); */
+        //     /* let parentShape = this.getParentShape(event.component, shapeFromKey); */
+        //     // let currentConnectors = fromShape.attachedConnectorIds.filter((VALUE: String) => VALUE != event.args.connector.id)
+
+
+        //     return true;
+        // }
+        //pipelineArray.push(valid_c838d53c);
 
 
 
@@ -376,9 +655,9 @@ export class Diagram {
         event.updateUI = resultPipeline;
 
 
-        if (event.allowed) {
-            console.log(event)
-        }
+        /*         if (event.allowed) {
+                    console.log(event)
+                } */
     }
 
     constructor() {
@@ -446,7 +725,6 @@ export class Diagram {
                         position: "top center",
                         direction: "down-push"
                     });
-
                 }
             }).dxButton("instance"),
             tagName: "botao01"
@@ -479,7 +757,6 @@ export class Diagram {
                         position: "top center",
                         direction: "down-push"
                     });
-
                 }
             }).dxButton("instance"),
             tagName: "botao01"
@@ -527,7 +804,7 @@ type TDataSource =
     DataConverterModel |
     StartExceptionModel |
     MultcastOutModel |
-    MultcastInModel |
+    MulticastInModel |
     StartProcessModel |
     EndProcessModel;
 // #endregion
@@ -536,7 +813,6 @@ class NodeStore {
     private _store: DevExpress.data.ArrayStore<TDataSource, String>;
 
     private onInserting = (data: TDataSource): void => {
-        if (data.initialized) { return }
         switch (data.type) {
             case "sender":
                 Object.assign(data, new SenderModel(data.ID));
@@ -569,7 +845,7 @@ class NodeStore {
                 Object.assign(data, new MultcastOutModel(data.ID));
                 break;
             case "multicastIn":
-                Object.assign(data, new MultcastInModel(data.ID));
+                Object.assign(data, new MulticastInModel(data.ID));
                 break;
             case "endProcess":
                 Object.assign(data, new EndProcessModel(data.ID));
@@ -591,7 +867,6 @@ class NodeStore {
         this._store.load().done((res: Array<TDataSource>) => data = res);
         return data;
     }
-
 
     public getByKey = (key?: string): TDataSource | null => {
         if (!key) { return null }
@@ -1357,6 +1632,7 @@ class ScriptCustonShape {
         connectionPoints: [
             { x: 1, y: 0.5 },
             { x: 0, y: 0.5 }
+
         ],
         toolboxTemplate: this.toolboxTemplate,
         template: this.template

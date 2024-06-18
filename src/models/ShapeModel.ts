@@ -9,7 +9,7 @@ export interface IShapeModel {
 
 export class ShapeModel implements IShapeModel {
     ID: string;
-    type: string;
+    type: ShapeType;
     text: string;
     shapeType: ShapeType;
     private _initialized: boolean

@@ -51,9 +51,9 @@ module.exports = (env, argv) => {
             }),
             new CopyWebpackPlugin({
                 patterns: [
-                    { from: './src/lib/jquery', to: './lib/jquery' },
-                    { from: './src/lib/DevExtreme/js', to: './lib/DevExtreme/js' },
-                    { from: './src/lib/DevExtreme/css', to: './lib/DevExtreme/css' },
+                    // { from: './src/lib/jquery', to: './lib/jquery' },
+                    // { from: './src/lib/DevExtreme/js', to: './lib/DevExtreme/js' },
+                    // { from: './src/lib/DevExtreme/css', to: './lib/DevExtreme/css' },
                     {
                         from: './src/index.html',
                         to: 'index.html',
