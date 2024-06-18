@@ -65,19 +65,39 @@ export class Diagram {
         return finalResult;
     }
 
-    private getParentShape = (component: any, shapeKey: string): undefined | Object => {
-        let shape = component.getItemByKey(shapeKey);
+    private getParentShapes = (component: any, shapeKey: string): undefined | Array<Object> => {
+        let shapeProps = component.getItemByKey(shapeKey);
 
-        let shapeConnectors = shape.attachedConnectorIds.map((VALUE: string) => component.getItemById(VALUE));
-        let connectorIn = shapeConnectors.find((VALUE: any) => VALUE.toKey == shapeKey);
-        if (!connectorIn) { return }
+        let shapeConnectors = shapeProps.attachedConnectorIds.map((VALUE: string) => component.getItemById(VALUE));
+        let connectorIn = shapeConnectors.filter((VALUE: any) => VALUE.toKey == shapeKey);
+        if (connectorIn.length == 0) { return }
 
-        let parentShape = component.getItemByKey(connectorIn.fromKey);
-        return parentShape;
+        let parentShapes = connectorIn.map((VALUE: any) => {
+            return component.getItemByKey(VALUE.fromKey);
+        });
+
+        parentShapes = parentShapes.map((VALUE: any) => {
+            return {
+                ...VALUE,
+                "dataItem": this.nodeStore.getByKey(VALUE.key)
+            }
+        })
+
+        return parentShapes;
     }
 
+    private getParentTreeShapes = (component: any, shapeKey: string): undefined | Array<Object> => {
+        let parent = this.getParentShapes(component, shapeKey);
+        if (!parent) { return }
 
-    // TODO nao poder adicionar mais de 
+        parent = parent.map((VALUE: any) => {
+            return [this.getParentTreeShapes(component, VALUE.key)]
+        }).filter(VALUE => VALUE)
+
+
+        return parent
+    }
+
     private onRequestEditOperation = (event: any) => {
         /* Adição dos shapes no box */
         if (event.operation == "addShapeFromToolbox") { return }
@@ -440,7 +460,7 @@ export class Diagram {
         }
         pipelineArray.push(valid_e16b5ea1);
 
-
+        /* Verifica se o multicastOut que está recebendo uma conexão já tem um Track name origin associado.  */
         const valid_49840919 = (event: any) => {
             if (event.operation != "changeConnection") { return true; }
 
@@ -479,7 +499,7 @@ export class Diagram {
                 });
 
                 Swal.fire({
-                    title: "Track Name",
+                    title: "Track name origin",
                     input: 'select',
                     inputOptions: options,
                     allowOutsideClick: false,
@@ -510,9 +530,27 @@ export class Diagram {
             return true;
         }
         pipelineArray.push(valid_49840919);
+
+
+        const valid_ffe6ac0a = (event: any) => {
+            if (event.operation != "changeConnection") { return true }
+
+            let toShapeKey = event?.args?.connector?.toKey;
+            if (!toShapeKey) { return true }
+
+            let dataShape = this.nodeStore.getByKey(toShapeKey);
+            if (!dataShape || dataShape.shapeType != "multicastOut") { return true }
+
+            let parents = [];
+
+            let a = this.getParentTreeShapes(event.component, toShapeKey);
+            debugger;
+            return true;
+        }
+        pipelineArray.push(valid_ffe6ac0a);
+
         // #endregion
         /* ========================================================== */
-
 
         // const valid_c838d53c = (event: any) => {
         //     if (!event?.args?.connector) { return true }
@@ -533,72 +571,72 @@ export class Diagram {
         // pipelineArray.push(valid_c838d53c);
 
 
-        const valid_c838d53c = (event: any) => {
-            if (!event?.args?.connector) { return true }
-            let shapeToKey = event.args.connector.toKey;
-            if (!shapeToKey) { return true }
+        // const valid_c838d53c = (event: any) => {
+        //     if (!event?.args?.connector) { return true }
+        //     let shapeToKey = event.args.connector.toKey;
+        //     if (!shapeToKey) { return true }
 
-            let toShape = event.component.getItemByKey(shapeToKey);
-            if (toShape.type != "multicastOut") { return true }
+        //     let toShape = event.component.getItemByKey(shapeToKey);
+        //     if (toShape.type != "multicastOut") { return true }
 
-            let multiCastIn: Array<MulticastInModel> = (() => {
-                let query = this.nodeStore.store.createQuery().filter(["type", "multicastIn"]);
-                let result: Array<any> = [];
-                query.enumerate().done((values: Array<any>) => result = values);
-                return result;
-            })();
+        //     let multiCastIn: Array<MulticastInModel> = (() => {
+        //         let query = this.nodeStore.store.createQuery().filter(["type", "multicastIn"]);
+        //         let result: Array<any> = [];
+        //         query.enumerate().done((values: Array<any>) => result = values);
+        //         return result;
+        //     })();
 
-            if (multiCastIn.length) {
-                return false;
-            }
-
-
-            /*
-            
-           
-            */
-
-            let dataItem: MultcastOutModel = toShape.dataItem;
-            if (!dataItem.trackNameOrigin) {
+        //     if (multiCastIn.length) {
+        //         return false;
+        //     }
 
 
-                Swal.fire({
-                    title: "Track Name",
-                    input: 'select',
-                    inputOptions: {
-                        'SRB': 'Serbia',
-                        'UKR': 'Ukraine',
-                        'HRV': 'Croatia'
-                    },
-                    allowOutsideClick: false,
-                    preConfirm: (value: string) => {
-                        // if (!value) {
-                        //     Swal.showValidationMessage("Track name Inválido.");
-                        //     return;
-                        // }
-
-                        // let query = this.nodeStore.store.createQuery().filter(["trackName", value]);
-
-                        // if (result.length > 0) {
-                        //     Swal.showValidationMessage("Track name duplicado.");
-                        //     return;
-                        // }
-
-                        // this.nodeStore.store.update(event.args.newShape.key, {
-                        //     ...event.args.newShape.dataItem,
-                        //     trackName: value
-                        // });
-                    }
-                });
-                return false;
-            }
-            /* let fromShape = event.component.getItemByKey(shapeFromKey); */
-            /* let parentShape = this.getParentShape(event.component, shapeFromKey); */
-            // let currentConnectors = fromShape.attachedConnectorIds.filter((VALUE: String) => VALUE != event.args.connector.id)
+        //     /*
 
 
-            return true;
-        }
+        //     */
+
+        //     let dataItem: MultcastOutModel = toShape.dataItem;
+        //     if (!dataItem.trackNameOrigin) {
+
+
+        //         Swal.fire({
+        //             title: "Track Name",
+        //             input: 'select',
+        //             inputOptions: {
+        //                 'SRB': 'Serbia',
+        //                 'UKR': 'Ukraine',
+        //                 'HRV': 'Croatia'
+        //             },
+        //             allowOutsideClick: false,
+        //             preConfirm: (value: string) => {
+        //                 // if (!value) {
+        //                 //     Swal.showValidationMessage("Track name Inválido.");
+        //                 //     return;
+        //                 // }
+
+        //                 // let query = this.nodeStore.store.createQuery().filter(["trackName", value]);
+
+        //                 // if (result.length > 0) {
+        //                 //     Swal.showValidationMessage("Track name duplicado.");
+        //                 //     return;
+        //                 // }
+
+        //                 // this.nodeStore.store.update(event.args.newShape.key, {
+        //                 //     ...event.args.newShape.dataItem,
+        //                 //     trackName: value
+        //                 // });
+        //             }
+        //         });
+        //         return false;
+        //     }
+        //     /* let fromShape = event.component.getItemByKey(shapeFromKey); */
+        //     /* let parentShape = this.getParentShape(event.component, shapeFromKey); */
+        //     // let currentConnectors = fromShape.attachedConnectorIds.filter((VALUE: String) => VALUE != event.args.connector.id)
+
+
+        //     return true;
+        // }
         //pipelineArray.push(valid_c838d53c);
 
 
