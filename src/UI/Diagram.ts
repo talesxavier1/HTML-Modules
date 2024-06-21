@@ -448,6 +448,7 @@ export class Diagram {
         }
         pipelineArray.push(valid_e16b5ea1);
 
+
         /* Verifica se o multicastOut que está recebendo uma conexão já tem um Track name origin associado.  */
         const valid_49840919 = (event: any) => {
             if (event.operation != "changeConnection") { return true; }
