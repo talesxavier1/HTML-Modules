@@ -65,12 +65,12 @@ export class Diagram {
         return finalResult;
     }
 
-    private getParentShapes = (component: any, shapeKey: string): undefined | Array<Object> => {
+    private getParentShapes = (component: any, shapeKey: string): Array<Object> => {
         let shapeProps = component.getItemByKey(shapeKey);
 
         let shapeConnectors = shapeProps.attachedConnectorIds.map((VALUE: string) => component.getItemById(VALUE));
         let connectorIn = shapeConnectors.filter((VALUE: any) => VALUE.toKey == shapeKey);
-        if (connectorIn.length == 0) { return }
+        if (connectorIn.length == 0) { return [] }
 
         let parentShapes = connectorIn.map((VALUE: any) => {
             return component.getItemByKey(VALUE.fromKey);
@@ -84,18 +84,6 @@ export class Diagram {
         })
 
         return parentShapes;
-    }
-
-    private getParentTreeShapes = (component: any, shapeKey: string): undefined | Array<Object> => {
-        let parent = this.getParentShapes(component, shapeKey);
-        if (!parent) { return }
-
-        parent = parent.map((VALUE: any) => {
-            return [this.getParentTreeShapes(component, VALUE.key)]
-        }).filter(VALUE => VALUE)
-
-
-        return parent
     }
 
     private onRequestEditOperation = (event: any) => {
@@ -465,8 +453,6 @@ export class Diagram {
             if (event.operation != "changeConnection") { return true; }
 
             let toShapeKey = event?.args?.connector?.toKey;
-            if (!toShapeKey) { return true; }
-
             let result = this.nodeStore.getByKey(toShapeKey);
             if (result?.type != "multicastOut") { return true }
             let toShape = result as MultcastOutModel;
@@ -531,116 +517,65 @@ export class Diagram {
         }
         pipelineArray.push(valid_49840919);
 
-
-        const valid_ffe6ac0a = (event: any) => {
-            if (event.operation != "changeConnection") { return true }
+        /* Não permite que um MultiCastOut receba a conexão de um fluxo que não seja do MultiCastIn associado */
+        const valid_2c8dde4a = (event: any) => {
+            if (event.operation != "changeConnection") { return true; }
 
             let toShapeKey = event?.args?.connector?.toKey;
-            if (!toShapeKey) { return true }
+            let result = this.nodeStore.getByKey(toShapeKey);
+            if (!result || result.type != "multicastOut") { return true }
+            let toShape: MultcastOutModel = result as MultcastOutModel;
 
-            let dataShape = this.nodeStore.getByKey(toShapeKey);
-            if (!dataShape || dataShape.shapeType != "multicastOut") { return true }
+            let lastFind: any = [];
+            do {
+                let key = lastFind.length > 0 ? lastFind[0].key : toShapeKey;
+                lastFind = this.getParentShapes(event.component, key);
+                if (lastFind.length > 0) {
+                    if (lastFind[0].type == "multicastIn") {
+                        if (lastFind[0].dataItem.trackName != toShape.trackNameOrigin) {
+                            return false;
+                        }
+                    }
+                }
+            } while (lastFind.length > 0)
 
-            let parents = [];
-
-            let a = this.getParentTreeShapes(event.component, toShapeKey);
-            debugger;
             return true;
         }
-        pipelineArray.push(valid_ffe6ac0a);
+        pipelineArray.push(valid_2c8dde4a);
 
         // #endregion
         /* ========================================================== */
 
-        // const valid_c838d53c = (event: any) => {
-        //     if (!event?.args?.connector) { return true }
-        //     let shapeFromKey = event.args.connector.fromKey;
-        //     let shapeToKey = event.args.connector.toKey;
-        //     if (!shapeFromKey || !shapeToKey) { return true }
+        /* ========================================================== */
+        // #region MultiCastIn
 
-        //     let toShape = event.component.getItemByKey(shapeToKey);
-        //     if (toShape.type != "multicastOut") { return true }
+        /* Valida se o  MultiCastIn está sendo conectado em série a outro MultiCastIn */
+        const valid_ffe6ac0a = (event: any) => {
+            if (event.operation != "changeConnection") { return true }
 
-        //     let fromShape = event.component.getItemByKey(shapeFromKey);
-        //     let parentShape = this.getParentShape(event.component, shapeFromKey);
-        //     // let currentConnectors = fromShape.attachedConnectorIds.filter((VALUE: String) => VALUE != event.args.connector.id)
+            let toShapeKey = event?.args?.connector?.toKey;
+            let toShape = this.nodeStore.getByKey(toShapeKey);
+            if (!toShape || toShape.type != "multicastIn") { return true }
 
 
-        //     return true;
-        // }
-        // pipelineArray.push(valid_c838d53c);
+            let lastFind: any = [];
+            do {
+                let key = lastFind.length > 0 ? lastFind[0].key : toShapeKey;
+                lastFind = this.getParentShapes(event.component, key);
+                if (lastFind.length > 0) {
+                    if (lastFind[0].type == "multicastIn") {
+                        return false;
+                    } else if (lastFind[0].type == "multicastOut") {
+                        return true
+                    }
+                }
 
-
-        // const valid_c838d53c = (event: any) => {
-        //     if (!event?.args?.connector) { return true }
-        //     let shapeToKey = event.args.connector.toKey;
-        //     if (!shapeToKey) { return true }
-
-        //     let toShape = event.component.getItemByKey(shapeToKey);
-        //     if (toShape.type != "multicastOut") { return true }
-
-        //     let multiCastIn: Array<MulticastInModel> = (() => {
-        //         let query = this.nodeStore.store.createQuery().filter(["type", "multicastIn"]);
-        //         let result: Array<any> = [];
-        //         query.enumerate().done((values: Array<any>) => result = values);
-        //         return result;
-        //     })();
-
-        //     if (multiCastIn.length) {
-        //         return false;
-        //     }
-
-
-        //     /*
-
-
-        //     */
-
-        //     let dataItem: MultcastOutModel = toShape.dataItem;
-        //     if (!dataItem.trackNameOrigin) {
-
-
-        //         Swal.fire({
-        //             title: "Track Name",
-        //             input: 'select',
-        //             inputOptions: {
-        //                 'SRB': 'Serbia',
-        //                 'UKR': 'Ukraine',
-        //                 'HRV': 'Croatia'
-        //             },
-        //             allowOutsideClick: false,
-        //             preConfirm: (value: string) => {
-        //                 // if (!value) {
-        //                 //     Swal.showValidationMessage("Track name Inválido.");
-        //                 //     return;
-        //                 // }
-
-        //                 // let query = this.nodeStore.store.createQuery().filter(["trackName", value]);
-
-        //                 // if (result.length > 0) {
-        //                 //     Swal.showValidationMessage("Track name duplicado.");
-        //                 //     return;
-        //                 // }
-
-        //                 // this.nodeStore.store.update(event.args.newShape.key, {
-        //                 //     ...event.args.newShape.dataItem,
-        //                 //     trackName: value
-        //                 // });
-        //             }
-        //         });
-        //         return false;
-        //     }
-        //     /* let fromShape = event.component.getItemByKey(shapeFromKey); */
-        //     /* let parentShape = this.getParentShape(event.component, shapeFromKey); */
-        //     // let currentConnectors = fromShape.attachedConnectorIds.filter((VALUE: String) => VALUE != event.args.connector.id)
-
-
-        //     return true;
-        // }
-        //pipelineArray.push(valid_c838d53c);
-
-
-
+            } while (lastFind.length > 0)
+            return true;
+        }
+        pipelineArray.push(valid_ffe6ac0a);
+        // #endregion
+        /* ========================================================== */
 
         /* const valid_50e77487 = (event: any) => {
             
