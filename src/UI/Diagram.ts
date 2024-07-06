@@ -185,7 +185,7 @@ export class Diagram {
                 return true;
             }
 
-            let connectorsFrom = this.edgesStore.getByFromId(fromKey);
+            let connectorsFrom = this.edgesStore.getByFromKey(fromKey);
             if (connectorsFrom.length == 0) { return true; }
 
             let connectorID = connector.key;
@@ -449,7 +449,6 @@ export class Diagram {
         pipelineArray.push(valid_e16b5ea1);
 
 
-
         /* Verifica se o multicastOut que está recebendo uma conexão já tem um Track name origin associado.  */
         const valid_49840919 = (event: any) => {
             if (event.operation != "changeConnection") { return true; }
@@ -537,6 +536,7 @@ export class Diagram {
                         if (lastFind[0].dataItem.trackName != toShape.trackNameOrigin) {
                             return false;
                         }
+                        return true;
                     }
                 }
             } while (lastFind.length > 0)
@@ -579,11 +579,26 @@ export class Diagram {
         // #endregion
         /* ========================================================== */
 
-        /* const valid_50e77487 = (event: any) => {
-            
+        /* ========================================================== */
+        // #region Condition
+        /* Valida se o componente Condition está sendo conectado a um quarto componente */
+        const valid_5e7f0a5f = (event: any) => {
+            let fromKey = event?.args?.connector?.fromKey;
+            if (!fromKey) { return true }
+
+            let fromShape = this.nodeStore.getByKey(fromKey);
+            if (fromShape?.type != "condition") { return true }
+
+            let fromShapeConnectorsOut = this.edgesStore.getByFromKey(fromKey);
+            if (fromShapeConnectorsOut.length == 3) { return false }
+
+
             return true;
         }
-        pipelineArray.push(valid_50e77487); */
+        pipelineArray.push(valid_5e7f0a5f);
+
+        /* ========================================================== */
+        /*  */
 
 
 
@@ -745,6 +760,7 @@ type TDataSource =
     StartProcessModel |
     EndProcessModel;
 // #endregion
+
 class NodeStore {
 
     private _store: DevExpress.data.ArrayStore<TDataSource, String>;
@@ -844,8 +860,16 @@ class EdgesStore {
         return data;
     }
 
-    public getByFromId = (ID: string): Array<any> => {
-        let query = this._store.createQuery().filter(["from", ID]);
+    public getByToKey = (toKey: String): Array<any> => {
+        let query = this._store.createQuery().filter(["to", toKey]);
+
+        let result: Array<any> = [];
+        query.enumerate().done((values: Array<any>) => result = values);
+        return result;
+    }
+
+    public getByFromKey = (fromKey: string): Array<any> => {
+        let query = this._store.createQuery().filter(["from", fromKey]);
 
         let result: Array<any> = [];
         query.enumerate().done((values: Array<any>) => result = values);
