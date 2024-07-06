@@ -4,7 +4,7 @@ import { Utils } from "../Utils/Utils";
 import { SenderModel } from "../models/SenderModel";
 import { ProcessContainerModel } from "../models/ProcessContainerModel";
 import { ReciverModel } from "../models/ReciverModel";
-import { DataConverterModel } from "../models/DataConverterModel";
+import { LoggerModel } from "../models/LoggerModel";
 import { ExceptionSubprocessModel } from "../models/ExceptionSubprocessModel";
 import { ScriptModel } from "../models/ScriptModel";
 import { EndExceptioModel } from "../models/EndExceptionModel";
@@ -48,7 +48,7 @@ export class Diagram {
             new MulticastInCustonShape().shape, /* Multicast In */
             new MulticastOutCustonShape().shape,/* Multicast Out */
             new StartExceptionCustonShape().shape, /* Start Exception */
-            new DataConverterCustonShape().shape, /* Data Converter */
+            new LoggerCustonShape().shape, /* Data Converter */
             new ScriptCustonShape().shape, /* Script */
             new EndExceptionCustonShape().shape, /* End Exception */
             new ExceptionSubprocessCustonShape().shape, /* Exception Subprocess */
@@ -185,7 +185,7 @@ export class Diagram {
                 return true;
             }
 
-            let connectorsFrom = this.edgesStore.getByFromId(fromKey);
+            let connectorsFrom = this.edgesStore.getByFromKey(fromKey);
             if (connectorsFrom.length == 0) { return true; }
 
             let connectorID = connector.key;
@@ -235,7 +235,7 @@ export class Diagram {
         pipelineArray.push(valid_925ba7a5);
 
         /* Shapes que podem ser incluidos apenas em containers */
-        let shapes_8ee49461 = ["multicastIn", "dataConverter", "script", "condition", "multicastOut"];
+        let shapes_8ee49461 = ["multicastIn", "logger", "script", "condition", "multicastOut"];
         const valid_8ee49461 = (event: any) => {
             if (!["addShape", "moveShape"].includes(event.operation)) { return true }
 
@@ -536,6 +536,7 @@ export class Diagram {
                         if (lastFind[0].dataItem.trackName != toShape.trackNameOrigin) {
                             return false;
                         }
+                        return true;
                     }
                 }
             } while (lastFind.length > 0)
@@ -578,11 +579,26 @@ export class Diagram {
         // #endregion
         /* ========================================================== */
 
-        /* const valid_50e77487 = (event: any) => {
-            
+        /* ========================================================== */
+        // #region Condition
+        /* Valida se o componente Condition está sendo conectado a um quarto componente */
+        const valid_5e7f0a5f = (event: any) => {
+            let fromKey = event?.args?.connector?.fromKey;
+            if (!fromKey) { return true }
+
+            let fromShape = this.nodeStore.getByKey(fromKey);
+            if (fromShape?.type != "condition") { return true }
+
+            let fromShapeConnectorsOut = this.edgesStore.getByFromKey(fromKey);
+            if (fromShapeConnectorsOut.length == 3) { return false }
+
+
             return true;
         }
-        pipelineArray.push(valid_50e77487); */
+        pipelineArray.push(valid_5e7f0a5f);
+
+        /* ========================================================== */
+        /*  */
 
 
 
@@ -737,13 +753,14 @@ type TDataSource =
     ExceptionSubprocessModel |
     EndExceptioModel |
     ScriptModel |
-    DataConverterModel |
+    LoggerModel |
     StartExceptionModel |
     MultcastOutModel |
     MulticastInModel |
     StartProcessModel |
     EndProcessModel;
 // #endregion
+
 class NodeStore {
 
     private _store: DevExpress.data.ArrayStore<TDataSource, String>;
@@ -771,8 +788,8 @@ class NodeStore {
             case "script":
                 Object.assign(data, new ScriptModel(data.ID));
                 break;
-            case "dataConverter":
-                Object.assign(data, new DataConverterModel(data.ID));
+            case "logger":
+                Object.assign(data, new LoggerModel(data.ID));
                 break;
             case "startException":
                 Object.assign(data, new StartExceptionModel(data.ID));
@@ -843,8 +860,16 @@ class EdgesStore {
         return data;
     }
 
-    public getByFromId = (ID: string): Array<any> => {
-        let query = this._store.createQuery().filter(["from", ID]);
+    public getByToKey = (toKey: String): Array<any> => {
+        let query = this._store.createQuery().filter(["to", toKey]);
+
+        let result: Array<any> = [];
+        query.enumerate().done((values: Array<any>) => result = values);
+        return result;
+    }
+
+    public getByFromKey = (fromKey: string): Array<any> => {
+        let query = this._store.createQuery().filter(["from", fromKey]);
 
         let result: Array<any> = [];
         query.enumerate().done((values: Array<any>) => result = values);
@@ -1413,7 +1438,7 @@ class StartExceptionCustonShape {
     }
 }
 
-class DataConverterCustonShape {
+class LoggerCustonShape {
     private toolboxTemplate = (container: any, data: any) => {
         let shapeContainer = $(data);
         let parentElement = shapeContainer.parent();
@@ -1478,8 +1503,8 @@ class DataConverterCustonShape {
     };
 
     private _shape: DevExpress.ui.TCustomShape = {
-        type: "dataConverter",
-        title: "Data Converter",
+        type: "logger",
+        title: "Logger",
         category: "Process",
         defaultText: "",
         defaultWidth: 1.5,
@@ -1535,7 +1560,7 @@ class ScriptCustonShape {
             "rx": "5",
             "ry": "5",
             "style": `
-                troke: #DEDEDE;
+                stroke: #DEDEDE;
                 fill: rgb(250, 250, 250);
             `
         }).appendTo(shapeContainer).on("mouseover", () => {
