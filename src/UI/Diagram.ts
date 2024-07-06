@@ -4,7 +4,7 @@ import { Utils } from "../Utils/Utils";
 import { SenderModel } from "../models/SenderModel";
 import { ProcessContainerModel } from "../models/ProcessContainerModel";
 import { ReciverModel } from "../models/ReciverModel";
-import { DataConverterModel } from "../models/DataConverterModel";
+import { LoggerModel } from "../models/LoggerModel";
 import { ExceptionSubprocessModel } from "../models/ExceptionSubprocessModel";
 import { ScriptModel } from "../models/ScriptModel";
 import { EndExceptioModel } from "../models/EndExceptionModel";
@@ -48,7 +48,7 @@ export class Diagram {
             new MulticastInCustonShape().shape, /* Multicast In */
             new MulticastOutCustonShape().shape,/* Multicast Out */
             new StartExceptionCustonShape().shape, /* Start Exception */
-            new DataConverterCustonShape().shape, /* Data Converter */
+            new LoggerCustonShape().shape, /* Data Converter */
             new ScriptCustonShape().shape, /* Script */
             new EndExceptionCustonShape().shape, /* End Exception */
             new ExceptionSubprocessCustonShape().shape, /* Exception Subprocess */
@@ -235,7 +235,7 @@ export class Diagram {
         pipelineArray.push(valid_925ba7a5);
 
         /* Shapes que podem ser incluidos apenas em containers */
-        let shapes_8ee49461 = ["multicastIn", "dataConverter", "script", "condition", "multicastOut"];
+        let shapes_8ee49461 = ["multicastIn", "logger", "script", "condition", "multicastOut"];
         const valid_8ee49461 = (event: any) => {
             if (!["addShape", "moveShape"].includes(event.operation)) { return true }
 
@@ -447,6 +447,7 @@ export class Diagram {
             return true;
         }
         pipelineArray.push(valid_e16b5ea1);
+
 
 
         /* Verifica se o multicastOut que está recebendo uma conexão já tem um Track name origin associado.  */
@@ -737,7 +738,7 @@ type TDataSource =
     ExceptionSubprocessModel |
     EndExceptioModel |
     ScriptModel |
-    DataConverterModel |
+    LoggerModel |
     StartExceptionModel |
     MultcastOutModel |
     MulticastInModel |
@@ -771,8 +772,8 @@ class NodeStore {
             case "script":
                 Object.assign(data, new ScriptModel(data.ID));
                 break;
-            case "dataConverter":
-                Object.assign(data, new DataConverterModel(data.ID));
+            case "logger":
+                Object.assign(data, new LoggerModel(data.ID));
                 break;
             case "startException":
                 Object.assign(data, new StartExceptionModel(data.ID));
@@ -1413,7 +1414,7 @@ class StartExceptionCustonShape {
     }
 }
 
-class DataConverterCustonShape {
+class LoggerCustonShape {
     private toolboxTemplate = (container: any, data: any) => {
         let shapeContainer = $(data);
         let parentElement = shapeContainer.parent();
@@ -1478,8 +1479,8 @@ class DataConverterCustonShape {
     };
 
     private _shape: DevExpress.ui.TCustomShape = {
-        type: "dataConverter",
-        title: "Data Converter",
+        type: "logger",
+        title: "Logger",
         category: "Process",
         defaultText: "",
         defaultWidth: 1.5,
@@ -1535,7 +1536,7 @@ class ScriptCustonShape {
             "rx": "5",
             "ry": "5",
             "style": `
-                troke: #DEDEDE;
+                stroke: #DEDEDE;
                 fill: rgb(250, 250, 250);
             `
         }).appendTo(shapeContainer).on("mouseover", () => {
