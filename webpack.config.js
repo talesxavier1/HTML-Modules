@@ -54,6 +54,7 @@ module.exports = (env, argv) => {
                     // { from: './src/lib/jquery', to: './lib/jquery' },
                     //{ from: './src/lib/DevExtreme/js', to: './lib/DevExtreme/js' },
                     // { from: './src/lib/DevExtreme/css', to: './lib/DevExtreme/css' },
+                    { from: './src/html', to: './html' },
                     {
                         from: './src/index.html',
                         to: 'index.html',
