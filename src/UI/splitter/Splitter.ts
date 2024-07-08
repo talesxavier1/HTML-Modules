@@ -1,14 +1,17 @@
+import { InstanceProps } from "../../Utils/dx-utils/InstanceProps";
+import { ComponentInstanceModel } from "../../Utils/dx-utils/ComponentInstanceModel";
+
 export class Splitter {
 
     //#region PRIVATE
-    private splitterInstance: DevExpress.ui.dxSplitter;
+    private componentInstanceModel = new ComponentInstanceModel<Object>(new Object);
     //#endregion PRIVATE
 
     //#region PUBLIC
     public onResizeEnd?: (e: DevExpress.ui.dxSplitter.ResizeEndEvent) => void;
 
     public repaint = () => {
-        this.splitterInstance.repaint();
+        this.componentInstanceModel.repaint("splitter");
     }
     //#endregion
 
@@ -42,21 +45,25 @@ export class Splitter {
             },
         }
 
-        this.splitterInstance = $('#splitter').dxSplitter({
-            onResizeEnd: (e) => {
-                if (this.onResizeEnd) {
-                    this.onResizeEnd(e);
-                }
-            },
-            items: [{
-                splitter: {
-                    orientation: "vertical",
-                    items: [
-                        diagramItem,
-                        optionsItem
-                    ]
-                }
-            }]
-        }).dxSplitter('instance');
+        this.componentInstanceModel.addInstance(new InstanceProps({
+            componentName: "dxSplitter",
+            tagName: "splitter",
+            instance: $('#splitter').dxSplitter({
+                onResizeEnd: (e) => {
+                    if (this.onResizeEnd) {
+                        this.onResizeEnd(e);
+                    }
+                },
+                items: [{
+                    splitter: {
+                        orientation: "vertical",
+                        items: [
+                            diagramItem,
+                            optionsItem
+                        ]
+                    }
+                }]
+            }).dxSplitter('instance')
+        }));
     }
 }

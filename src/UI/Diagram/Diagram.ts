@@ -5,6 +5,8 @@ import { MultcastOutModel } from "../../models/MulticastOutModel";
 import { MulticastInModel } from "../../models/MulticastInModel";
 import { NodeStore } from "../../Data/NodeStore";
 import { EdgesStore } from "../../Data/EdgesStore";
+import { TDiagramShapeClicked } from "../../Types/TDiagramShapeClicked";
+import { TDataSource } from "../../Types/TDataSource";
 declare const Swal: any;
 
 export class Diagram {
@@ -13,22 +15,8 @@ export class Diagram {
     private nodeStore = new NodeStore("ID");
     private edgesStore = new EdgesStore("ID");
 
-    setDiagramOptions = (strDiagramProps: string, diagramData: Array<any>) => {
-        // return;
-        let diagramProps = this.componentInstanceModel.getInstanceProps("diagrama");
-        let diagramInstance = diagramProps.getInstance() as DevExpress.ui.dxDiagram;
-        diagramInstance.import(strDiagramProps, false);
 
-        diagramData.forEach((VAL: any) => {
-            this.nodeStore.store.update(VAL.ID, VAL);
-        });
-    }
-
-    private shapeClicked = (event: DevExpress.ui.dxDiagram.ItemClickEvent) => {
-        return;
-
-    }
-
+    // #region PRIVATE
     private customShapes: DevExpress.ui.dxDiagramOptions = {
         customShapes: [
             new SenderCustonShape().shape, /* Sender */
@@ -587,17 +575,39 @@ export class Diagram {
             return true;
         }
         pipelineArray.push(valid_5e7f0a5f);
-
+        // #endregion
         /* ========================================================== */
         let resultPipeline = this.pipelineEditOperation(event, pipelineArray);
         event.allowed = resultPipeline;
         event.updateUI = resultPipeline;
     }
 
-    public repaint = () => {
-        const diagramInstance = this.componentInstanceModel.getInstanceProps("diagrama").getInstance() as DevExpress.ui.dxDiagram;
-        diagramInstance.repaint();
+    private _shapeClicked = (evt: DevExpress.ui.dxDiagram.ItemClickEvent) => {
+        if (!this.shapeClicked) { return; }
+        this.shapeClicked({
+            event: evt,
+            shapeData: evt.item.dataItem as TDataSource
+        })
     }
+    // #endregion
+
+    // #region PUBLIC
+    public shapeClicked: ((args: TDiagramShapeClicked) => void) | undefined;
+
+    public repaint = () => {
+        this.componentInstanceModel.repaint("diagrama");
+    }
+
+    public setDiagramOptions = (strDiagramProps: string, diagramData: Array<any>) => {
+        let diagramProps = this.componentInstanceModel.getInstanceProps("diagrama");
+        let diagramInstance = diagramProps.getInstance() as DevExpress.ui.dxDiagram;
+        diagramInstance.import(strDiagramProps, false);
+
+        diagramData.forEach((VAL: any) => {
+            this.nodeStore.store.update(VAL.ID, VAL);
+        });
+    }
+    // #region PUBLIC
 
     constructor() {
         this.componentInstanceModel.addInstance(new InstanceProps({
@@ -609,7 +619,7 @@ export class Diagram {
                     groups: [{ category: "Process" }, { category: "Exception" }]
                 },
                 onRequestEditOperation: this.onRequestEditOperation,
-                onItemClick: this.shapeClicked,
+                onItemClick: this._shapeClicked,
                 customShapes: this.customShapes.customShapes,
                 nodes: {
                     dataSource: this.nodeStore.store,
@@ -725,11 +735,10 @@ export class Diagram {
             }).dxButton("instance"),
             tagName: "botao01"
         }))
-
-
     }
 }
 
+//TODO Dividir isso em arquivos independentes dentro de ./Diagrams/CustomShapes
 // #region CustonShape
 class SenderCustonShape {
     private toolboxTemplate = (container: any, data: any) => {
