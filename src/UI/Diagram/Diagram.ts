@@ -19,19 +19,19 @@ export class Diagram {
     // #region PRIVATE
     private customShapes: DevExpress.ui.dxDiagramOptions = {
         customShapes: [
-            new SenderCustonShape().shape, /* Sender */
-            new ReciverCustonShape().shape, /* Reciver */
-            new ProcessContainerCustonShape().shape, /* Process Container */
-            new StartProcessCustonShape().shape, /* Start Process */
-            new EndProcessCustonShape().shape, /* End Process */
-            new MulticastInCustonShape().shape, /* Multicast In */
-            new MulticastOutCustonShape().shape,/* Multicast Out */
-            new StartExceptionCustonShape().shape, /* Start Exception */
-            new LoggerCustonShape().shape, /* Data Converter */
-            new ScriptCustonShape().shape, /* Script */
-            new EndExceptionCustonShape().shape, /* End Exception */
-            new ExceptionSubprocessCustonShape().shape, /* Exception Subprocess */
-            new ConditionCustonShape().shape, /* Condition */
+            new SenderCustomShape().shape, /* Sender */
+            new ReciverCustomShape().shape, /* Reciver */
+            new ProcessContainerCustomShape().shape, /* Process Container */
+            new StartProcessCustomShape().shape, /* Start Process */
+            new EndProcessCustomShape().shape, /* End Process */
+            new MulticastInCustomShape().shape, /* Multicast In */
+            new MulticastOutCustomShape().shape,/* Multicast Out */
+            new StartExceptionCustomShape().shape, /* Start Exception */
+            new LoggerCustomShape().shape, /* Data Converter */
+            new ScriptCustomShape().shape, /* Script */
+            new EndExceptionCustomShape().shape, /* End Exception */
+            new ExceptionSubprocessCustomShape().shape, /* Exception Subprocess */
+            new ConditionCustomShape().shape, /* Condition */
         ]
     }
 
@@ -739,8 +739,8 @@ export class Diagram {
 }
 
 //TODO Dividir isso em arquivos independentes dentro de ./Diagrams/CustomShapes
-// #region CustonShape
-class SenderCustonShape {
+// #region CustomShape
+class SenderCustomShape {
     private toolboxTemplate = (container: any, data: any) => {
         let shapeContainer = $(data);
         let parentElement = shapeContainer.parent();
@@ -807,7 +807,7 @@ class SenderCustonShape {
     }
 }
 
-class ReciverCustonShape {
+class ReciverCustomShape {
     private toolboxTemplate = (container: any, data: any) => {
         let shapeContainer = $(data);
         let parentElement = shapeContainer.parent();
@@ -873,7 +873,7 @@ class ReciverCustonShape {
     }
 }
 
-class ProcessContainerCustonShape {
+class ProcessContainerCustomShape {
     private toolboxTemplate = (container: any, data: any) => {
         let shapeContainer = $(data);
         let parentElement = shapeContainer.parent();
@@ -974,7 +974,7 @@ class ProcessContainerCustonShape {
     }
 }
 
-class StartProcessCustonShape {
+class StartProcessCustomShape {
     private toolboxTemplate = (container: any, data: any) => {
         let shapeContainer = $(data);
         let parentElement = shapeContainer.parent();
@@ -1038,7 +1038,7 @@ class StartProcessCustonShape {
     }
 }
 
-class EndProcessCustonShape {
+class EndProcessCustomShape {
     private toolboxTemplate = (container: any, data: any) => {
         let shapeContainer = $(data);
         let parentElement = shapeContainer.parent();
@@ -1102,7 +1102,7 @@ class EndProcessCustonShape {
     }
 }
 
-class MulticastInCustonShape {
+class MulticastInCustomShape {
     private toolboxTemplate = (container: any, data: any) => {
         let shapeContainer = $(data);
         let parentElement = shapeContainer.parent();
@@ -1166,7 +1166,7 @@ class MulticastInCustonShape {
     }
 }
 
-class MulticastOutCustonShape {
+class MulticastOutCustomShape {
     private toolboxTemplate = (container: any, data: any) => {
         let shapeContainer = $(data);
         let parentElement = shapeContainer.parent();
@@ -1230,7 +1230,7 @@ class MulticastOutCustonShape {
     }
 }
 
-class StartExceptionCustonShape {
+class StartExceptionCustomShape {
     private toolboxTemplate = (container: any, data: any) => { };
 
     private template = (container: any, data: any) => {
@@ -1280,7 +1280,7 @@ class StartExceptionCustonShape {
     }
 }
 
-class LoggerCustonShape {
+class LoggerCustomShape {
     private toolboxTemplate = (container: any, data: any) => {
         let shapeContainer = $(data);
         let parentElement = shapeContainer.parent();
@@ -1366,7 +1366,7 @@ class LoggerCustonShape {
     }
 }
 
-class ScriptCustonShape {
+class ScriptCustomShape {
     private toolboxTemplate = (container: any, data: any) => {
         let shapeContainer = $(data);
         let parentElement = shapeContainer.parent();
@@ -1446,7 +1446,7 @@ class ScriptCustonShape {
     }
 }
 
-class EndExceptionCustonShape {
+class EndExceptionCustomShape {
     private toolboxTemplate = (container: any, data: any) => { };
 
     private template = (container: any, data: any) => {
@@ -1496,7 +1496,7 @@ class EndExceptionCustonShape {
     }
 }
 
-class ExceptionSubprocessCustonShape {
+class ExceptionSubprocessCustomShape {
     private toolboxTemplate = (container: any, data: any) => { };
 
     private template = (container: any, data: any) => {
@@ -1580,7 +1580,7 @@ class ExceptionSubprocessCustonShape {
     }
 }
 
-class ConditionCustonShape {
+class ConditionCustomShape {
     private toolboxTemplate = (container: any, data: any) => { };
 
     private template = (container: any, data: any) => {
