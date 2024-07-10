@@ -1,17 +1,13 @@
 @import url('https://talesxavier1.github.io/GH-CDN/TypeScriptEditor/lib/DevExtreme/css/dx-diagram.min.css');
 @import url('https://talesxavier1.github.io/GH-CDN/TypeScriptEditor/lib/DevExtreme/css/dx.light.css');
 @import url('https://talesxavier1.github.io/GH-CDN/TypeScriptEditor/lib/sweetalert2/sweetalert2.min.css');
-
 @import "./UI/Diagram/Driagram.css";
+@import "./UI/splitter/Splitter.css";
 
 * {
     padding: 0;
     margin: 0;
     border: 0;
-}
-
-dx-license {
-    display: none;
 }
 
 body,
@@ -20,22 +16,6 @@ html {
     height: 100%;
 }
 
-body>dx-license {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-}
-
 .swal2-container {
     z-index: 1502;
-}
-
-#splitter {
-    width: 100%;
-    height: 100%;
-}
-
-.dx-item-content .dx-splitter-item-content {
-    overflow: hidden;
 }

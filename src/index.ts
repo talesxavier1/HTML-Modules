@@ -1,7 +1,8 @@
 
 import { Splitter } from "./UI/splitter/Splitter";
 import { Diagram } from "./UI/Diagram/Diagram";
-import { TDiagramShapeClicked } from "Types/TDiagramShapeClicked";
+import { TDiagramShapeClicked } from "./Types/TDiagramShapeClicked";
+import { OptionsUI } from "./UI/Options/OptionsUI";
 
 const diagramHTML = await (async () => {
     const response = await fetch("./html/Diagram.html");
@@ -23,18 +24,20 @@ const optionsHTML = await (async () => {
 
 let splitter: Splitter;
 let diagram: Diagram;
+let optionsUI: OptionsUI;
 const main = async (): Promise<void> => {
     splitter = new Splitter(diagramHTML, optionsHTML);
     diagram = new Diagram();
-
+    optionsUI = new OptionsUI();
 
     diagram.setDiagramOptions(JSON.stringify(diagramProps), diagramData);
 
     splitter.onResizeEnd = () => {
         diagram.repaint();
     }
-    diagram.shapeClicked = (Event: TDiagramShapeClicked) => {
 
+    diagram.shapeClicked = (Event: TDiagramShapeClicked) => {
+        optionsUI.mountOptions(Event.shapeData);
     }
 
 }
