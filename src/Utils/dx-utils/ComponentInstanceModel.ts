@@ -119,13 +119,11 @@ export class ComponentInstanceModel<T> {
     public disposeInstance = (tagName: string) => {
         let instanceProps = this.getInstanceProps(tagName);
         instanceProps?.getInstance()?.dispose();
-        $(`#${tagName}`)?.remove();
     }
 
     public disposeAllInstances = () => {
         this.ARRAY_COMPONENTS_INSTANCES.forEach(VALUE => {
-            VALUE.getInstance().dispose();
-            $(`#${VALUE.getTagName()}`)?.remove();
+            this.disposeInstance(VALUE.getTagName());
         })
     }
 

@@ -39,9 +39,6 @@ export class OptionsUI {
             default:
                 throw new Error("[ERRO] - tipo não definido.")
         }
-        if (data.type == "sender") {
-            this.instanceUI = new SenderOptionsUI();
-        }
     }
 
     public onConfirm: ((data: TDataSource) => void) | undefined;
