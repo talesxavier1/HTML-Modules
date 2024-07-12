@@ -1,14 +1,22 @@
+import { ComponentInstanceModel } from "../../../Utils/dx-utils/ComponentInstanceModel";
 import { IOptionUI } from "../../../Interfaces/IOptionUI";
 import { SenderModel } from "../../../models/SenderModel";
 import { TDataSource } from "../../../Types/TDataSource";
 
 export class SenderOptionsUI implements IOptionUI {
+    private componentInstanceModel = new ComponentInstanceModel<SenderModel>(new SenderModel());
+
+    private data: TDataSource;
     setData = (data: TDataSource) => {
 
     };
 
     getData = () => {
-        return new SenderModel();
+        let builtObject = this.componentInstanceModel.getBuiltObject();
+        return {
+            ...this.data,
+            ...builtObject
+        } as SenderModel;
     };
 
     distroyUI = () => {
@@ -19,10 +27,9 @@ export class SenderOptionsUI implements IOptionUI {
 
     };
 
-    constructor(data?: TDataSource) {
-        if (data) {
-            this.setData(data);
-        }
+    constructor(data: TDataSource) {
+        this.data = data;
+
     }
 
 }
