@@ -1,4 +1,5 @@
-import { DxInstanceType } from "./Consts";
+import { TComponentName } from "../../Types/TComponentName";
+import { TDxInstanceType } from "../../Types/DxInstanceType";
 import { DxDefaultValues } from "./DxDefaultValues";
 
 
@@ -10,7 +11,7 @@ export class InstanceProps {
     private defaultValue: any;
     private tagName: string;
 
-    constructor(args: { componentName: string, instance: DxInstanceType, tagName: string }) {
+    constructor(args: { componentName: TComponentName, instance: TDxInstanceType, tagName: string }) {
         let xDefaultValues = new DxDefaultValues();
         this.instance = args.instance;
         this.defaultValue = xDefaultValues.getDefaultValue(args.componentName);
@@ -18,7 +19,7 @@ export class InstanceProps {
         this.tagName = args.tagName;
     }
 
-    getInstance = (): DxInstanceType => {
+    getInstance = (): TDxInstanceType => {
         return this.instance;
     }
 

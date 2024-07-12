@@ -583,7 +583,6 @@ export class Diagram {
     }
 
     private _shapeClicked = (evt: DevExpress.ui.dxDiagram.ItemClickEvent) => {
-        this.componentInstanceModel.disposeInstance("diagrama");
         if (!this.shapeClicked) { return; }
         this.shapeClicked({
             event: evt,

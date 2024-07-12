@@ -1,17 +1,12 @@
+import { TComponentName } from "Types/TComponentName";
 
 interface IdxComponentValue {
-    componentName: string,
+    componentName: TComponentName,
     defaultValue: any,
     valueField: string | undefined
 }
 
-class DxComponentValue implements IdxComponentValue {
-    componentName: string = "";
-    defaultValue: any;
-    valueField: string | undefined = "";
-}
-
-const ListdxComponentValue: Array<DxComponentValue> = [
+const ListdxComponentValue: Array<IdxComponentValue> = [
     { componentName: "dxTextBox", defaultValue: "", valueField: "value" },
     { componentName: "dxSelectBox", defaultValue: null, valueField: "value" },
     { componentName: "dxCheckBox", defaultValue: false, valueField: "value" },
@@ -27,4 +22,4 @@ const ListdxComponentValue: Array<DxComponentValue> = [
     { componentName: "dxLoadIndicator", defaultValue: true, valueField: "visible" },
 ];
 
-export { ListdxComponentValue, DxComponentValue }
+export { ListdxComponentValue, IdxComponentValue }
