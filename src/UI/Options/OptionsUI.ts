@@ -1,7 +1,6 @@
-import { TShapeType } from "Types/TShapeType";
-import { SenderModel } from "../../models/SenderModel";
 import { TDataSource } from "../../Types/TDataSource";
 import { TInstanceUI } from "../../Types/TInstanceUI";
+import { ScriptOptionsUI } from "./ScriptOptions/ScriptOptionsUI";
 import { SenderOptionsUI } from "./SenderOptions/SenderOptionsUI";
 
 
@@ -29,9 +28,10 @@ export class OptionsUI {
             case "reciver":
                 break;
             case "script":
+                this.instanceUI = new ScriptOptionsUI(data);
                 break;
             case "sender":
-                this.instanceUI = new SenderOptionsUI(data as SenderModel);
+                this.instanceUI = new SenderOptionsUI(data);
                 break;
             case "startException":
                 break;

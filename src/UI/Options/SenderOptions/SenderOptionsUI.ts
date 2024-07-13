@@ -25,14 +25,15 @@ export class SenderOptionsUI implements IOptionUI {
         this.componentInstanceModel.repaintAllInstances();
     };
 
-    constructor(data: SenderModel, readonly?: boolean) {
-        this.data = data;
+
+    constructor(data: TDataSource, readonly?: boolean) {
+        this.data = data as SenderModel;
 
         this.componentInstanceModel.addInstance(new InstanceProps({
             componentName: "dxTextBox",
             tagName: "senderName",
             instance: $('#senderName').dxTextBox({
-                value: data.senderName,
+                value: this.data.senderName,
                 label: "Sender Name",
                 readOnly: readonly
             }).dxTextBox("instance")
@@ -42,7 +43,7 @@ export class SenderOptionsUI implements IOptionUI {
             componentName: "dxTextBox",
             tagName: "senderPath",
             instance: $('#senderPath').dxTextBox({
-                value: data.senderPath,
+                value: this.data.senderPath,
                 label: "Sender Path",
                 readOnly: readonly
             }).dxTextBox("instance")

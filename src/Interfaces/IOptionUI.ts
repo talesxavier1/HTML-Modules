@@ -1,3 +1,4 @@
+import { SenderOptionsUI } from "../UI/Options/SenderOptions/SenderOptionsUI";
 import { TDataSource } from "../Types/TDataSource";
 
 export interface IOptionUI {
