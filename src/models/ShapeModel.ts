@@ -1,20 +1,21 @@
+import { TShapeType } from "../Types/TShapeType";
 import { Utils } from "../Utils/Utils";
 
-type ShapeType = "sender" | "processContainer" | "reciver" | "condition" | "exceptionSubprocess" | "endException" | "script" | "logger" | "startException" | "multicastOut" | "multicastIn" | "endProcess" | "startProcess";
+
 export interface IShapeModel {
     ID: string
-    shapeType: ShapeType
+    shapeType: TShapeType
     initialized: boolean
 }
 
 export class ShapeModel implements IShapeModel {
     ID: string;
-    type: ShapeType;
+    type: TShapeType;
     text: string;
-    shapeType: ShapeType;
+    shapeType: TShapeType;
     private _initialized: boolean
 
-    constructor(shapeType: ShapeType, ID?: string) {
+    constructor(shapeType: TShapeType, ID?: string) {
         this.ID = ID ? ID : Utils.getGuid();
         this.shapeType = shapeType;
         this._initialized = true;
