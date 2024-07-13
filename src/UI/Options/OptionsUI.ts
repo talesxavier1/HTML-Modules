@@ -1,3 +1,5 @@
+import { TShapeType } from "Types/TShapeType";
+import { SenderModel } from "../../models/SenderModel";
 import { TDataSource } from "../../Types/TDataSource";
 import { TInstanceUI } from "../../Types/TInstanceUI";
 import { SenderOptionsUI } from "./SenderOptions/SenderOptionsUI";
@@ -6,8 +8,7 @@ import { SenderOptionsUI } from "./SenderOptions/SenderOptionsUI";
 export class OptionsUI {
     private instanceUI: TInstanceUI | undefined;
 
-    public mountOptions = (data: TDataSource) => {
-        this.instanceUI?.distroyUI();
+    private setInstanceUI = (data: TDataSource) => {
         switch (data.type) {
             case "condition":
                 break;
@@ -30,7 +31,7 @@ export class OptionsUI {
             case "script":
                 break;
             case "sender":
-                this.instanceUI = new SenderOptionsUI(data);
+                this.instanceUI = new SenderOptionsUI(data as SenderModel);
                 break;
             case "startException":
                 break;
@@ -39,6 +40,11 @@ export class OptionsUI {
             default:
                 throw new Error("[ERRO] - tipo não definido.")
         }
+    }
+
+    public mountOptions = (data: TDataSource) => {
+        this.instanceUI?.distroyUI();
+        this.setInstanceUI(data);
     }
 
     public onConfirm: ((data: TDataSource) => void) | undefined;

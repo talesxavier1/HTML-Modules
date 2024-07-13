@@ -5,16 +5,16 @@ import { TDiagramShapeClicked } from "./Types/TDiagramShapeClicked";
 import { OptionsUI } from "./UI/Options/OptionsUI";
 
 const diagramHTML = await (async () => {
-    const response = await fetch("./html/Diagram.html");
+    const response = await fetch("./html/Splitter/Diagram.html");
     if (response.ok) {
         return await response.text();
     } else {
-        throw new Error("./html/Diagram.html não encontrado.")
+        throw new Error("./html/Splitter/Diagram.html não encontrado.")
     }
 })();
 
 const optionsHTML = await (async () => {
-    const response = await fetch("./html/Options.html");
+    const response = await fetch("./html/Splitter/Options.html");
     if (response.ok) {
         return await response.text();
     } else {

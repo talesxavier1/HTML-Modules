@@ -7,7 +7,7 @@ import { InstanceProps } from "../../../Utils/dx-utils/InstanceProps";
 export class SenderOptionsUI implements IOptionUI {
     private componentInstanceModel = new ComponentInstanceModel<SenderModel>(new SenderModel());
 
-    private data: TDataSource;
+    private data: SenderModel;
 
     getData = () => {
         let builtObject = this.componentInstanceModel.getBuiltObject();
@@ -25,21 +25,28 @@ export class SenderOptionsUI implements IOptionUI {
         this.componentInstanceModel.repaintAllInstances();
     };
 
-    constructor(data: TDataSource) {
+    constructor(data: SenderModel, readonly?: boolean) {
         this.data = data;
+
+        this.componentInstanceModel.addInstance(new InstanceProps({
+            componentName: "dxTextBox",
+            tagName: "senderName",
+            instance: $('#senderName').dxTextBox({
+                value: data.senderName,
+                label: "Sender Name",
+                readOnly: readonly
+            }).dxTextBox("instance")
+        }));
 
         this.componentInstanceModel.addInstance(new InstanceProps({
             componentName: "dxTextBox",
             tagName: "senderPath",
             instance: $('#senderPath').dxTextBox({
-                value: 'John Smith',
-                showClearButton: true,
-                inputAttr: { 'aria-label': 'Full Name' },
+                value: data.senderPath,
+                label: "Sender Path",
+                readOnly: readonly
             }).dxTextBox("instance")
-        }))
-
-
-
+        }));
     }
 
 }
