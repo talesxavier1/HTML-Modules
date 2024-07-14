@@ -3,6 +3,7 @@ import { IOptionUI } from "../../../Interfaces/IOptionUI";
 import { ScriptModel } from "../../../models/ScriptModel";
 import { ComponentInstanceModel } from "../../../Utils/dx-utils/ComponentInstanceModel";
 import { InstanceProps } from "../../../Utils/dx-utils/InstanceProps";
+import { TESTE_AAA } from "../../../Utils/dx-utils/Consts";
 
 interface ITabScriptOptions {
     id: string,
@@ -55,7 +56,7 @@ export class ScriptOptionsUI implements IOptionUI {
             componentName: "dxTabPanel",
             tagName: "scriptTabContainer",
             instance: $('#scriptTabContainer').dxTabPanel({
-                height: 260,
+                height: "100%",
                 dataSource: this.dataSource,
                 selectedIndex: 0,
                 loop: false,
@@ -71,11 +72,15 @@ export class ScriptOptionsUI implements IOptionUI {
             }).dxTabPanel("instance")
         }))
 
+        const fileProvider = new DevExpress.fileManagement.ObjectFileSystemProvider({
+            data: TESTE_AAA
+        });
+
         this.componentInstanceModel.addInstance(new InstanceProps({
             componentName: "dxFileManager",
             tagName: "scriptFileManager",
             instance: $('#scriptFileManager').dxFileManager({
-                /* fileSystemProvider: fileSystem, */
+                fileSystemProvider: fileProvider,
                 itemView: {
                     mode: 'thumbnails',
                 },
@@ -97,9 +102,18 @@ export class ScriptOptionsUI implements IOptionUI {
         }))
 
         const a = () => {
-            let instance = this.componentInstanceModel.getInstanceProps("scriptFileManager").getInstance();
+            let instance = this.componentInstanceModel.getInstanceProps("scriptFileManager");
+            let aaa: any = instance.getInstanceValue()
+            let t = (fileProvider as any)._data;
             console.clear()
-            console.log(instance);
+
+            const tempTextArea = document.createElement('textarea');
+            tempTextArea.value = JSON.stringify(t);
+            document.body.appendChild(tempTextArea);
+            tempTextArea.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempTextArea);
+
         }
         $('#teste_btn').dxButton({
             stylingMode: 'outlined',

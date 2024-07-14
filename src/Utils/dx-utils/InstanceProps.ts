@@ -7,7 +7,7 @@ import { DxDefaultValues } from "./DxDefaultValues";
 export class InstanceProps {
 
     private instance: any;
-    private componentValueField: string;
+    private componentValueField: string | undefined | ((instance: any) => string)
     private defaultValue: any;
     private tagName: string;
 
@@ -24,6 +24,10 @@ export class InstanceProps {
     }
 
     getInstanceValue = (): any => {
+        if (this.componentValueField == undefined) { return }
+        if (typeof this.componentValueField == "function") {
+            return this.componentValueField(this.instance)
+        }
         return this.instance.option(this.componentValueField);
     }
 

@@ -6,3 +6,7 @@
 .dx-item-content .dx-splitter-item-content {
     overflow: hidden;
 }
+
+#splitter_options {
+    height: 100%;
+}
