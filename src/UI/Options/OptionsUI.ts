@@ -38,7 +38,7 @@ export class OptionsUI {
             case "startProcess":
                 break;
             default:
-                throw new Error("[ERRO] - tipo não definido.")
+                console.warn("[ERRO] - tipo não definido.")
         }
     }
 
