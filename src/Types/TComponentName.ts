@@ -1,4 +1,6 @@
 export type TComponentName =
+    "dxFileManager" |
+    "dxTabPanel" |
     "dxTextBox" |
     "dxSelectBox" |
     "dxCheckBox" |

@@ -18,8 +18,11 @@ const ListdxComponentValue: Array<IdxComponentValue> = [
     { componentName: "dxList", defaultValue: [], valueField: "items" },
     { componentName: "dxTreeView", defaultValue: [], valueField: "items" },
     { componentName: "dxTabs", defaultValue: 0, valueField: "selectedItem" },
+    { componentName: "dxTabPanel", defaultValue: 0, valueField: "selectedItem" },
     { componentName: "dxPopup", defaultValue: false, valueField: "visible" },
     { componentName: "dxLoadIndicator", defaultValue: true, valueField: "visible" },
+    { componentName: "dxFileManager", defaultValue: undefined, valueField: undefined },
 ];
 
 export { ListdxComponentValue, IdxComponentValue }
+

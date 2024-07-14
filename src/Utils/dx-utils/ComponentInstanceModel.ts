@@ -129,12 +129,14 @@ export class ComponentInstanceModel<T> {
 
     public repaint = (tagName: string) => {
         let instanceProps = this.getInstanceProps(tagName);
-        instanceProps?.getInstance()?.repaint();
+        let instance = instanceProps?.getInstance();
+        if (instance.has)
+            instanceProps?.getInstance()?.repaint();
     }
 
     public repaintAllInstances = () => {
         this.ARRAY_COMPONENTS_INSTANCES.forEach(VALUE => {
-            VALUE.getInstance().repaint()
+            VALUE.getInstance()?.repaint()
         });
     }
     constructor(dataObject: T) {
