@@ -13,7 +13,7 @@
     <script src="https://talesxavier1.github.io/GH-CDN/TypeScriptEditor/lib/DevExtreme/js/dx.all.js"></script>
     <script
         src="https://talesxavier1.github.io/GH-CDN/TypeScriptEditor/lib/sweetalert2/sweetalert2.all.min.js"> </script>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js"></script>
 </head>
 
 <body class="dx-viewport">
@@ -23,8 +23,43 @@
         <div id="botao03"></div>
     </div> -->
     <div id="splitter"></div>
+
+    <div id="container"></div>
+    <script>
+        window.CNT_REQUIRE_INSTANCE = require;
+
+        // $(document).ready(function () {
+        //     debugger
+        //     require.config({
+        //         paths: {
+        //             'vs': 'https://talesxavier1.github.io/GH-CDN/TypeScriptEditor/lib/monaco-editor/min/vs'
+        //         }
+        //     });
+        //     require(['vs/editor/editor.main'], function () {
+        //         editor = monaco.editor.create(document.getElementById('container'), {
+        //             value: [
+        //                 'function x() {',
+        //                 '\tconsole.log("Hello world!");',
+        //                 '}'
+        //             ].join('\n'),
+        //             language: 'javascript'
+        //         });
+        //     });
+
+        //     $('#new').click(function () {
+        //         alert('Pl. implement and send a PR. Thanks.');
+        //     });
+
+        //     // $('#container').change(function(){
+        //     //     alert(' File Changed...');
+        //     // });
+
+        // });
+    </script>
+
     <!-- <script data-env="prod" type="module" src="./index.js"></script> -->
     <script data-env="dev" type="module" src="./dist/index.js"></script>
+
 </body>
 
 </html>
