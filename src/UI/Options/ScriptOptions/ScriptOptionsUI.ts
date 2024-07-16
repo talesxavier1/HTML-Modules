@@ -82,26 +82,16 @@ export class ScriptOptionsUI implements IOptionUI {
         }))
 
 
-        const onToolbarItemClick = (args: any) => {
+        const onToolbarItemClick = async (args: any) => {
             if (args?.itemData?.options?.text == "Editar") {
                 let instance = this.componentInstanceModel.getInstanceProps("scriptFileManager").getInstance() as DevExpress.ui.dxFileManager;
                 let selectedItem = instance.getSelectedItems();
-                new ScriptPopUp();
-                let CNT_REQUIRE_INSTANCE = (window as any).CNT_REQUIRE_INSTANCE;
-                CNT_REQUIRE_INSTANCE.config({
-                    paths: {
-                        'vs': 'https://talesxavier1.github.io/GH-CDN/TypeScriptEditor/lib/monaco-editor/min/vs'
-                    }
-                });
-                CNT_REQUIRE_INSTANCE(['vs/editor/editor.main'], function () {
-                    let comp = document.getElementById('file-manager');
-                    if (!comp) { return }
-                    let editor = monaco.editor.create(comp, {
-                        value: atob(selectedItem[0].dataItem.content),
-                        language: 'typescript',
-                        theme: "vs-dark",
-                    });
-                });
+                const scriptPopUp = new ScriptPopUp();
+                await scriptPopUp.init();
+                scriptPopUp.setContent(atob(selectedItem[0].dataItem.content))
+                let result
+                // selectedItem[0].dataItem.name = "teste";
+                // instance.refresh();
             }
 
         }
@@ -179,7 +169,9 @@ export class ScriptOptionsUI implements IOptionUI {
 class ScriptPopUp {
     private componentInstanceModel = new ComponentInstanceModel<ScriptModel>(new ScriptModel());
 
-    constructor() {
+    private monacoEditor: monaco.editor.IStandaloneCodeEditor | undefined;
+
+    private initDxComponents = (): void => {
         this.componentInstanceModel.addInstance(new InstanceProps({
             componentName: "dxPopup",
             tagName: "scriptPopUpScript",
@@ -187,21 +179,60 @@ class ScriptPopUp {
                 width: "70%",
                 height: "90%",
                 contentTemplate() {
-                    return `
-                        <div id="file-manager"></div>
-                    `
+                    return `<div id="ScriptPopUp"></div>`
                 },
                 onHidden: () => {
                     this.componentInstanceModel.disposeAllInstances();
                 },
+                onResize(e) {
+                    let component = $("#ScriptPopUp");
+                },
+                resizeEnabled: true,
                 visible: true,
                 dragEnabled: false,
                 hideOnOutsideClick: false,
                 showCloseButton: true,
             }).dxPopup("instance")
         }));
+    }
+
+    private initMonaco = async (): Promise<monaco.editor.IStandaloneCodeEditor> => {
+
+        return new Promise((resolve) => {
+            let CNT_REQUIRE_INSTANCE = (window as any).CNT_REQUIRE_INSTANCE;
+            let monacoInstance: any;
+            CNT_REQUIRE_INSTANCE.config({
+                paths: {
+                    'vs': 'https://talesxavier1.github.io/GH-CDN/TypeScriptEditor/lib/monaco-editor/min/vs'
+                }
+            });
+            CNT_REQUIRE_INSTANCE(['vs/editor/editor.main'], function () {
+                let comp = document.getElementById('ScriptPopUp');
+                if (!comp) { return }
+                resolve(monaco.editor.create(comp, {
+                    language: 'typescript',
+                    theme: "vs-dark"
+                }))
+            });
+        })
+    }
+
+    public init = async () => {
+        this.initDxComponents();
+        this.monacoEditor = await this.initMonaco();
+    }
+
+    public setContent = (content: string) => {
+        this.monacoEditor?.setValue(content);
+    }
 
 
+
+    constructor() {
+
+        // // this.monacoEditor = await this.initMonaco();
+
+        // this.monacoEditor.setValue("sssss")
 
 
     }
