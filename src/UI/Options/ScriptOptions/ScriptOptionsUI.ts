@@ -4,6 +4,7 @@ import { ScriptModel } from "../../../models/ScriptModel";
 import { ComponentInstanceModel } from "../../../Utils/dx-utils/ComponentInstanceModel";
 import { InstanceProps } from "../../../Utils/dx-utils/InstanceProps";
 import { TESTE_AAA } from "../../../Utils/dx-utils/Consts";
+import { Utils } from "../../../Utils/Utils";
 // declare var monaco: any;
 
 interface ITabScriptOptions {
@@ -89,7 +90,12 @@ export class ScriptOptionsUI implements IOptionUI {
                 const scriptPopUp = new ScriptPopUp();
                 await scriptPopUp.init();
                 scriptPopUp.setContent(atob(selectedItem[0].dataItem.content))
-                let result
+                let result = await new Promise((resolve) => {
+                    scriptPopUp.onSubmit = (content) => {
+                        resolve(content);
+                    }
+                })
+                debugger;
                 // selectedItem[0].dataItem.name = "teste";
                 // instance.refresh();
             }
@@ -170,6 +176,13 @@ class ScriptPopUp {
     private componentInstanceModel = new ComponentInstanceModel<ScriptModel>(new ScriptModel());
 
     private monacoEditor: monaco.editor.IStandaloneCodeEditor | undefined;
+    private onResize = async () => {
+        if (!this.monacoEditor) { return }
+        let curretValue = this.monacoEditor.getValue();
+        this.monacoEditor.dispose();
+        this.monacoEditor = await this.initMonaco();
+        this.monacoEditor.setValue(curretValue);
+    }
 
     private initDxComponents = (): void => {
         this.componentInstanceModel.addInstance(new InstanceProps({
@@ -184,23 +197,42 @@ class ScriptPopUp {
                 onHidden: () => {
                     this.componentInstanceModel.disposeAllInstances();
                 },
-                onResize(e) {
-                    let component = $("#ScriptPopUp");
-                },
+                onResize: Utils.debounce(this.onResize, 100),
                 resizeEnabled: true,
                 visible: true,
                 dragEnabled: false,
                 hideOnOutsideClick: false,
                 showCloseButton: true,
+                toolbarItems: [{
+                    html: `<div id="script_popup_salvar_btn"></div>`,
+                    location: "after"
+                }]
+
             }).dxPopup("instance")
         }));
+
+        const onClick = () => {
+            this.onSubmit(this.monacoEditor?.getValue() ?? "")
+        }
+        this.componentInstanceModel.addInstance(new InstanceProps({
+            componentName: "dxButton",
+            tagName: "script_popup_salvar_btn",
+            instance: $('#script_popup_salvar_btn').dxButton({
+                stylingMode: 'contained',
+                text: 'Salvar',
+                type: 'success',
+                width: 120,
+                onClick: onClick,
+            }).dxButton("instance"),
+        }));
+
+
     }
 
     private initMonaco = async (): Promise<monaco.editor.IStandaloneCodeEditor> => {
 
         return new Promise((resolve) => {
             let CNT_REQUIRE_INSTANCE = (window as any).CNT_REQUIRE_INSTANCE;
-            let monacoInstance: any;
             CNT_REQUIRE_INSTANCE.config({
                 paths: {
                     'vs': 'https://talesxavier1.github.io/GH-CDN/TypeScriptEditor/lib/monaco-editor/min/vs'
@@ -209,10 +241,15 @@ class ScriptPopUp {
             CNT_REQUIRE_INSTANCE(['vs/editor/editor.main'], function () {
                 let comp = document.getElementById('ScriptPopUp');
                 if (!comp) { return }
-                resolve(monaco.editor.create(comp, {
+                let monacoInstance = monaco.editor.create(comp, {
                     language: 'typescript',
-                    theme: "vs-dark"
-                }))
+                    theme: "vs-dark",
+                });
+                let monacoNode = monacoInstance.getDomNode();
+                if (!monacoNode) { monacoInstance.dispose(); return; }
+                $(monacoNode).height("100%").width("100%");
+                monacoInstance.render
+                resolve(monacoInstance);
             });
         })
     }
@@ -226,15 +263,12 @@ class ScriptPopUp {
         this.monacoEditor?.setValue(content);
     }
 
+    public onSubmit = (content: string) => {
+    }
+
 
 
     constructor() {
-
-        // // this.monacoEditor = await this.initMonaco();
-
-        // this.monacoEditor.setValue("sssss")
-
-
     }
 }
 
