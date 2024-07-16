@@ -23,5 +23,17 @@ export class Utils {
         });
     }
 
+    static debounce(func: (...args: any[]) => void, delay: number): (...args: any[]) => void {
+        let timeoutId: ReturnType<typeof setTimeout> | undefined;
+        return function (this: any, ...args: any[]) {
+            if (timeoutId) {
+                clearTimeout(timeoutId);
+            }
+            timeoutId = setTimeout(() => {
+                func.apply(this, args);
+            }, delay);
+        };
+    }
+
 
 }
