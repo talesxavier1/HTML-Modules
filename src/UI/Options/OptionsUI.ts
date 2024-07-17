@@ -28,7 +28,7 @@ export class OptionsUI {
             case "reciver":
                 break;
             case "script":
-                this.instanceUI = new ScriptOptionsUI(data);
+                this.instanceUI = new ScriptOptionsUI(data, true);
                 break;
             case "sender":
                 this.instanceUI = new SenderOptionsUI(data);

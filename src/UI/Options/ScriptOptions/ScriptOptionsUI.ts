@@ -5,7 +5,7 @@ import { ComponentInstanceModel } from "../../../Utils/dx-utils/ComponentInstanc
 import { InstanceProps } from "../../../Utils/dx-utils/InstanceProps";
 import { TESTE_AAA } from "../../../Utils/dx-utils/Consts";
 import { Utils } from "../../../Utils/Utils";
-// declare var monaco: any;
+import { FunctionProps } from "../../../Utils/dx-utils/FunctionProps";
 
 interface ITabScriptOptions {
     id: string,
@@ -35,39 +35,38 @@ export class ScriptOptionsUI implements IOptionUI {
         this.componentInstanceModel.repaintAllInstances();
     };
 
-    private dataSource: Array<ITabScriptOptions> = [
-        {
-            id: "scriptFileManager",
-            title: "File Manager",
-            html: $(`<div id="scriptFileManager"></div>`)
-        },
-        {
-            id: "scriptOptions",
-            title: "Options",
-            html: $(`
-                <div id="scriptOptions">
-                    <div id="teste_btn">
-                    </div>
-                    <div>
-                </div>
-            `)
-        }
-    ];
 
-    constructor(data: TDataSource, readonly?: boolean) {
+    constructor(data: TDataSource, readonly: boolean = false) {
         this.data = data as ScriptModel;
         this.fileProvider = new DevExpress.fileManagement.ObjectFileSystemProvider({
             //data: this.data.scriptDirectoryContent
             data: TESTE_AAA
-
         });
+
+        const dataSource: Array<ITabScriptOptions> = [
+            {
+                id: "scriptFileManager",
+                title: "File Manager",
+                html: $(`<div id="scriptFileManager"></div>`)
+            },
+            {
+                id: "scriptOptions",
+                title: "Options",
+                html: $(`
+                    <div id="scriptOptions">
+                        <div id="teste_btn">
+                        </div>
+                    </div>
+                `)
+            }
+        ];
 
         this.componentInstanceModel.addInstance(new InstanceProps({
             componentName: "dxTabPanel",
             tagName: "scriptTabContainer",
             instance: $('#scriptTabContainer').dxTabPanel({
                 height: "100%",
-                dataSource: this.dataSource,
+                dataSource: dataSource,
                 selectedIndex: 0,
                 loop: false,
                 animationEnabled: true,
@@ -83,24 +82,26 @@ export class ScriptOptionsUI implements IOptionUI {
         }))
 
 
-        const onToolbarItemClick = async (args: any) => {
-            if (args?.itemData?.options?.text == "Editar") {
-                let instance = this.componentInstanceModel.getInstanceProps("scriptFileManager").getInstance() as DevExpress.ui.dxFileManager;
-                let selectedItem = instance.getSelectedItems();
-                const scriptPopUp = new ScriptPopUp();
-                await scriptPopUp.init();
-                scriptPopUp.setContent(atob(selectedItem[0].dataItem.content))
-                let result = await new Promise((resolve) => {
-                    scriptPopUp.onSubmit = (content) => {
-                        resolve(content);
-                    }
-                })
-                debugger;
-                // selectedItem[0].dataItem.name = "teste";
-                // instance.refresh();
+        const btnSalvarVisualizarClick = async () => {
+            let instance = this.componentInstanceModel.getInstanceProps("scriptFileManager").getInstance() as DevExpress.ui.dxFileManager;
+            let selectedItem = instance.getSelectedItems();
+            const scriptPopUp = new ScriptPopUp(readonly);
+            await scriptPopUp.init();
+            scriptPopUp.setContent(atob(selectedItem[0].dataItem.content));
+            let result = await new Promise<string | null>((resolve) => {
+                scriptPopUp.onSubmit = (content) => {
+                    resolve(content);
+                }
+                scriptPopUp.onPopUpHidden = () => {
+                    resolve(null);
+                }
+            });
+            if (!readonly && result) {
+                selectedItem[0].dataItem.content = result;
+                instance.refresh();
             }
-
         }
+
         this.componentInstanceModel.addInstance(new InstanceProps({
             componentName: "dxFileManager",
             tagName: "scriptFileManager",
@@ -111,13 +112,13 @@ export class ScriptOptionsUI implements IOptionUI {
                 },
                 height: "100%",
                 permissions: {
-                    create: true,
-                    copy: true,
-                    move: true,
-                    delete: true,
-                    rename: true,
-                    upload: true,
-                    download: true,
+                    create: !readonly,
+                    copy: !readonly,
+                    move: !readonly,
+                    delete: !readonly,
+                    rename: !readonly,
+                    upload: !readonly,
+                    download: !readonly,
                 },
                 customizeThumbnail(fileSystemItem) {
                     return ""
@@ -130,42 +131,55 @@ export class ScriptOptionsUI implements IOptionUI {
                         "copy", "separator",
                         "rename", "separator",
                         "delete", "separator",
+                        "clearSelection", "separator",
                         {
-                            widget: 'dxButton',
+                            widget: "dxButton",
                             options: {
-                                text: "Editar",
+                                text: readonly ? "Visualizar" : "Editar",
+                                icon: readonly ? "eyeopen" : "edit",
+                                location: 'before'
                             },
-                            location: 'before',
 
                         }
-                    ]
-
+                    ],
                 },
-                onToolbarItemClick,
+                async onToolbarItemClick(evt) {
+                    if (["Visualizar", "Editar"].includes(evt?.itemData?.options?.text)) {
+                        await btnSalvarVisualizarClick();
+                    }
+                },
             }).dxFileManager("instance"),
-        }))
+        }));
 
-        const a = () => {
-            let instance = this.componentInstanceModel.getInstanceProps("scriptFileManager");
-            let aaa: any = instance.getInstanceValue()
-            let t = (this.fileProvider as any)._data;
-            console.clear()
 
-            const tempTextArea = document.createElement('textarea');
-            tempTextArea.value = JSON.stringify(t);
-            document.body.appendChild(tempTextArea);
-            tempTextArea.select();
-            document.execCommand('copy');
-            document.body.removeChild(tempTextArea);
+        this.componentInstanceModel.addInstance(new InstanceProps({
+            componentName: "dxButton",
+            tagName: "btn_scriptOption_visualizar_editar",
+            instance: $('#btn_scriptOption_visualizar_editar').dxButton({
+                stylingMode: 'contained',
+                text: readonly ? "Visualizar" : "Editar",
+                type: readonly ? 'normal' : 'success',
+                // icon: readonly ? "eyeopen" : "edit",
+                width: 120,
+                onClick: btnSalvarVisualizarClick,
+            }).dxButton("instance")
+        }));
 
-        }
-        $('#teste_btn').dxButton({
-            stylingMode: 'outlined',
-            text: 'Outlined',
-            type: 'normal',
-            width: 120,
-            onClick: a,
-        });
+        //         this.componentInstanceModel.addInstance(new InstanceProps({
+        //             componentName: "dxButton",
+        //             tagName: "btn_scriptOption_clearSelection",
+        //             instance: $('#btn_scriptOption_clearSelection').dxButton({
+        //                 stylingMode: 'contained',
+        //                 text: "Limpar seleção",
+        //                 type: "normal",
+        //                 icon: "close",
+        //                 width: 150,
+        //                 onClick: () => {
+        //                     let instance = this.componentInstanceModel.getInstanceProps("scriptFileManager").getInstance() as DevExpress.ui.dxFileManager;
+        // instance.
+        //                 },
+        //             }).dxButton("instance")
+        //         }));
 
     }
 
@@ -174,9 +188,10 @@ export class ScriptOptionsUI implements IOptionUI {
 
 class ScriptPopUp {
     private componentInstanceModel = new ComponentInstanceModel<ScriptModel>(new ScriptModel());
+    private readonly: boolean;
 
     private monacoEditor: monaco.editor.IStandaloneCodeEditor | undefined;
-    private onResize = async () => {
+    private onPopUpResize = async () => {
         if (!this.monacoEditor) { return }
         let curretValue = this.monacoEditor.getValue();
         this.monacoEditor.dispose();
@@ -184,53 +199,23 @@ class ScriptPopUp {
         this.monacoEditor.setValue(curretValue);
     }
 
-    private initDxComponents = (): void => {
-        this.componentInstanceModel.addInstance(new InstanceProps({
-            componentName: "dxPopup",
-            tagName: "scriptPopUpScript",
-            instance: $('#scriptPopUpScript').dxPopup({
-                width: "70%",
-                height: "90%",
-                contentTemplate() {
-                    return `<div id="ScriptPopUp"></div>`
-                },
-                onHidden: () => {
-                    this.componentInstanceModel.disposeAllInstances();
-                },
-                onResize: Utils.debounce(this.onResize, 100),
-                resizeEnabled: true,
-                visible: true,
-                dragEnabled: false,
-                hideOnOutsideClick: false,
-                showCloseButton: true,
-                toolbarItems: [{
-                    html: `<div id="script_popup_salvar_btn"></div>`,
-                    location: "after"
-                }]
+    private _onPopUpHidden = () => {
+        this.componentInstanceModel.disposeAllInstances();
+        this.monacoEditor?.dispose();
+        this.onPopUpHidden();
+    }
 
-            }).dxPopup("instance")
-        }));
-
-        const onClick = () => {
-            this.onSubmit(this.monacoEditor?.getValue() ?? "")
+    private _onSubmit = () => {
+        this.componentInstanceModel.disposeAllInstances();
+        let value = this.monacoEditor?.getValue();
+        this.monacoEditor?.dispose();
+        if (value) {
+            this.onSubmit(btoa(value));
         }
-        this.componentInstanceModel.addInstance(new InstanceProps({
-            componentName: "dxButton",
-            tagName: "script_popup_salvar_btn",
-            instance: $('#script_popup_salvar_btn').dxButton({
-                stylingMode: 'contained',
-                text: 'Salvar',
-                type: 'success',
-                width: 120,
-                onClick: onClick,
-            }).dxButton("instance"),
-        }));
-
-
+        this.onSubmit("");
     }
 
     private initMonaco = async (): Promise<monaco.editor.IStandaloneCodeEditor> => {
-
         return new Promise((resolve) => {
             let CNT_REQUIRE_INSTANCE = (window as any).CNT_REQUIRE_INSTANCE;
             CNT_REQUIRE_INSTANCE.config({
@@ -254,6 +239,46 @@ class ScriptPopUp {
         })
     }
 
+    private initDxComponents = (): void => {
+        this.componentInstanceModel.addInstance(new InstanceProps({
+            componentName: "dxPopup",
+            tagName: "scriptPopUpScript",
+            instance: $('#scriptPopUpScript').dxPopup({
+                width: "70%",
+                height: "90%",
+                contentTemplate() {
+                    return `<div id="ScriptPopUp"></div>`
+                },
+                onHidden: this._onPopUpHidden,
+                onResize: Utils.debounce(this.onPopUpResize, 100),
+                resizeEnabled: true,
+                visible: true,
+                dragEnabled: false,
+                hideOnOutsideClick: false,
+                showCloseButton: true,
+                toolbarItems: [{
+                    html: `<div id="script_popup_salvar_btn"></div>`,
+                    location: "after"
+                }]
+
+            }).dxPopup("instance")
+        }));
+
+        if (!this.readonly) {
+            this.componentInstanceModel.addInstance(new InstanceProps({
+                componentName: "dxButton",
+                tagName: "script_popup_salvar_btn",
+                instance: $('#script_popup_salvar_btn').dxButton({
+                    stylingMode: 'contained',
+                    text: 'Salvar',
+                    type: 'success',
+                    width: 120,
+                    onClick: this._onSubmit,
+                }).dxButton("instance"),
+            }));
+        }
+    }
+
     public init = async () => {
         this.initDxComponents();
         this.monacoEditor = await this.initMonaco();
@@ -263,12 +288,11 @@ class ScriptPopUp {
         this.monacoEditor?.setValue(content);
     }
 
-    public onSubmit = (content: string) => {
-    }
+    public onSubmit = (content: string) => { }
+    public onPopUpHidden = () => { }
 
-
-
-    constructor() {
+    constructor(readonly: boolean) {
+        this.readonly = readonly;
     }
 }
 
