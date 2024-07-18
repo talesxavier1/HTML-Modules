@@ -13,4 +13,5 @@ export type TComponentName =
     "dxTreeView" |
     "dxTabs" |
     "dxPopup" |
-    "dxLoadIndicator"
+    "dxLoadIndicator" |
+    "dxLoadPanel"

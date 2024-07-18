@@ -6,6 +6,7 @@ import { InstanceProps } from "../../../Utils/dx-utils/InstanceProps";
 import { TESTE_AAA } from "../../../Utils/dx-utils/Consts";
 import { Utils } from "../../../Utils/Utils";
 import { FunctionProps } from "../../../Utils/dx-utils/FunctionProps";
+declare const requirejs: any;
 
 interface ITabScriptOptions {
     id: string,
@@ -150,37 +151,6 @@ export class ScriptOptionsUI implements IOptionUI {
                 },
             }).dxFileManager("instance"),
         }));
-
-
-        this.componentInstanceModel.addInstance(new InstanceProps({
-            componentName: "dxButton",
-            tagName: "btn_scriptOption_visualizar_editar",
-            instance: $('#btn_scriptOption_visualizar_editar').dxButton({
-                stylingMode: 'contained',
-                text: readonly ? "Visualizar" : "Editar",
-                type: readonly ? 'normal' : 'success',
-                // icon: readonly ? "eyeopen" : "edit",
-                width: 120,
-                onClick: btnSalvarVisualizarClick,
-            }).dxButton("instance")
-        }));
-
-        //         this.componentInstanceModel.addInstance(new InstanceProps({
-        //             componentName: "dxButton",
-        //             tagName: "btn_scriptOption_clearSelection",
-        //             instance: $('#btn_scriptOption_clearSelection').dxButton({
-        //                 stylingMode: 'contained',
-        //                 text: "Limpar seleção",
-        //                 type: "normal",
-        //                 icon: "close",
-        //                 width: 150,
-        //                 onClick: () => {
-        //                     let instance = this.componentInstanceModel.getInstanceProps("scriptFileManager").getInstance() as DevExpress.ui.dxFileManager;
-        // instance.
-        //                 },
-        //             }).dxButton("instance")
-        //         }));
-
     }
 
 }
@@ -217,13 +187,12 @@ class ScriptPopUp {
 
     private initMonaco = async (): Promise<monaco.editor.IStandaloneCodeEditor> => {
         return new Promise((resolve) => {
-            let CNT_REQUIRE_INSTANCE = (window as any).CNT_REQUIRE_INSTANCE;
-            CNT_REQUIRE_INSTANCE.config({
+            requirejs.config({
                 paths: {
                     'vs': 'https://talesxavier1.github.io/GH-CDN/TypeScriptEditor/lib/monaco-editor/min/vs'
                 }
             });
-            CNT_REQUIRE_INSTANCE(['vs/editor/editor.main'], function () {
+            requirejs(['vs/editor/editor.main'], function () {
                 let comp = document.getElementById('ScriptPopUp');
                 if (!comp) { return }
                 let monacoInstance = monaco.editor.create(comp, {
@@ -236,10 +205,31 @@ class ScriptPopUp {
                 monacoInstance.render
                 resolve(monacoInstance);
             });
+
+            // CNT_REQUIRE_INSTANCE.config({
+            //     paths: {
+            //         'vs': 'https://talesxavier1.github.io/GH-CDN/TypeScriptEditor/lib/monaco-editor/min/vs'
+            //     }
+            // });
+            // CNT_REQUIRE_INSTANCE(['vs/editor/editor.main'], function () {
+            //     let comp = document.getElementById('ScriptPopUp');
+            //     if (!comp) { return }
+            //     let monacoInstance = monaco.editor.create(comp, {
+            //         language: 'typescript',
+            //         theme: "vs-dark",
+            //     });
+            //     let monacoNode = monacoInstance.getDomNode();
+            //     if (!monacoNode) { monacoInstance.dispose(); return; }
+            //     $(monacoNode).height("100%").width("100%");
+            //     monacoInstance.render
+            //     resolve(monacoInstance);
+            // });
         })
     }
 
+    private loadPanel: DevExpress.ui.dxLoadPanel | undefined;
     private initDxComponents = (): void => {
+
         this.componentInstanceModel.addInstance(new InstanceProps({
             componentName: "dxPopup",
             tagName: "scriptPopUpScript",
@@ -247,10 +237,20 @@ class ScriptPopUp {
                 width: "70%",
                 height: "90%",
                 contentTemplate() {
-                    return `<div id="ScriptPopUp"></div>`
+                    return `
+                        <div id="loadPanel"></div>
+                        <div id="ScriptPopUp"></div>
+                    `
                 },
                 onHidden: this._onPopUpHidden,
                 onResize: Utils.debounce(this.onPopUpResize, 100),
+                onContentReady(e: any) {
+                    if (!e.component["_$wrapper"]) { return }
+                    let wrapper = $(e.component["_$wrapper"]);
+                    wrapper.attr("id", "scriptPopUpScript_wrapper");
+                    let children = wrapper.children();
+                    children.attr("id", "scriptPopUpScript_wrapper_children");
+                },
                 resizeEnabled: true,
                 visible: true,
                 dragEnabled: false,
@@ -259,9 +259,29 @@ class ScriptPopUp {
                 toolbarItems: [{
                     html: `<div id="script_popup_salvar_btn"></div>`,
                     location: "after"
-                }]
-
+                }],
             }).dxPopup("instance")
+        }));
+
+        this.componentInstanceModel.addInstance(new InstanceProps({
+            componentName: "dxLoadPanel",
+            tagName: "loadPanel",
+            instance: $('#loadPanel').dxLoadPanel({
+                shadingColor: 'rgba(0,0,0,0.4)',
+                position: { of: "#scriptPopUpScript_wrapper_children" },
+                visible: false,
+                showIndicator: true,
+                showPane: true,
+                shading: true,
+                hideOnOutsideClick: false,
+                onShown(e: any) {
+                    if (!e.component["_$wrapper"]) { return }
+                    let wrapper = $(e.component["_$wrapper"]);
+                    let scriptPopUpScript_wrapper = $("#scriptPopUpScript_wrapper");
+                    let scriptPopUpScript_zIndex = scriptPopUpScript_wrapper.css("z-index");
+                    $(wrapper).css("z-index", Number(scriptPopUpScript_zIndex) + 2);
+                },
+            }).dxLoadPanel('instance')
         }));
 
         if (!this.readonly) {
@@ -281,7 +301,10 @@ class ScriptPopUp {
 
     public init = async () => {
         this.initDxComponents();
+        let loadPanel = this.componentInstanceModel.getInstanceProps("loadPanel").getInstance() as DevExpress.ui.dxLoadPanel;
+        loadPanel.show()
         this.monacoEditor = await this.initMonaco();
+        loadPanel.hide()
     }
 
     public setContent = (content: string) => {
