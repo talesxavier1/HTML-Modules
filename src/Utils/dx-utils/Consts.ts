@@ -23,6 +23,7 @@ const ListdxComponentValue: Array<IdxComponentValue> = [
     { componentName: "dxPopup", defaultValue: false, valueField: "visible" },
     { componentName: "dxLoadIndicator", defaultValue: true, valueField: "visible" },
     { componentName: "dxFileManager", defaultValue: undefined, valueField: undefined },
+    { componentName: "dxLoadPanel", defaultValue: undefined, valueField: undefined },
 ];
 const TESTE_AAA: Array<any>
 
