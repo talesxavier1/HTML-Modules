@@ -5,8 +5,8 @@ import { ComponentInstanceModel } from "../../../Utils/dx-utils/ComponentInstanc
 import { InstanceProps } from "../../../Utils/dx-utils/InstanceProps";
 import { TESTE_AAA } from "../../../Utils/dx-utils/Consts";
 import { Utils } from "../../../Utils/Utils";
-import { FunctionProps } from "../../../Utils/dx-utils/FunctionProps";
-declare const requirejs: any;
+import { TMonacoLanguage } from "../../../Types/TMonacoLanguage";
+import { LanguageStore } from "../../../Data/LanguageStore";
 
 interface ITabScriptOptions {
     id: string,
@@ -86,9 +86,13 @@ export class ScriptOptionsUI implements IOptionUI {
         const btnSalvarVisualizarClick = async () => {
             let instance = this.componentInstanceModel.getInstanceProps("scriptFileManager").getInstance() as DevExpress.ui.dxFileManager;
             let selectedItem = instance.getSelectedItems();
-            const scriptPopUp = new ScriptPopUp(readonly);
+            let dataItem = selectedItem[0].dataItem;
+            let language = LanguageStore.getLenguageFromFileName(dataItem.name);
+
+            const scriptPopUp = new ScriptPopUp(false, language);
             await scriptPopUp.init();
-            scriptPopUp.setContent(atob(selectedItem[0].dataItem.content));
+            scriptPopUp.setContent(atob(dataItem.content));
+
             let result = await new Promise<string | null>((resolve) => {
                 scriptPopUp.onSubmit = (content) => {
                     resolve(content);
@@ -159,13 +163,14 @@ export class ScriptOptionsUI implements IOptionUI {
 class ScriptPopUp {
     private componentInstanceModel = new ComponentInstanceModel<ScriptModel>(new ScriptModel());
     private readonly: boolean;
+    private monacoLanguage: TMonacoLanguage;
 
     private monacoEditor: monaco.editor.IStandaloneCodeEditor | undefined;
     private onPopUpResize = async () => {
         if (!this.monacoEditor) { return }
         let curretValue = this.monacoEditor.getValue();
         this.monacoEditor.dispose();
-        this.monacoEditor = await this.initMonaco();
+        this.monacoEditor = await this.initMonaco(this.monacoLanguage);
         this.monacoEditor.setValue(curretValue);
     }
 
@@ -176,16 +181,16 @@ class ScriptPopUp {
     }
 
     private _onSubmit = () => {
-        this.componentInstanceModel.disposeAllInstances();
         let value = this.monacoEditor?.getValue();
         this.monacoEditor?.dispose();
+        this.componentInstanceModel.disposeAllInstances();
         if (value) {
             this.onSubmit(btoa(value));
         }
         this.onSubmit("");
     }
 
-    private initMonaco = async (): Promise<monaco.editor.IStandaloneCodeEditor> => {
+    private initMonaco = async (language: TMonacoLanguage): Promise<monaco.editor.IStandaloneCodeEditor> => {
         return new Promise((resolve) => {
             requirejs.config({
                 paths: {
@@ -196,38 +201,14 @@ class ScriptPopUp {
                 let comp = document.getElementById('ScriptPopUp');
                 if (!comp) { return }
                 let monacoInstance = monaco.editor.create(comp, {
-                    language: 'typescript',
+                    language: language,
                     theme: "vs-dark",
                 });
-                let monacoNode = monacoInstance.getDomNode();
-                if (!monacoNode) { monacoInstance.dispose(); return; }
-                $(monacoNode).height("100%").width("100%");
-                monacoInstance.render
                 resolve(monacoInstance);
             });
-
-            // CNT_REQUIRE_INSTANCE.config({
-            //     paths: {
-            //         'vs': 'https://talesxavier1.github.io/GH-CDN/TypeScriptEditor/lib/monaco-editor/min/vs'
-            //     }
-            // });
-            // CNT_REQUIRE_INSTANCE(['vs/editor/editor.main'], function () {
-            //     let comp = document.getElementById('ScriptPopUp');
-            //     if (!comp) { return }
-            //     let monacoInstance = monaco.editor.create(comp, {
-            //         language: 'typescript',
-            //         theme: "vs-dark",
-            //     });
-            //     let monacoNode = monacoInstance.getDomNode();
-            //     if (!monacoNode) { monacoInstance.dispose(); return; }
-            //     $(monacoNode).height("100%").width("100%");
-            //     monacoInstance.render
-            //     resolve(monacoInstance);
-            // });
         })
     }
 
-    private loadPanel: DevExpress.ui.dxLoadPanel | undefined;
     private initDxComponents = (): void => {
 
         this.componentInstanceModel.addInstance(new InstanceProps({
@@ -302,8 +283,8 @@ class ScriptPopUp {
     public init = async () => {
         this.initDxComponents();
         let loadPanel = this.componentInstanceModel.getInstanceProps("loadPanel").getInstance() as DevExpress.ui.dxLoadPanel;
-        loadPanel.show()
-        this.monacoEditor = await this.initMonaco();
+        loadPanel.show();
+        this.monacoEditor = await this.initMonaco(this.monacoLanguage);
         loadPanel.hide()
     }
 
@@ -314,8 +295,9 @@ class ScriptPopUp {
     public onSubmit = (content: string) => { }
     public onPopUpHidden = () => { }
 
-    constructor(readonly: boolean) {
+    constructor(readonly: boolean, language: TMonacoLanguage) {
         this.readonly = readonly;
+        this.monacoLanguage = language;
     }
 }
 
