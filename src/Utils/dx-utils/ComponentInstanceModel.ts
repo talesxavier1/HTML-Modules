@@ -130,9 +130,9 @@ export class ComponentInstanceModel<T> {
     public repaint = (tagName: string) => {
         let instanceProps = this.getInstanceProps(tagName);
         let instance: any = instanceProps?.getInstance();
-        if (instance.hasOwnProperty("repaint")) {
+        try {
             instance.repaint();
-        }
+        } catch (e) { }
     }
 
     public repaintAllInstances = () => {
