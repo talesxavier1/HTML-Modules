@@ -14,7 +14,8 @@ export class LanguageStore {
             ".json"
         ],
         "typescript": [
-            ".ts"
+            ".ts",
+            ".d.ts"
         ],
         "abap": [
             ".abap"
