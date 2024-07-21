@@ -1,6 +1,6 @@
 @import url('https://talesxavier1.github.io/GH-CDN/TypeScriptEditor/lib/DevExtreme/css/dx-diagram.min.css');
-@import url('https://talesxavier1.github.io/GH-CDN/TypeScriptEditor/lib/DevExtreme/css/dx.darkmoon.css');
-/* @import url('https://talesxavier1.github.io/GH-CDN/TypeScriptEditor/lib/DevExtreme/css/dx.light.css'); */
+/* @import url('https://talesxavier1.github.io/GH-CDN/TypeScriptEditor/lib/DevExtreme/css/dx.darkmoon.css'); */
+@import url('https://talesxavier1.github.io/GH-CDN/TypeScriptEditor/lib/DevExtreme/css/dx.light.css');
 @import url('https://talesxavier1.github.io/GH-CDN/TypeScriptEditor/lib/sweetalert2/sweetalert2.min.css');
 @import "./UI/Diagram/Driagram.css";
 @import "./UI/splitter/Splitter.css";
