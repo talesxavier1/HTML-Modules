@@ -3,7 +3,6 @@ import { IOptionUI } from "../../../Interfaces/IOptionUI";
 import { ScriptModel } from "../../../models/ScriptModel";
 import { ComponentInstanceModel } from "../../../Utils/dx-utils/ComponentInstanceModel";
 import { InstanceProps } from "../../../Utils/dx-utils/InstanceProps";
-import { TESTE_AAA } from "../../../Utils/dx-utils/Consts";
 import { Utils } from "../../../Utils/Utils";
 import { TMonacoLanguage } from "../../../Types/TMonacoLanguage";
 import { LanguageStore } from "../../../Data/LanguageStore";
@@ -17,14 +16,13 @@ interface ITabScriptOptions {
 export class ScriptOptionsUI implements IOptionUI {
     private componentInstanceModel = new ComponentInstanceModel<ScriptModel>(new ScriptModel());
     private data: ScriptModel;
-    private fileProvider: DevExpress.fileManagement.ObjectFileSystemProvider;
+    //private fileProvider: DevExpress.fileManagement.ObjectFileSystemProvider;
 
     getData = () => {
         let builtObject = this.componentInstanceModel.getBuiltObject();
         return {
             ...this.data,
-            ...builtObject,
-            scriptDirectoryContent: (this.fileProvider as any)._data
+            ...builtObject
         } as ScriptModel;
     };
 
@@ -38,10 +36,14 @@ export class ScriptOptionsUI implements IOptionUI {
 
     constructor(data: TDataSource, readonly: boolean = false) {
         this.data = data as ScriptModel;
-        this.fileProvider = new DevExpress.fileManagement.ObjectFileSystemProvider({
-            //data: this.data.scriptDirectoryContent
-            data: TESTE_AAA
-        });
+
+        this.componentInstanceModel.addInstance(new InstanceProps({
+            componentName: "ObjectFileSystemProvider",
+            tagName: "scriptDirectoryContent",
+            instance: new DevExpress.fileManagement.ObjectFileSystemProvider({
+                data: this.data.scriptDirectoryContent
+            })
+        }));
 
         const dataSource: Array<ITabScriptOptions> = [
             {
@@ -54,8 +56,13 @@ export class ScriptOptionsUI implements IOptionUI {
                 title: "Options",
                 html: $(`
                     <div id="scriptOptions">
-                        <div id="teste_btn">
-                        </div>
+                        <div id="scriptOptions_ID"></div>
+                        <div id="scriptOptions_shapeType"></div>
+                        <div id="scriptOptions_type"></div>
+                        <div id="scriptOptions_text"></div>
+                        <div id="scriptOptions_XXXXXX"></div>
+                        <div id="scriptOptions_XXXXXX"></div>
+                        <div id="scriptOptions_XXXXXX"></div>
                     </div>
                 `)
             }
@@ -90,8 +97,8 @@ export class ScriptOptionsUI implements IOptionUI {
             const scriptPopUp = new ScriptPopUp(false, language, atob(dataItem.content));
             await scriptPopUp.init();
 
-            let result = await scriptPopUp.asyncOnCompletedOperation();
-            if (!readonly && result) {
+            let result: String | null = await scriptPopUp.asyncOnCompletedOperation();
+            if (!readonly && typeof result == "string") {
                 selectedItem[0].dataItem.content = result;
                 instance.refresh();
             }
@@ -101,7 +108,7 @@ export class ScriptOptionsUI implements IOptionUI {
             componentName: "dxFileManager",
             tagName: "scriptFileManager",
             instance: $('#scriptFileManager').dxFileManager({
-                fileSystemProvider: this.fileProvider,
+                fileSystemProvider: this.componentInstanceModel.getInstanceProps("scriptDirectoryContent").getInstance(),
                 itemView: {
                     mode: 'thumbnails',
                 },
@@ -144,6 +151,46 @@ export class ScriptOptionsUI implements IOptionUI {
                     }
                 },
             }).dxFileManager("instance"),
+        }));
+
+        /* ID */
+        this.componentInstanceModel.addInstance(new InstanceProps({
+            componentName: "dxTextBox",
+            tagName: "ID",
+            instance: $('#scriptOptions_ID').dxTextBox({
+                value: this.data.ID,
+                inputAttr: { 'aria-label': 'Name' },
+            }).dxTextBox("instance")
+        }));
+
+        /* shapeType */
+        this.componentInstanceModel.addInstance(new InstanceProps({
+            componentName: "dxTextBox",
+            tagName: "shapeType",
+            instance: $('#scriptOptions_shapeType').dxTextBox({
+                value: this.data.shapeType,
+                inputAttr: { 'aria-label': 'Name' },
+            }).dxTextBox("instance")
+        }));
+
+        /* type */
+        this.componentInstanceModel.addInstance(new InstanceProps({
+            componentName: "dxTextBox",
+            tagName: "type",
+            instance: $('#scriptOptions_type').dxTextBox({
+                value: this.data.type,
+                inputAttr: { 'aria-label': 'Name' },
+            }).dxTextBox("instance")
+        }));
+
+        /* text */
+        this.componentInstanceModel.addInstance(new InstanceProps({
+            componentName: "dxTextBox",
+            tagName: "text",
+            instance: $('#scriptOptions_text').dxTextBox({
+                value: this.data.text,
+                inputAttr: { 'aria-label': 'Name' },
+            }).dxTextBox("instance")
         }));
     }
 

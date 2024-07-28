@@ -1,4 +1,5 @@
 export type TDxInstanceType =
+    DevExpress.fileManagement.ObjectFileSystemProvider |
     DevExpress.ui.dxAccordion |
     DevExpress.ui.dxActionSheet |
     DevExpress.ui.dxAutocomplete |
