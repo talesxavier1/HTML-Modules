@@ -3,17 +3,53 @@ import { ComponentInstanceModel } from "../../Utils/dx-utils/ComponentInstanceMo
 
 export class Splitter {
 
-    //#region PRIVATE
     private componentInstanceModel = new ComponentInstanceModel<Object>(new Object);
-    //#endregion PRIVATE
 
-    //#region PUBLIC
     public onResizeEnd?: (e: DevExpress.ui.dxSplitter.ResizeEndEvent) => void;
-
+    public onConfirmDeclineBtnClicked?: (button: "DECLINE" | "CONFIRM") => void;
     public repaint = () => {
         this.componentInstanceModel.repaint("splitter");
     }
-    //#endregion
+
+
+    public showHideButtonsDeclineConfirm = (action: "SHOW" | "HIDE") => {
+        let btnConfirmInstance = this.componentInstanceModel.tryGetInstanceProps("splitter_options_confirm_btn");
+        let btnDeclineInstance = this.componentInstanceModel.tryGetInstanceProps("splitter_options_decline_btn");
+
+        if (action == "SHOW" && (!btnConfirmInstance && !btnDeclineInstance)) {
+            this.componentInstanceModel.addInstance(new InstanceProps({
+                componentName: "dxButton",
+                tagName: "splitter_options_confirm_btn",
+                instance: $("#splitter_options_confirm_btn").dxButton({
+                    icon: "plus",
+                    onClick: () => {
+                        if (this.onConfirmDeclineBtnClicked) {
+                            this.onConfirmDeclineBtnClicked("CONFIRM");
+                        }
+                    }
+                }).dxButton("instance")
+            }));
+
+            this.componentInstanceModel.addInstance(new InstanceProps({
+                componentName: "dxButton",
+                tagName: "splitter_options_decline_btn",
+                instance: $("#splitter_options_decline_btn").dxButton({
+                    icon: "less",
+                    onClick: () => {
+                        if (this.onConfirmDeclineBtnClicked) {
+                            this.onConfirmDeclineBtnClicked("DECLINE");
+                        }
+                    }
+                }).dxButton("instance")
+            }));
+        }
+
+        if (action == "HIDE") {
+            if (btnConfirmInstance) { this.componentInstanceModel.disposeInstance("splitter_options_confirm_btn") }
+            if (btnDeclineInstance) { this.componentInstanceModel.disposeInstance("splitter_options_decline_btn") }
+        }
+    }
+
 
     constructor(htmlDiagram: string, htmlOptions: string) {
 

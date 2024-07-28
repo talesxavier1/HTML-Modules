@@ -42,8 +42,12 @@ export class OptionsUI {
         }
     }
 
-    public mountOptions = (data: TDataSource) => {
+    public distroyOptionsUI = () => {
         this.instanceUI?.distroyUI();
+    }
+
+    public mountOptions = (data: TDataSource) => {
+        this.distroyOptionsUI()
         this.setInstanceUI(data);
     }
 

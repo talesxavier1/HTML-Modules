@@ -31,6 +31,10 @@ export class ComponentInstanceModel<T> {
         }
     }
 
+    private removeInstance = (tagName: string) => {
+        this.ARRAY_COMPONENTS_INSTANCES = this.ARRAY_COMPONENTS_INSTANCES.filter(VALUE => VALUE.getTagName() != tagName);
+    }
+
     public addInstance = (instanceProps: InstanceProps) => {
         this.ARRAY_COMPONENTS_INSTANCES.push(instanceProps);
     }
@@ -41,6 +45,14 @@ export class ComponentInstanceModel<T> {
             throw new Error(`[ERRO]-[ComponentInstanceModel] instancia com tagName '${tagName} não encontrada'.`);
         }
         return value;
+    }
+
+    public tryGetInstanceProps = (tagName: string): (InstanceProps | undefined) => {
+        try {
+            return this.getInstanceProps(tagName);
+        } catch (err) {
+            return;
+        }
     }
 
     public getInstanceValue = (tagName: string) => {
@@ -119,6 +131,7 @@ export class ComponentInstanceModel<T> {
     public disposeInstance = (tagName: string) => {
         let instanceProps = this.getInstanceProps(tagName);
         instanceProps?.getInstance()?.dispose();
+        this.removeInstance(tagName);
     }
 
     public disposeAllInstances = () => {
@@ -140,6 +153,11 @@ export class ComponentInstanceModel<T> {
             this.repaint(VALUE.getTagName())
         });
     }
+
+    public existInstance = (tagName: string): boolean => {
+        return !!this.ARRAY_COMPONENTS_INSTANCES.find(VALUE => VALUE.getTagName() == tagName);
+    }
+
     constructor(dataObject: T) {
         this.dataObject = dataObject;
     }
