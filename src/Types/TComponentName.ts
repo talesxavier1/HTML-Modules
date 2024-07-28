@@ -1,4 +1,5 @@
 export type TComponentName =
+    "ObjectFileSystemProvider" |
     "dxFileManager" |
     "dxTabPanel" |
     "dxTextBox" |

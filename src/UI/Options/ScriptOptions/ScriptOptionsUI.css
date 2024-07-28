@@ -9,3 +9,7 @@
 .monaco-editor {
     width: 100%;
 }
+
+.dx-tabs-wrapper {
+    height: 50px;
+}

@@ -130,7 +130,10 @@ export class ComponentInstanceModel<T> {
 
     public disposeInstance = (tagName: string) => {
         let instanceProps = this.getInstanceProps(tagName);
-        instanceProps?.getInstance()?.dispose();
+        let instance: any = instanceProps?.getInstance()
+        try {
+            instance.dispose();
+        } catch { }
         this.removeInstance(tagName);
     }
 

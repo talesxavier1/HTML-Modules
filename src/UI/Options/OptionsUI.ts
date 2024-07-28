@@ -5,7 +5,7 @@ import { SenderOptionsUI } from "./SenderOptions/SenderOptionsUI";
 
 
 export class OptionsUI {
-    private instanceUI: TInstanceUI | undefined;
+    private instanceUI?: TInstanceUI;
 
     private setInstanceUI = (data: TDataSource) => {
         switch (data.type) {
@@ -51,9 +51,8 @@ export class OptionsUI {
         this.setInstanceUI(data);
     }
 
-    public onConfirm: ((data: TDataSource) => void) | undefined;
-    private _onConfirm = (data: TDataSource) => {
-        if (this.onConfirm) { this.onConfirm(data) }
+    public getData = (): TDataSource | null => {
+        return this.instanceUI?.getData() ?? null;
     }
 
 

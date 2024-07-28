@@ -16,7 +16,6 @@ export class Diagram {
     private edgesStore = new EdgesStore("ID");
 
 
-    // #region PRIVATE
     private customShapes: DevExpress.ui.dxDiagramOptions = {
         customShapes: [
             new SenderCustomShape().shape, /* Sender */
@@ -582,17 +581,14 @@ export class Diagram {
         event.updateUI = resultPipeline;
     }
 
+    public shapeClicked: ((args: TDiagramShapeClicked) => void) | undefined;
     private _shapeClicked = (evt: DevExpress.ui.dxDiagram.ItemClickEvent) => {
         if (!this.shapeClicked) { return; }
         this.shapeClicked({
             event: evt,
-            shapeData: evt.item.dataItem as TDataSource
+            shapeData: this.nodeStore.getByKey(evt.item.dataItem.ID) as TDataSource
         })
     }
-    // #endregion
-
-    // #region PUBLIC
-    public shapeClicked: ((args: TDiagramShapeClicked) => void) | undefined;
 
     public repaint = () => {
         this.componentInstanceModel.repaint("diagrama");
@@ -607,7 +603,10 @@ export class Diagram {
             this.nodeStore.store.update(VAL.ID, VAL);
         });
     }
-    // #region PUBLIC
+
+    public updateNode = (key: string, data: TDataSource) => {
+        this.nodeStore.store.update(key, data);
+    }
 
     constructor() {
         this.componentInstanceModel.addInstance(new InstanceProps({

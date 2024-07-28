@@ -21,7 +21,8 @@ export class Splitter {
                 componentName: "dxButton",
                 tagName: "splitter_options_confirm_btn",
                 instance: $("#splitter_options_confirm_btn").dxButton({
-                    icon: "plus",
+                    icon: "check",
+                    type: "success",
                     onClick: () => {
                         if (this.onConfirmDeclineBtnClicked) {
                             this.onConfirmDeclineBtnClicked("CONFIRM");
@@ -34,7 +35,8 @@ export class Splitter {
                 componentName: "dxButton",
                 tagName: "splitter_options_decline_btn",
                 instance: $("#splitter_options_decline_btn").dxButton({
-                    icon: "less",
+                    icon: "remove",
+                    type: "danger",
                     onClick: () => {
                         if (this.onConfirmDeclineBtnClicked) {
                             this.onConfirmDeclineBtnClicked("DECLINE");
