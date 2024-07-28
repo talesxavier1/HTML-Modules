@@ -36,7 +36,6 @@ export class ScriptOptionsUI implements IOptionUI {
         this.componentInstanceModel.repaintAllInstances();
     };
 
-
     constructor(data: TDataSource, readonly: boolean = false) {
         this.data = data as ScriptModel;
         this.fileProvider = new DevExpress.fileManagement.ObjectFileSystemProvider({
@@ -80,8 +79,7 @@ export class ScriptOptionsUI implements IOptionUI {
                     return data.html
                 },
             }).dxTabPanel("instance")
-        }))
-
+        }));
 
         const btnSalvarVisualizarClick = async () => {
             let instance = this.componentInstanceModel.getInstanceProps("scriptFileManager").getInstance() as DevExpress.ui.dxFileManager;
@@ -89,18 +87,10 @@ export class ScriptOptionsUI implements IOptionUI {
             let dataItem = selectedItem[0].dataItem;
             let language = LanguageStore.getLenguageFromFileName(dataItem.name);
 
-            const scriptPopUp = new ScriptPopUp(false, language);
+            const scriptPopUp = new ScriptPopUp(false, language, atob(dataItem.content));
             await scriptPopUp.init();
-            scriptPopUp.setContent(atob(dataItem.content));
 
-            let result = await new Promise<string | null>((resolve) => {
-                scriptPopUp.onSubmit = (content) => {
-                    resolve(content);
-                }
-                scriptPopUp.onPopUpHidden = () => {
-                    resolve(null);
-                }
-            });
+            let result = await scriptPopUp.asyncOnCompletedOperation();
             if (!readonly && result) {
                 selectedItem[0].dataItem.content = result;
                 instance.refresh();
@@ -159,11 +149,12 @@ export class ScriptOptionsUI implements IOptionUI {
 
 }
 
-
+//TODO Precisa de dispose aqui.
 class ScriptPopUp {
     private componentInstanceModel = new ComponentInstanceModel<ScriptModel>(new ScriptModel());
     private readonly: boolean;
     private monacoLanguage: TMonacoLanguage;
+    private monacoContent: string
 
     private monacoEditor: monaco.editor.IStandaloneCodeEditor | undefined;
     private onPopUpResize = async () => {
@@ -174,23 +165,34 @@ class ScriptPopUp {
         this.monacoEditor.setValue(curretValue);
     }
 
+    private _asyncOnCompletedOperation?: (content: string | null) => void;
+
+    private _asyncOnPopUpHidden?: () => void;
     private _onPopUpHidden = () => {
         this.componentInstanceModel.disposeAllInstances();
         this.monacoEditor?.dispose();
-        this.onPopUpHidden();
+        this.onPopUpHidden ? this.onPopUpHidden() : "";
+        this._asyncOnCompletedOperation ? this._asyncOnCompletedOperation(null) : "";
+        this._asyncOnPopUpHidden ? this._asyncOnPopUpHidden() : "";
     }
 
+    private _asyncOnSubmit?: (content: string) => void
     private _onSubmit = () => {
-        let value = this.monacoEditor?.getValue();
+        let value = (() => {
+            let value = this.monacoEditor?.getValue();
+            if (!value) { return "" }
+            return btoa(value);
+        })();
+        this.monacoEditor?.getValue() ?? "";
         this.monacoEditor?.dispose();
         this.componentInstanceModel.disposeAllInstances();
-        if (value) {
-            this.onSubmit(btoa(value));
-        }
-        this.onSubmit("");
+
+        this.onSubmit ? this.onSubmit(value) : "";
+        this._asyncOnSubmit ? this._asyncOnSubmit(value) : "";
+        this._asyncOnCompletedOperation ? this._asyncOnCompletedOperation(value) : "";
     }
 
-    private initMonaco = async (language: TMonacoLanguage): Promise<monaco.editor.IStandaloneCodeEditor> => {
+    private initMonaco = async (language: TMonacoLanguage, content?: string): Promise<monaco.editor.IStandaloneCodeEditor> => {
         return new Promise((resolve) => {
             requirejs.config({
                 paths: {
@@ -203,6 +205,7 @@ class ScriptPopUp {
                 let monacoInstance = monaco.editor.create(comp, {
                     language: language,
                     theme: "vs-dark",
+                    value: content ?? ""
                 });
                 resolve(monacoInstance);
             });
@@ -284,20 +287,38 @@ class ScriptPopUp {
         this.initDxComponents();
         let loadPanel = this.componentInstanceModel.getInstanceProps("loadPanel").getInstance() as DevExpress.ui.dxLoadPanel;
         loadPanel.show();
-        this.monacoEditor = await this.initMonaco(this.monacoLanguage);
+        this.monacoEditor = await this.initMonaco(this.monacoLanguage, this.monacoContent);
         loadPanel.hide()
     }
 
     public setContent = (content: string) => {
         this.monacoEditor?.setValue(content);
+        this.monacoContent = content;
     }
 
-    public onSubmit = (content: string) => { }
-    public onPopUpHidden = () => { }
+    public asyncOnCompletedOperation = (): Promise<String | null> => {
+        return new Promise((resolve) => {
+            this._asyncOnCompletedOperation = (content: string | null) => {
+                resolve(content)
+            }
+        });
+    }
 
-    constructor(readonly: boolean, language: TMonacoLanguage) {
+    public asyncOnSubmit = (): Promise<string> => {
+        return new Promise((resolve) => {
+            this._asyncOnSubmit = (content) => {
+                resolve(content)
+            }
+        });
+    }
+
+    public onSubmit?: (content: string) => void
+    public onPopUpHidden?: () => void
+
+    constructor(readonly: boolean, language: TMonacoLanguage, content?: string) {
         this.readonly = readonly;
         this.monacoLanguage = language;
+        this.monacoContent = content ?? "";
     }
 }
 

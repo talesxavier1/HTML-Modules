@@ -10,3 +10,7 @@
 #splitter_options {
     height: 100%;
 }
+
+#splitter_options_confirm_btn {
+    border-radius: 50%;
+}
