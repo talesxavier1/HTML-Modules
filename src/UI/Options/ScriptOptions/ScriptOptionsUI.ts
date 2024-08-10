@@ -6,6 +6,10 @@ import { InstanceProps } from "../../../Utils/dx-utils/InstanceProps";
 import { Utils } from "../../../Utils/Utils";
 import { TMonacoLanguage } from "../../../Types/TMonacoLanguage";
 import { LanguageStore } from "../../../Data/LanguageStore";
+import scriptFileManagerHtml from "../../../html/ScriptOptions/ScriptFileManager.html";
+import scriptOptionsHtml from "../../../html/ScriptOptions/ScriptOptions.html";
+import { FunctionProps } from "../../../Utils/dx-utils/FunctionProps";
+
 
 interface ITabScriptOptions {
     id: string,
@@ -45,49 +49,31 @@ export class ScriptOptionsUI implements IOptionUI {
             })
         }));
 
-        const dataSource: Array<ITabScriptOptions> = [
-            {
-                id: "scriptFileManager",
-                title: "File Manager",
-                html: $(`<div id="scriptFileManager"></div>`)
-            },
-            {
-                id: "scriptOptions",
-                title: "Options",
-                html: $(`
-                    <div id="scriptOptions">
-                        <div id="scriptOptions_ID"></div>
-                        <div id="scriptOptions_shapeType"></div>
-                        <div id="scriptOptions_type"></div>
-                        <div id="scriptOptions_text"></div>
-                        <div id="scriptOptions_XXXXXX"></div>
-                        <div id="scriptOptions_XXXXXX"></div>
-                        <div id="scriptOptions_XXXXXX"></div>
-                    </div>
-                `)
-            }
-        ];
-
+        /* scriptTabContainer */
         this.componentInstanceModel.addInstance(new InstanceProps({
             componentName: "dxTabPanel",
             tagName: "scriptTabContainer",
             instance: $('#scriptTabContainer').dxTabPanel({
                 height: "100%",
-                dataSource: dataSource,
+                dataSource: [
+                    {
+                        id: "scriptFileManager",
+                        title: "File Manager",
+                        html: $(scriptFileManagerHtml)
+                    },
+                    {
+                        id: "scriptOptions",
+                        title: "Options",
+                        html: $(scriptOptionsHtml)
+                    }
+                ],
                 selectedIndex: 0,
-                loop: false,
                 animationEnabled: true,
-                swipeEnabled: true,
                 deferRendering: false,
-                itemTitleTemplate: (data: ITabScriptOptions) => {
-                    return data.title;
-                },
-                itemTemplate: (data: ITabScriptOptions) => {
-                    return data.html
-                },
             }).dxTabPanel("instance")
         }));
 
+        /* scriptFileManager */
         const btnSalvarVisualizarClick = async () => {
             let instance = this.componentInstanceModel.getInstanceProps("scriptFileManager").getInstance() as DevExpress.ui.dxFileManager;
             let selectedItem = instance.getSelectedItems();
@@ -103,7 +89,6 @@ export class ScriptOptionsUI implements IOptionUI {
                 instance.refresh();
             }
         }
-
         this.componentInstanceModel.addInstance(new InstanceProps({
             componentName: "dxFileManager",
             tagName: "scriptFileManager",
@@ -159,7 +144,8 @@ export class ScriptOptionsUI implements IOptionUI {
             tagName: "ID",
             instance: $('#scriptOptions_ID').dxTextBox({
                 value: this.data.ID,
-                inputAttr: { 'aria-label': 'Name' },
+                readOnly: true,
+                label: "ID"
             }).dxTextBox("instance")
         }));
 
@@ -169,7 +155,8 @@ export class ScriptOptionsUI implements IOptionUI {
             tagName: "shapeType",
             instance: $('#scriptOptions_shapeType').dxTextBox({
                 value: this.data.shapeType,
-                inputAttr: { 'aria-label': 'Name' },
+                readOnly: true,
+                label: "ShapeType"
             }).dxTextBox("instance")
         }));
 
@@ -179,7 +166,8 @@ export class ScriptOptionsUI implements IOptionUI {
             tagName: "type",
             instance: $('#scriptOptions_type').dxTextBox({
                 value: this.data.type,
-                inputAttr: { 'aria-label': 'Name' },
+                label: "Type",
+                readOnly: true
             }).dxTextBox("instance")
         }));
 
@@ -188,12 +176,32 @@ export class ScriptOptionsUI implements IOptionUI {
             componentName: "dxTextBox",
             tagName: "text",
             instance: $('#scriptOptions_text').dxTextBox({
-                value: this.data.text,
-                inputAttr: { 'aria-label': 'Name' },
+                value: this.data.text ? this.data.text : "",
+                label: "Text",
+                readOnly: true
             }).dxTextBox("instance")
         }));
-    }
 
+        /* scriptType */
+        this.componentInstanceModel.addInstance(new InstanceProps({
+            "componentName": "dxSelectBox",
+            "instance": $("#scriptOptions_scriptType").dxSelectBox({
+                dataSource: [
+                    { "ID": "", "VALUE": "" },
+                    { "ID": "nodejs", "VALUE": "nodeJs" },
+                    { "ID": "typescript", "VALUE": "typeScript" },
+                    { "ID": "groovy", "VALUE": "Groovy" }
+                ],
+                label: "Format",
+                valueExpr: "ID",
+                displayExpr: "VALUE",
+                disabled: readonly,
+                value: this.data.scriptType ? this.data.scriptType : null
+            }).dxSelectBox("instance"),
+            "tagName": "scriptType"
+        }));
+
+    }
 }
 
 //TODO Precisa de dispose aqui.

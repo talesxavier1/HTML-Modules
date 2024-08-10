@@ -39,6 +39,10 @@ module.exports = (env, argv) => {
                             ]
                         }
                     }
+                },
+                {
+                    test: /\.html$/,
+                    loader: 'html-loader'
                 }
             ]
         },

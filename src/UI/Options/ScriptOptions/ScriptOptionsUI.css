@@ -13,3 +13,15 @@
 .dx-tabs-wrapper {
     height: 50px;
 }
+
+#scriptOptions_container {
+    display: flex;
+    justify-content: center;
+    margin: 10px;
+    border-radius: 5px;
+}
+
+#scriptOptions {
+    width: 100%;
+    padding: 5px;
+}
