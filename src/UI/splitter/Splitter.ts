@@ -7,10 +7,10 @@ export class Splitter {
 
     public onResizeEnd?: (e: DevExpress.ui.dxSplitter.ResizeEndEvent) => void;
     public onConfirmDeclineBtnClicked?: (button: "DECLINE" | "CONFIRM") => void;
+
     public repaint = () => {
         this.componentInstanceModel.repaint("splitter");
     }
-
 
     public showHideButtonsDeclineConfirm = (action: "SHOW" | "HIDE") => {
         let btnConfirmInstance = this.componentInstanceModel.tryGetInstanceProps("splitter_options_confirm_btn");
@@ -51,7 +51,6 @@ export class Splitter {
             if (btnDeclineInstance) { this.componentInstanceModel.disposeInstance("splitter_options_decline_btn") }
         }
     }
-
 
     constructor(htmlDiagram: string, htmlOptions: string) {
 

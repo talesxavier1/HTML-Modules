@@ -3,26 +3,12 @@ import { Splitter } from "./UI/splitter/Splitter";
 import { Diagram } from "./UI/Diagram/Diagram";
 import { TDiagramShapeClicked } from "./Types/TDiagramShapeClicked";
 import { OptionsUI } from "./UI/Options/OptionsUI";
+import diagramHTML from "./html/Splitter/Diagram.html";
+import optionsHTML from "./html/Splitter/Options.html";
+
 import DIAGRAM_DATA from "./Data/DIAGRAM_DATA.json";
 import DIAGRAM_PROPS from "./Data/DIAGRAM_PROPS.json"
 
-const diagramHTML = await (async () => {
-    const response = await fetch("./html/Splitter/Diagram.html");
-    if (response.ok) {
-        return await response.text();
-    } else {
-        throw new Error("./html/Splitter/Diagram.html não encontrado.")
-    }
-})();
-
-const optionsHTML = await (async () => {
-    const response = await fetch("./html/Splitter/Options.html");
-    if (response.ok) {
-        return await response.text();
-    } else {
-        throw new Error("./html/Options.html não encontrado.")
-    }
-})();
 
 let splitter: Splitter;
 let diagram: Diagram;
@@ -49,6 +35,7 @@ const main = async (): Promise<void> => {
         optionsUI.distroyOptionsUI();
         if (data) {
             diagram.updateNode(data.ID, data);
+            diagram.repaint();
         }
     }
 }

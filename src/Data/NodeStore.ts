@@ -73,11 +73,17 @@ export class NodeStore {
         return data;
     }
 
-    public getByKey = (key?: string): TDataSource | null => {
-        if (!key) { return null }
+    public getByKey = (key?: string): TDataSource | undefined => {
+        if (!key) { return }
+
+        let query = this._store.createQuery().filter(["ID", key]);
         let result;
-        this._store.byKey(key).done((VAL: TDataSource) => { result = VAL })
-        return result ?? null
+        query.enumerate().always((VALUE: Array<TDataSource>) => {
+            if (VALUE.length > 0) {
+                result = VALUE[0];
+            }
+        });
+        return result
     }
 
     constructor(key: string) {
