@@ -25,3 +25,8 @@
     width: 100%;
     padding: 5px;
 }
+
+#scriptFileManager_container {
+    padding: 15px;
+    height: 100%;
+}
