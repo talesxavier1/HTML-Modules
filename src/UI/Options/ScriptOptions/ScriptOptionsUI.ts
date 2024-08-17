@@ -8,19 +8,11 @@ import { TMonacoLanguage } from "../../../Types/TMonacoLanguage";
 import { LanguageStore } from "../../../Data/LanguageStore";
 import scriptFileManagerHtml from "../../../html/ScriptOptions/ScriptFileManager.html";
 import scriptOptionsHtml from "../../../html/ScriptOptions/ScriptOptions.html";
-import { FunctionProps } from "../../../Utils/dx-utils/FunctionProps";
 
-
-interface ITabScriptOptions {
-    id: string,
-    title: string,
-    html: JQuery<HTMLElement>
-}
 
 export class ScriptOptionsUI implements IOptionUI {
     private componentInstanceModel = new ComponentInstanceModel<ScriptModel>(new ScriptModel());
     private data: ScriptModel;
-    //private fileProvider: DevExpress.fileManagement.ObjectFileSystemProvider;
 
     getData = () => {
         let builtObject = this.componentInstanceModel.getBuiltObject();
@@ -40,14 +32,6 @@ export class ScriptOptionsUI implements IOptionUI {
 
     constructor(data: TDataSource, readonly: boolean = false) {
         this.data = data as ScriptModel;
-
-        this.componentInstanceModel.addInstance(new InstanceProps({
-            componentName: "ObjectFileSystemProvider",
-            tagName: "scriptDirectoryContent",
-            instance: new DevExpress.fileManagement.ObjectFileSystemProvider({
-                data: this.data.scriptDirectoryContent
-            })
-        }));
 
         /* scriptTabContainer */
         this.componentInstanceModel.addInstance(new InstanceProps({
@@ -71,6 +55,15 @@ export class ScriptOptionsUI implements IOptionUI {
                 animationEnabled: true,
                 deferRendering: false,
             }).dxTabPanel("instance")
+        }));
+
+        /* scriptDirectoryContent */
+        this.componentInstanceModel.addInstance(new InstanceProps({
+            componentName: "ObjectFileSystemProvider",
+            tagName: "scriptDirectoryContent",
+            instance: new DevExpress.fileManagement.ObjectFileSystemProvider({
+                data: this.data.scriptDirectoryContent
+            })
         }));
 
         /* scriptFileManager */

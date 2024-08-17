@@ -79,39 +79,6 @@ export class Diagram {
 
         /* Exibição dos pontos de conexão quando clica no shape. */
         if (event.operation == "changeConnection" && !event.args.connector) {
-
-            /* Validação de track name para multicastIn */
-            if (event.args.newShape?.dataItem?.type == "multicastIn") {
-                let shapeData = this.nodeStore.getByKey(event.args.newShape.key) as MulticastInModel;
-                if (!shapeData) { return }
-                if (!shapeData.trackName) {
-                    Swal.fire({
-                        title: "Track Name",
-                        input: "text",
-                        allowOutsideClick: false,
-                        preConfirm: (value: string) => {
-                            if (!value) {
-                                Swal.showValidationMessage("Track name Inválido.");
-                                return;
-                            }
-
-                            let query = this.nodeStore.store.createQuery().filter(["trackName", value]);
-                            let result: Array<any> = [];
-                            query.enumerate().done((values: Array<any>) => result = values);
-                            if (result.length > 0) {
-                                Swal.showValidationMessage("Track name duplicado.");
-                                return;
-                            }
-
-                            this.nodeStore.store.update(event.args.newShape.key, {
-                                ...event.args.newShape.dataItem,
-                                trackName: value
-                            });
-                        }
-                    })
-                }
-            }
-
             return;
         }
 
@@ -554,6 +521,18 @@ export class Diagram {
             return true;
         }
         pipelineArray.push(valid_ffe6ac0a);
+
+        /* Não permite que o multicastIn se se conecte a outro shape sem trackName definido. */
+        const valid_0fdb983b = (event: any) => {
+            if (event?.operation != 'changeConnection') { return true; }
+            let fromKey = event?.args?.connector?.fromKey;
+            if (!fromKey) { return true; }
+            let fromShape = this.nodeStore.getByKey(fromKey) as MulticastInModel;
+            if (fromShape.type != "multicastIn") { return true }
+            if (!fromShape.trackName) { return false }
+            return true;
+        }
+        pipelineArray.push(valid_0fdb983b);
         // #endregion
         /* ========================================================== */
 
