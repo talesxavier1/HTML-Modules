@@ -592,7 +592,6 @@ export class Diagram {
             tagName: "diagrama",
             componentName: "dxDiagram",
             instance: $('#diagrama').dxDiagram({
-
                 toolbox: {
                     groups: [{ category: "Process" }, { category: "Exception" }]
                 },
