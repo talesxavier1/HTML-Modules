@@ -13,6 +13,7 @@ import scriptOptionsHtml from "../../../html/ScriptOptions/ScriptOptions.html";
 export class ScriptOptionsUI implements IOptionUI {
     private componentInstanceModel = new ComponentInstanceModel<ScriptModel>(new ScriptModel());
     private data: ScriptModel;
+    public optionsHTMLContainer: string;
 
     getData = () => {
         let builtObject = this.componentInstanceModel.getBuiltObject();
@@ -24,20 +25,33 @@ export class ScriptOptionsUI implements IOptionUI {
 
     distroyUI = () => {
         this.componentInstanceModel.disposeAllInstances();
+        this.hideShowHTMLContainer("HIDE");
     };
+
+    hideShowHTMLContainer = (action: "SHOW" | "HIDE") => {
+        let J_optionsHTMLContainer = $(`#${this.optionsHTMLContainer}`);
+        if (!J_optionsHTMLContainer) { return }
+        if (action == "SHOW") {
+            J_optionsHTMLContainer.show()
+        } else {
+            J_optionsHTMLContainer.hide()
+        }
+    }
 
     repaint = () => {
         this.componentInstanceModel.repaintAllInstances();
     };
 
-    constructor(data: TDataSource, readonly: boolean = false) {
+    constructor(data: TDataSource, readonly: boolean = false, optionsHTMLContainer: string) {
         this.data = data as ScriptModel;
+        this.optionsHTMLContainer = optionsHTMLContainer;
+        this.hideShowHTMLContainer("SHOW");
 
         /* scriptTabContainer */
         this.componentInstanceModel.addInstance(new InstanceProps({
             componentName: "dxTabPanel",
             tagName: "scriptTabContainer",
-            instance: $('#scriptTabContainer').dxTabPanel({
+            instance: $('#script_options_scriptTabContainer').dxTabPanel({
                 height: "100%",
                 dataSource: [
                     {
@@ -265,7 +279,7 @@ class ScriptPopUp {
         this.componentInstanceModel.addInstance(new InstanceProps({
             componentName: "dxPopup",
             tagName: "scriptPopUpScript",
-            instance: $('#scriptPopUpScript').dxPopup({
+            instance: $('#script_options_scriptPopUpScript').dxPopup({
                 width: "70%",
                 height: "90%",
                 contentTemplate() {

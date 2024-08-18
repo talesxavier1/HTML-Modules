@@ -12,46 +12,6 @@ export class Splitter {
         this.componentInstanceModel.repaint("splitter");
     }
 
-    public showHideButtonsDeclineConfirm = (action: "SHOW" | "HIDE") => {
-        let btnConfirmInstance = this.componentInstanceModel.tryGetInstanceProps("splitter_options_confirm_btn");
-        let btnDeclineInstance = this.componentInstanceModel.tryGetInstanceProps("splitter_options_decline_btn");
-
-        if (action == "SHOW" && (!btnConfirmInstance && !btnDeclineInstance)) {
-            this.componentInstanceModel.addInstance(new InstanceProps({
-                componentName: "dxButton",
-                tagName: "splitter_options_confirm_btn",
-                instance: $("#splitter_options_confirm_btn").dxButton({
-                    icon: "check",
-                    type: "success",
-                    onClick: () => {
-                        if (this.onConfirmDeclineBtnClicked) {
-                            this.onConfirmDeclineBtnClicked("CONFIRM");
-                        }
-                    }
-                }).dxButton("instance")
-            }));
-
-            this.componentInstanceModel.addInstance(new InstanceProps({
-                componentName: "dxButton",
-                tagName: "splitter_options_decline_btn",
-                instance: $("#splitter_options_decline_btn").dxButton({
-                    icon: "remove",
-                    type: "danger",
-                    onClick: () => {
-                        if (this.onConfirmDeclineBtnClicked) {
-                            this.onConfirmDeclineBtnClicked("DECLINE");
-                        }
-                    }
-                }).dxButton("instance")
-            }));
-        }
-
-        if (action == "HIDE") {
-            if (btnConfirmInstance) { this.componentInstanceModel.disposeInstance("splitter_options_confirm_btn") }
-            if (btnDeclineInstance) { this.componentInstanceModel.disposeInstance("splitter_options_decline_btn") }
-        }
-    }
-
     constructor(htmlDiagram: string, htmlOptions: string) {
 
         const diagramItem = {

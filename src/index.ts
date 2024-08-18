@@ -26,16 +26,11 @@ const main = async (): Promise<void> => {
 
     diagram.shapeClicked = (Event: TDiagramShapeClicked) => {
         optionsUI.mountOptions(JSON.parse(JSON.stringify(Event.shapeData)));
-        splitter.showHideButtonsDeclineConfirm("SHOW");
     }
 
-    splitter.onConfirmDeclineBtnClicked = (button) => {
-        splitter.showHideButtonsDeclineConfirm("HIDE");
-        let data = optionsUI.getData();
-        optionsUI.distroyOptionsUI();
+    optionsUI.btnConfirmDeclineCliked = (action, data) => {
         if (data) {
             diagram.updateNode(data.ID, data);
-            diagram.repaint();
         }
     }
 }

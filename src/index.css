@@ -5,10 +5,12 @@
 @import "./UI/Diagram/Driagram.css";
 @import "./UI/splitter/Splitter.css";
 @import "./UI/Options/ScriptOptions/ScriptOptionsUI.css";
+@import "./UI/Options/MulticastInOptions/MulticastInOptionsUI.css";
 
 /* #region default-box-shadow */
 .default-box-shadow {
     box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 5px 0px, rgba(0, 0, 0, 0.1) 0px 0px 1px 0px;
+    border-radius: 5px;
 }
 
 @keyframes shadow-pulse {
