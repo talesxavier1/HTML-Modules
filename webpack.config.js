@@ -4,6 +4,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const webpack = require('webpack');
 const fs = require('fs');
 const os = require('os');
+const WebpackObfuscator = require('webpack-obfuscator');
 
 
 module.exports = (env, argv) => {
@@ -81,7 +82,10 @@ module.exports = (env, argv) => {
                     },
 
                 ]
-            })
+            }),
+            new WebpackObfuscator({
+                rotateStringArray: true
+            }, [])
         ]
     };
 
