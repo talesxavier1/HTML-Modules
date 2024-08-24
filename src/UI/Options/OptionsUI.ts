@@ -5,6 +5,7 @@ import { MulticastInOptionsUI } from "./MulticastInOptions/MulticastInOptionsUI"
 import { ScriptOptionsUI } from "./ScriptOptions/ScriptOptionsUI";
 import { SenderOptionsUI } from "./SenderOptions/SenderOptionsUI";
 import { InstanceProps } from "../../Utils/dx-utils/InstanceProps";
+import { MulticastOutOptions } from "./MulticastOutModelOptions/MulticastOutOptions";
 
 
 export class OptionsUI {
@@ -27,6 +28,7 @@ export class OptionsUI {
                 this.instanceUI = new MulticastInOptionsUI(data, false, "multicastIn_options");
                 break;
             case "multicastOut":
+                this.instanceUI = new MulticastOutOptions(data, false, "multicastOut_options");
                 break;
             case "processContainer":
                 break;
