@@ -12,9 +12,12 @@ declare const Swal: any;
 export class Diagram {
     private componentInstanceModel = new ComponentInstanceModel<Object>(new Object);
 
-    private nodeStore = new NodeStore("ID");
-    private edgesStore = new EdgesStore("ID");
+    private _nodeStore = new NodeStore("ID");
+    private _edgesStore = new EdgesStore("ID");
 
+    public getNodeStore = (): NodeStore => {
+        return this._nodeStore
+    }
 
     private customShapes: DevExpress.ui.dxDiagramOptions = {
         customShapes: [
@@ -57,7 +60,7 @@ export class Diagram {
         parentShapes = parentShapes.map((VALUE: any) => {
             return {
                 ...VALUE,
-                "dataItem": this.nodeStore.getByKey(VALUE.key)
+                "dataItem": this._nodeStore.getByKey(VALUE.key)
             }
         })
 
@@ -130,7 +133,7 @@ export class Diagram {
                 return true;
             }
 
-            let connectorsFrom = this.edgesStore.getByFromKey(fromKey);
+            let connectorsFrom = this._edgesStore.getByFromKey(fromKey);
             if (connectorsFrom.length == 0) { return true; }
 
             let connectorID = connector.key;
@@ -361,7 +364,7 @@ export class Diagram {
             if (event?.args?.shape?.type != "multicastOut") { return true }
 
             let multiCastIn: Array<MulticastInModel> = (() => {
-                let query = this.nodeStore.store.createQuery().filter(["type", "multicastIn"]);
+                let query = this._nodeStore.store.createQuery().filter(["type", "multicastIn"]);
                 let result: any = [];
                 query.enumerate().done((VAL: Array<MulticastInModel>) => result = VAL)
                 return result;
@@ -375,7 +378,7 @@ export class Diagram {
                 if (multiCastIn.length == 0) { return [] }
                 return multiCastIn.filter(VALUE => {
                     let result = 0;
-                    let query = this.nodeStore.store.createQuery()
+                    let query = this._nodeStore.store.createQuery()
                         .filter(["type", "=", "multicastOut"])
                         .filter(["trackNameOrigin", "=", VALUE.trackName]);
 
@@ -471,7 +474,7 @@ export class Diagram {
             if (event.operation != "changeConnection") { return true; }
 
             let toShapeKey = event?.args?.connector?.toKey;
-            let result = this.nodeStore.getByKey(toShapeKey);
+            let result = this._nodeStore.getByKey(toShapeKey);
             if (!result || result.type != "multicastOut") { return true }
             let toShape: MultcastOutModel = result as MultcastOutModel;
 
@@ -504,7 +507,7 @@ export class Diagram {
             if (event.operation != "changeConnection") { return true }
 
             let toShapeKey = event?.args?.connector?.toKey;
-            let toShape = this.nodeStore.getByKey(toShapeKey);
+            let toShape = this._nodeStore.getByKey(toShapeKey);
             if (!toShape || toShape.type != "multicastIn") { return true }
 
 
@@ -530,7 +533,7 @@ export class Diagram {
             if (event?.operation != 'changeConnection') { return true; }
             let fromKey = event?.args?.connector?.fromKey;
             if (!fromKey) { return true; }
-            let fromShape = this.nodeStore.getByKey(fromKey) as MulticastInModel;
+            let fromShape = this._nodeStore.getByKey(fromKey) as MulticastInModel;
             if (fromShape.type != "multicastIn") { return true }
             if (!fromShape.trackName) { return false }
             return true;
@@ -546,10 +549,10 @@ export class Diagram {
             let fromKey = event?.args?.connector?.fromKey;
             if (!fromKey) { return true }
 
-            let fromShape = this.nodeStore.getByKey(fromKey);
+            let fromShape = this._nodeStore.getByKey(fromKey);
             if (fromShape?.type != "condition") { return true }
 
-            let fromShapeConnectorsOut = this.edgesStore.getByFromKey(fromKey);
+            let fromShapeConnectorsOut = this._edgesStore.getByFromKey(fromKey);
             if (fromShapeConnectorsOut.length == 3) { return false }
 
 
@@ -568,7 +571,7 @@ export class Diagram {
         if (!this.shapeClicked) { return; }
         this.shapeClicked({
             event: evt,
-            shapeData: this.nodeStore.getByKey(evt.item.dataItem.ID) as TDataSource
+            shapeData: this._nodeStore.getByKey(evt.item.dataItem.ID) as TDataSource
         })
     }
 
@@ -582,13 +585,15 @@ export class Diagram {
         diagramInstance.import(strDiagramProps, false);
 
         diagramData.forEach((VAL: any) => {
-            this.nodeStore.store.update(VAL.ID, VAL);
+            this._nodeStore.store.update(VAL.ID, VAL);
         });
     }
 
     public updateNode = (key: string, data: TDataSource) => {
-        this.nodeStore.store.update(key, data);
+        this._nodeStore.store.update(key, data);
     }
+
+
 
     constructor() {
         this.componentInstanceModel.addInstance(new InstanceProps({
@@ -602,11 +607,11 @@ export class Diagram {
                 onItemClick: this._shapeClicked,
                 customShapes: this.customShapes.customShapes,
                 nodes: {
-                    dataSource: this.nodeStore.store,
+                    dataSource: this._nodeStore.store,
                     keyExpr: "ID"
                 },
                 edges: {
-                    dataSource: this.edgesStore.store,
+                    dataSource: this._edgesStore.store,
                     keyExpr: "ID"
                 },
                 showGrid: false,
@@ -662,7 +667,7 @@ export class Diagram {
                 text: "copy data",
                 type: "danger",
                 onClick: () => {
-                    let data = this.nodeStore.getAll();
+                    let data = this._nodeStore.getAll();
 
                     const tempTextArea = document.createElement('textarea');
                     tempTextArea.value = JSON.stringify(data);
@@ -694,7 +699,7 @@ export class Diagram {
                 text: "limpar log",
                 type: "danger",
                 onClick: () => {
-                    let data = this.nodeStore.getAll();
+                    let data = this._nodeStore.getAll();
 
                     console.clear()
 

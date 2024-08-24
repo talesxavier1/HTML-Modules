@@ -49,7 +49,7 @@ export class MulticastInOptionsUI implements IOptionUI {
                 value: this.data.ID,
                 readOnly: true,
                 label: "ID",
-                visible: false
+                visible: true
             }).dxTextBox("instance")
         }));
 
@@ -61,7 +61,7 @@ export class MulticastInOptionsUI implements IOptionUI {
                 value: this.data.shapeType,
                 readOnly: true,
                 label: "ShapeType",
-                visible: false
+                visible: true
             }).dxTextBox("instance")
         }));
 
@@ -73,7 +73,7 @@ export class MulticastInOptionsUI implements IOptionUI {
                 value: this.data.type,
                 label: "Type",
                 readOnly: true,
-                visible: false
+                visible: true
             }).dxTextBox("instance")
         }));
 
@@ -85,7 +85,7 @@ export class MulticastInOptionsUI implements IOptionUI {
                 value: this.data.text ? this.data.text : "",
                 label: "Text",
                 readOnly: true,
-                visible: false
+                visible: true
             }).dxTextBox("instance")
         }));
 
