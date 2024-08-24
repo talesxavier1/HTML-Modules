@@ -395,6 +395,7 @@ export class Diagram {
 
 
         /* Verifica se o multicastOut que está recebendo uma conexão já tem um Track name origin associado.  */
+        /* 
         const valid_49840919 = (event: any) => {
             if (event.operation != "changeConnection") { return true; }
 
@@ -462,6 +463,8 @@ export class Diagram {
             return true;
         }
         pipelineArray.push(valid_49840919);
+        */
+
 
         /* Não permite que um MultiCastOut receba a conexão de um fluxo que não seja do MultiCastIn associado */
         const valid_2c8dde4a = (event: any) => {

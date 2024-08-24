@@ -25,7 +25,10 @@ const main = async (): Promise<void> => {
     }
 
     diagram.shapeClicked = (Event: TDiagramShapeClicked) => {
-        optionsUI.mountOptions(JSON.parse(JSON.stringify(Event.shapeData)));
+        let data = Event.shapeData;
+        if (data) {
+            optionsUI.mountOptions(JSON.parse(JSON.stringify(Event.shapeData)));
+        }
     }
 
     optionsUI.btnConfirmDeclineCliked = (action, data) => {
