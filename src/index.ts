@@ -16,7 +16,7 @@ let optionsUI: OptionsUI;
 const main = async (): Promise<void> => {
     splitter = new Splitter(diagramHTML, optionsHTML);
     diagram = new Diagram();
-    optionsUI = new OptionsUI();
+    optionsUI = new OptionsUI(diagram.getNodeStore());
 
     diagram.setDiagramOptions(JSON.stringify(DIAGRAM_PROPS), DIAGRAM_DATA);
 

@@ -6,11 +6,13 @@ import { ScriptOptionsUI } from "./ScriptOptions/ScriptOptionsUI";
 import { SenderOptionsUI } from "./SenderOptions/SenderOptionsUI";
 import { InstanceProps } from "../../Utils/dx-utils/InstanceProps";
 import { MulticastOutOptions } from "./MulticastOutModelOptions/MulticastOutOptions";
+import { NodeStore } from "../../Data/NodeStore";
 
 
 export class OptionsUI {
     private componentInstanceModel = new ComponentInstanceModel<Object>(new Object);
     private instanceUI?: TInstanceUI;
+    private nodeStore: NodeStore;
 
     private setInstanceUI = (data: TDataSource) => {
         switch (data.type) {
@@ -28,7 +30,7 @@ export class OptionsUI {
                 this.instanceUI = new MulticastInOptionsUI(data, false, "multicastIn_options");
                 break;
             case "multicastOut":
-                this.instanceUI = new MulticastOutOptions(data, false, "multicastOut_options");
+                this.instanceUI = new MulticastOutOptions(data, false, "multicastOut_options", this.nodeStore);
                 break;
             case "processContainer":
                 break;
@@ -92,5 +94,7 @@ export class OptionsUI {
         return this.instanceUI?.getData() ?? undefined;
     }
 
-    constructor() { }
+    constructor(nodeStore: NodeStore) {
+        this.nodeStore = nodeStore;
+    }
 }
