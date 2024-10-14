@@ -9,7 +9,6 @@ import { LanguageStore } from "../../../Data/LanguageStore";
 import scriptFileManagerHtml from "../../../html/ScriptOptions/ScriptFileManager.html";
 import scriptOptionsHtml from "../../../html/ScriptOptions/ScriptOptions.html";
 
-
 export class ScriptOptionsUI implements IOptionUI {
     private componentInstanceModel = new ComponentInstanceModel<ScriptModel>(new ScriptModel());
     private data: ScriptModel;
@@ -76,9 +75,25 @@ export class ScriptOptionsUI implements IOptionUI {
             componentName: "ObjectFileSystemProvider",
             tagName: "scriptDirectoryContent",
             instance: new DevExpress.fileManagement.ObjectFileSystemProvider({
-                data: this.data.scriptDirectoryContent
+                data: this.data.scriptDirectoryContent,
             })
         }));
+
+        const provider = new DevExpress.fileManagement.RemoteFileSystemProvider({
+            endpointUrl: 'http://localhost:9090/file-manager/',
+            beforeAjaxSend(options) {
+                let argumentsFormData = options?.formData?.arguments;
+                if (argumentsFormData) {
+                    options.headers.arguments = argumentsFormData;
+                    delete options?.formData?.arguments;
+                }
+                let commandFormData = options?.formData?.command;
+                if (commandFormData) {
+                    options.headers.command = commandFormData;
+                    delete options?.formData?.command;
+                }
+            },
+        });
 
         /* scriptFileManager */
         const btnSalvarVisualizarClick = async () => {
@@ -100,7 +115,8 @@ export class ScriptOptionsUI implements IOptionUI {
             componentName: "dxFileManager",
             tagName: "scriptFileManager",
             instance: $('#scriptFileManager').dxFileManager({
-                fileSystemProvider: this.componentInstanceModel.getInstanceProps("scriptDirectoryContent").getInstance(),
+                fileSystemProvider: provider,
+                //fileSystemProvider: this.componentInstanceModel.getInstanceProps("scriptDirectoryContent").getInstance(),
                 itemView: {
                     mode: 'thumbnails',
                 },
@@ -141,7 +157,7 @@ export class ScriptOptionsUI implements IOptionUI {
                     if (["Visualizar", "Editar"].includes(evt?.itemData?.options?.text)) {
                         await btnSalvarVisualizarClick();
                     }
-                },
+                }
             }).dxFileManager("instance"),
         }));
 

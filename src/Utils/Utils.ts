@@ -1,4 +1,6 @@
 
+import CryptoJS from 'crypto-js';
+
 export class Utils {
 
     static getNewSVGComponent = (type: keyof SVGElementTagNameMap): JQuery<SVGElementTagNameMap[keyof SVGElementTagNameMap]> => {
@@ -35,5 +37,19 @@ export class Utils {
         };
     }
 
+    static generateHashFromBlob(blob: Blob) {
+        if (!blob) { return ""; }
 
+        const reader = new FileReader();
+        reader.readAsArrayBuffer(blob);
+        const readerPromise = new Promise<ArrayBuffer>((resolve, reject) => {
+            reader.onloadend = () => {
+                resolve(reader.result as ArrayBuffer);
+            };
+            reader.onerror = reject;
+        });
+        const arrayBuffer = readerPromise as unknown as ArrayBuffer;
+        const wordArray = CryptoJS.lib.WordArray.create(arrayBuffer);
+        return CryptoJS.SHA256(wordArray).toString(CryptoJS.enc.Hex);
+    }
 }
