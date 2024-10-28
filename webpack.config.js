@@ -44,6 +44,13 @@ module.exports = (env, argv) => {
                 {
                     test: /\.html$/,
                     loader: 'html-loader'
+                },
+                {
+                    test: /\.(png|jpe?g|gif|svg)$/i,
+                    type: 'asset/resource',
+                    generator: {
+                        filename: 'images/[name][ext]', // Define a estrutura de saída dos arquivos
+                    },
                 }
             ]
         },
@@ -56,9 +63,7 @@ module.exports = (env, argv) => {
             }),
             new CopyWebpackPlugin({
                 patterns: [
-                    // { from: './src/lib/jquery', to: './lib/jquery' },
-                    //{ from: './src/lib/DevExtreme/js', to: './lib/DevExtreme/js' },
-                    // { from: './src/lib/DevExtreme/css', to: './lib/DevExtreme/css' },
+                    { from: './src/images', to: './images', force: true },
                     { from: './src/html', to: './html' },
                     {
                         from: './src/index.html',
@@ -86,7 +91,7 @@ module.exports = (env, argv) => {
             new WebpackObfuscator({
                 rotateStringArray: true
             }, [])
-        ]
+        ],
     };
 
     if (WPMode == "development") {

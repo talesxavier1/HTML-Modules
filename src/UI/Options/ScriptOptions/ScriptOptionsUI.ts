@@ -8,6 +8,7 @@ import { TMonacoLanguage } from "../../../Types/TMonacoLanguage";
 import { LanguageStore } from "../../../Data/LanguageStore";
 import scriptFileManagerHtml from "../../../html/ScriptOptions/ScriptFileManager.html";
 import scriptOptionsHtml from "../../../html/ScriptOptions/ScriptOptions.html";
+import { GlobalLoadIndicator } from "../../../UI/GlobalLoadIndicator/GlobalLoadIndicator";
 
 export class ScriptOptionsUI implements IOptionUI {
     private componentInstanceModel = new ComponentInstanceModel<ScriptModel>(new ScriptModel());
@@ -42,6 +43,7 @@ export class ScriptOptionsUI implements IOptionUI {
     };
 
     constructor(data: TDataSource, readonly: boolean = false, optionsHTMLContainer: string) {
+        const self = this;
         this.data = data as ScriptModel;
         this.optionsHTMLContainer = optionsHTMLContainer;
         this.hideShowHTMLContainer("SHOW");
@@ -79,9 +81,15 @@ export class ScriptOptionsUI implements IOptionUI {
             })
         }));
 
+
         const provider = new DevExpress.fileManagement.RemoteFileSystemProvider({
             endpointUrl: 'http://localhost:9090/file-manager/',
-            beforeAjaxSend(options) {
+            //endpointUrl: 'https://js.devexpress.com/Demos/Mvc/api/file-manager-file-system-scripts',
+            beforeAjaxSend: (options) => {
+                options.headers.processID = "28e27b2d-131e-41be-88a8-82fd149f3519";
+                options.headers.processVersionID = "f0c2e5eb-b72e-4623-93e0-f0e48590290e";
+                options.headers.packageID = self.data.ID;
+
                 let argumentsFormData = options?.formData?.arguments;
                 if (argumentsFormData) {
                     options.headers.arguments = argumentsFormData;
@@ -93,6 +101,11 @@ export class ScriptOptionsUI implements IOptionUI {
                     delete options?.formData?.command;
                 }
             },
+            beforeSubmit(options: any) {
+                options.formData.partProcessID = "28e27b2d-131e-41be-88a8-82fd149f3519";
+                options.formData.partProcessVersionID = "f0c2e5eb-b72e-4623-93e0-f0e48590290e";
+                options.formData.partPackageID = self.data.ID;
+            }
         });
 
         /* scriptFileManager */
@@ -102,7 +115,7 @@ export class ScriptOptionsUI implements IOptionUI {
             let dataItem = selectedItem[0].dataItem;
             let language = LanguageStore.getLenguageFromFileName(dataItem.name);
 
-            const scriptPopUp = new ScriptPopUp(false, language, atob(dataItem.content));
+            const scriptPopUp = new ScriptPopUp(false, language, "atob(dataItem.content)");
             await scriptPopUp.init();
 
             let result: String | null = await scriptPopUp.asyncOnCompletedOperation();
@@ -110,7 +123,56 @@ export class ScriptOptionsUI implements IOptionUI {
                 selectedItem[0].dataItem.content = result;
                 instance.refresh();
             }
-        }
+        };
+
+        const btnDownloadClick = async () => {
+            GlobalLoadIndicator.show();
+            let instance = self.componentInstanceModel.getInstanceProps("scriptFileManager").getInstance() as DevExpress.ui.dxFileManager;
+            let selectedItem = instance.getSelectedItems();
+
+            let pathInfo = selectedItem[0].pathInfo;
+            let name = selectedItem[0].name;
+            pathInfo.push({
+                "key": selectedItem[0].key,
+                "name": selectedItem[0].name
+            });
+
+            let result: Blob | null = await new Promise((resolve) => {
+                fetch(`http://localhost:9090/file-manager/Download`, {
+                    headers: {
+                        "processID": "28e27b2d-131e-41be-88a8-82fd149f3519",
+                        "processVersionID": "f0c2e5eb-b72e-4623-93e0-f0e48590290e",
+                        "packageID": self.data.ID,
+                        "arguments": JSON.stringify({ "pathInfo": pathInfo, "name": name }),
+                    },
+                    method: "GET"
+                }).then((response) => {
+                    if (!response.ok) {
+                        resolve(null);
+                    }
+                    return response.blob();
+                }).then((blob) => {
+                    resolve(blob);
+                });
+            });
+
+            if (result) {
+                const url = window.URL.createObjectURL(result);
+
+                const a = document.createElement('a');
+                a.style.display = 'none';
+                a.href = url;
+                a.download = name;
+
+                document.body.appendChild(a);
+                a.click();
+
+                document.body.removeChild(a);
+                window.URL.revokeObjectURL(url);
+            }
+            GlobalLoadIndicator.hide();
+        };
+
         this.componentInstanceModel.addInstance(new InstanceProps({
             componentName: "dxFileManager",
             tagName: "scriptFileManager",
@@ -136,7 +198,14 @@ export class ScriptOptionsUI implements IOptionUI {
                 selectionMode: "single",
                 toolbar: {
                     fileSelectionItems: [
-                        "download", "separator",
+                        {
+                            widget: "dxButton",
+                            options: {
+                                text: "download",
+                                icon: "download",
+                                location: 'before'
+                            },
+                        }, "separator",
                         "move", "separator",
                         "copy", "separator",
                         "rename", "separator",
@@ -156,6 +225,8 @@ export class ScriptOptionsUI implements IOptionUI {
                 async onToolbarItemClick(evt) {
                     if (["Visualizar", "Editar"].includes(evt?.itemData?.options?.text)) {
                         await btnSalvarVisualizarClick();
+                    } else if (evt?.itemData?.options?.text == "download") {
+                        await btnDownloadClick();
                     }
                 }
             }).dxFileManager("instance"),
@@ -329,7 +400,10 @@ class ScriptPopUp {
             componentName: "dxLoadPanel",
             tagName: "loadPanel",
             instance: $('#loadPanel').dxLoadPanel({
+                indicatorSrc: './images/loading.svg',
                 shadingColor: 'rgba(0,0,0,0.4)',
+                width: 100,
+                height: 100,
                 position: { of: "#scriptPopUpScript_wrapper_children" },
                 visible: false,
                 showIndicator: true,

@@ -14,6 +14,9 @@ let splitter: Splitter;
 let diagram: Diagram;
 let optionsUI: OptionsUI;
 const main = async (): Promise<void> => {
+
+
+    // return;
     splitter = new Splitter(diagramHTML, optionsHTML);
     diagram = new Diagram();
     optionsUI = new OptionsUI(diagram.getNodeStore());
