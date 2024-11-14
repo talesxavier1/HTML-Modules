@@ -8,6 +8,7 @@ import optionsHTML from "./html/Splitter/Options.html";
 
 import DIAGRAM_DATA from "./Data/DIAGRAM_DATA.json";
 import DIAGRAM_PROPS from "./Data/DIAGRAM_PROPS.json"
+import { GlobalLoadIndicator } from "./UI/GlobalLoadIndicator/GlobalLoadIndicator";
 
 
 let splitter: Splitter;
@@ -27,14 +28,17 @@ const main = async (): Promise<void> => {
         diagram.repaint();
     }
 
-    diagram.shapeClicked = (Event: TDiagramShapeClicked) => {
+    diagram.shapeClicked = async (Event: TDiagramShapeClicked) => {
         let data = Event.shapeData;
+        GlobalLoadIndicator.show();
         if (data) {
-            optionsUI.mountOptions(JSON.parse(JSON.stringify(Event.shapeData)));
+            await optionsUI.mountOptions(JSON.parse(JSON.stringify(Event.shapeData)));
         }
+        GlobalLoadIndicator.hide();
+
     }
 
-    optionsUI.btnConfirmDeclineCliked = (action, data) => {
+    optionsUI.btnConfirmDeclineCliked = async (action, data) => {
         if (data) {
             diagram.updateNode(data.ID, data);
         }

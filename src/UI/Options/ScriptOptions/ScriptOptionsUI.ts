@@ -14,8 +14,10 @@ export class ScriptOptionsUI implements IOptionUI {
     private componentInstanceModel = new ComponentInstanceModel<ScriptModel>(new ScriptModel());
     private data: ScriptModel;
     public optionsHTMLContainer: string;
+    private tempDirID: string | undefined;
 
-    getData = () => {
+    getData = async () => {
+        await this.pubTempDir();
         let builtObject = this.componentInstanceModel.getBuiltObject();
         return {
             ...this.data,
@@ -23,9 +25,71 @@ export class ScriptOptionsUI implements IOptionUI {
         } as ScriptModel;
     };
 
-    distroyUI = () => {
+    private clearTempDir = async () => {
+        await new Promise((resolve) => {
+            setTimeout(() => {
+                resolve("Concluído após 5 segundos!");
+            }, 5000);
+        });
+        // return await new Promise<boolean>((resolve) => {
+        //     let url = "http://localhost:9090/file-manager/?command={0}&arguments={1}";
+        //     url = url.replace("{0}", "ClearTempDir");
+        //     url = url.replace("{1}", "{}");
+
+        //     fetch(encodeURI(url), {
+        //         headers: {
+        //             "processID": "28e27b2d-131e-41be-88a8-82fd149f3519",
+        //             "processVersionID": "f0c2e5eb-b72e-4623-93e0-f0e48590290e",
+        //             "packageID": this.data.ID,
+        //             "tempDirID": this.tempDirID ?? ""
+        //         },
+        //         method: "POST"
+        //     }).then((resp) => {
+        //         if (!resp.ok) {
+        //             resolve(false);
+        //         }
+        //         return resp.json();
+        //     }).then((value) => {
+        //         if (value.success) {
+        //             return true;
+        //         }
+        //         return false;
+        //     });
+        // });
+    }
+
+    private pubTempDir = async () => {
+        return new Promise<boolean>((resolve) => {
+            let url = "http://localhost:9090/file-manager/?command={0}&arguments={1}";
+            url = url.replace("{0}", "PubTempDir");
+            url = url.replace("{1}", "{}");
+
+            fetch(encodeURI(url), {
+                headers: {
+                    "processID": "28e27b2d-131e-41be-88a8-82fd149f3519",
+                    "processVersionID": "f0c2e5eb-b72e-4623-93e0-f0e48590290e",
+                    "packageID": this.data.ID,
+                    "tempDirID": this.tempDirID ?? ""
+                },
+                method: "POST"
+            }).then((resp) => {
+                if (!resp.ok) {
+                    resolve(false);
+                }
+                return resp.json();
+            }).then((value) => {
+                if (value.success) {
+                    return true;
+                }
+                return false;
+            });
+        });
+    }
+
+    distroyUI = async () => {
         this.componentInstanceModel.disposeAllInstances();
         this.hideShowHTMLContainer("HIDE");
+        await this.clearTempDir();
     };
 
     hideShowHTMLContainer = (action: "SHOW" | "HIDE") => {
@@ -36,7 +100,7 @@ export class ScriptOptionsUI implements IOptionUI {
         } else {
             J_optionsHTMLContainer.hide()
         }
-    }
+    };
 
     repaint = () => {
         this.componentInstanceModel.repaintAllInstances();
@@ -46,6 +110,7 @@ export class ScriptOptionsUI implements IOptionUI {
         const self = this;
         this.data = data as ScriptModel;
         this.optionsHTMLContainer = optionsHTMLContainer;
+        if (!readonly) { this.tempDirID = Utils.getGuid() }
         this.hideShowHTMLContainer("SHOW");
 
         /* scriptTabContainer */
@@ -81,7 +146,6 @@ export class ScriptOptionsUI implements IOptionUI {
             })
         }));
 
-
         const provider = new DevExpress.fileManagement.RemoteFileSystemProvider({
             endpointUrl: 'http://localhost:9090/file-manager/',
             //endpointUrl: 'https://js.devexpress.com/Demos/Mvc/api/file-manager-file-system-scripts',
@@ -89,6 +153,7 @@ export class ScriptOptionsUI implements IOptionUI {
                 options.headers.processID = "28e27b2d-131e-41be-88a8-82fd149f3519";
                 options.headers.processVersionID = "f0c2e5eb-b72e-4623-93e0-f0e48590290e";
                 options.headers.packageID = self.data.ID;
+                options.headers.tempDirID = self.tempDirID ? self.tempDirID : "";
 
                 let argumentsFormData = options?.formData?.arguments;
                 if (argumentsFormData) {
@@ -100,22 +165,47 @@ export class ScriptOptionsUI implements IOptionUI {
                     options.headers.command = commandFormData;
                     delete options?.formData?.command;
                 }
-            },
-            beforeSubmit(options: any) {
-                options.formData.partProcessID = "28e27b2d-131e-41be-88a8-82fd149f3519";
-                options.formData.partProcessVersionID = "f0c2e5eb-b72e-4623-93e0-f0e48590290e";
-                options.formData.partPackageID = self.data.ID;
             }
         });
 
         /* scriptFileManager */
-        const btnSalvarVisualizarClick = async () => {
+        const btnEditarVisualizarClick = async () => {
             let instance = this.componentInstanceModel.getInstanceProps("scriptFileManager").getInstance() as DevExpress.ui.dxFileManager;
             let selectedItem = instance.getSelectedItems();
             let dataItem = selectedItem[0].dataItem;
+
+            let pathInfo = JSON.parse(JSON.stringify(selectedItem[0].pathInfo));
+            pathInfo.push({
+                "key": selectedItem[0].key,
+                "name": selectedItem[0].name
+            });
+
+            GlobalLoadIndicator.show();
+            let strFile: string = await new Promise((resolve) => {
+                let url = "http://localhost:9090/file-manager/?command={0}&arguments={1}";
+                url = url.replace("{0}", "GetFileContent");
+                url = url.replace("{1}", JSON.stringify({ "pathInfo": pathInfo, "name": selectedItem[0].name }));
+                fetch(encodeURI(url), {
+                    headers: {
+                        "processID": "28e27b2d-131e-41be-88a8-82fd149f3519",
+                        "processVersionID": "f0c2e5eb-b72e-4623-93e0-f0e48590290e",
+                        "packageID": self.data.ID,
+                    },
+                    method: "GET"
+                }).then((response) => {
+                    if (!response.ok) {
+                        resolve("");
+                    }
+                    return response.json();
+                }).then((body) => {
+                    resolve(body.strResult);
+                });;
+            });
+            GlobalLoadIndicator.hide();
+
             let language = LanguageStore.getLenguageFromFileName(dataItem.name);
 
-            const scriptPopUp = new ScriptPopUp(false, language, "atob(dataItem.content)");
+            const scriptPopUp = new ScriptPopUp(readonly, language, strFile);
             await scriptPopUp.init();
 
             let result: String | null = await scriptPopUp.asyncOnCompletedOperation();
@@ -224,7 +314,7 @@ export class ScriptOptionsUI implements IOptionUI {
                 },
                 async onToolbarItemClick(evt) {
                     if (["Visualizar", "Editar"].includes(evt?.itemData?.options?.text)) {
-                        await btnSalvarVisualizarClick();
+                        await btnEditarVisualizarClick();
                     } else if (evt?.itemData?.options?.text == "download") {
                         await btnDownloadClick();
                     }

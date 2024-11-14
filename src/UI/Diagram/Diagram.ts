@@ -566,13 +566,17 @@ export class Diagram {
         event.updateUI = resultPipeline;
     }
 
-    public shapeClicked: ((args: TDiagramShapeClicked) => void) | undefined;
-    private _shapeClicked = (evt: DevExpress.ui.dxDiagram.ItemClickEvent) => {
+    public shapeClicked: ((args: TDiagramShapeClicked) => Promise<void>) | undefined;
+    private _shapeClicked = async (evt: DevExpress.ui.dxDiagram.ItemClickEvent) => {
         if (!this.shapeClicked) { return; }
-        this.shapeClicked({
+        let shapeData = this._nodeStore.getByKey(evt.item.dataItem.ID) as TDataSource;
+        console.log("aa")
+        let a = await this.shapeClicked({
             event: evt,
-            shapeData: this._nodeStore.getByKey(evt.item.dataItem.ID) as TDataSource
-        })
+            shapeData: shapeData
+        });
+        console.log("bb")
+
     }
 
     public repaint = () => {
@@ -604,7 +608,9 @@ export class Diagram {
                     groups: [{ category: "Process" }, { category: "Exception" }]
                 },
                 onRequestEditOperation: this.onRequestEditOperation,
-                onItemClick: this._shapeClicked,
+                onItemClick: async (e) => {
+                    await this._shapeClicked(e);
+                },
                 customShapes: this.customShapes.customShapes,
                 nodes: {
                     dataSource: this._nodeStore.store,

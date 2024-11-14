@@ -4,7 +4,7 @@ import { TDataSource } from "../Types/TDataSource";
 export interface IOptionUI {
     optionsHTMLContainer: string;
     hideShowHTMLContainer: (action: "SHOW" | "HIDE") => void
-    getData: () => TDataSource;
-    distroyUI: () => void;
+    getData: () => Promise<TDataSource>;
+    distroyUI: () => Promise<void>;
     repaint: () => void;
 }

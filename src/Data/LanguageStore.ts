@@ -270,6 +270,9 @@ export class LanguageStore {
         "yaml": [
             ".yaml",
             ".yml"
+        ],
+        "groovy": [
+            ".groovy"
         ]
     };
 
