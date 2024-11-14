@@ -51,14 +51,14 @@ export class OptionsUI {
         }
     }
 
-    public distroyOptionsUI = () => {
-        this.instanceUI?.distroyUI();
+    public distroyOptionsUI = async () => {
+        await this.instanceUI?.distroyUI();
         this.componentInstanceModel.disposeAllInstances();
     }
 
-    public btnConfirmDeclineCliked = (action?: "CONFIRM" | "DECLINE", data?: TDataSource) => { }
-    private _btnConfirmDeclineCliked = (action: "CONFIRM" | "DECLINE") => {
-        this.btnConfirmDeclineCliked(action, this.getData());
+    public btnConfirmDeclineCliked = async (action?: "CONFIRM" | "DECLINE", data?: TDataSource) => { }
+    private _btnConfirmDeclineCliked = async (action: "CONFIRM" | "DECLINE") => {
+        this.btnConfirmDeclineCliked(action, await this.getData());
         this.distroyOptionsUI();
     }
 
@@ -84,14 +84,15 @@ export class OptionsUI {
         }));
     }
 
-    public mountOptions = (data: TDataSource) => {
-        this.distroyOptionsUI();
+    public mountOptions = async (data: TDataSource) => {
+        await this.distroyOptionsUI();
         this.setInstanceUI(data);
         this.mountButtonsConfirmDecline();
     }
 
-    public getData = (): TDataSource | undefined => {
-        return this.instanceUI?.getData() ?? undefined;
+    public getData = async (): Promise<TDataSource | undefined> => {
+        let result = this.instanceUI?.getData();
+        if (result) { return result }
     }
 
     constructor(nodeStore: NodeStore) {

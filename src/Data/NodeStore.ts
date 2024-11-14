@@ -64,7 +64,6 @@ export class NodeStore {
     }
 
     private errorHandler = (Error: any): void => {
-        debugger;
     }
 
     public getAll = (): Array<TDataSource> => {
