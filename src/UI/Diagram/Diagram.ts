@@ -7,6 +7,7 @@ import { NodeStore } from "../../Data/NodeStore";
 import { EdgesStore } from "../../Data/EdgesStore";
 import { TDiagramShapeClicked } from "../../Types/TDiagramShapeClicked";
 import { TDataSource } from "../../Types/TDataSource";
+import { GlobalLoadIndicator } from "../../UI/GlobalLoadIndicator/GlobalLoadIndicator";
 declare const Swal: any;
 
 export class Diagram {
@@ -570,13 +571,10 @@ export class Diagram {
     private _shapeClicked = async (evt: DevExpress.ui.dxDiagram.ItemClickEvent) => {
         if (!this.shapeClicked) { return; }
         let shapeData = this._nodeStore.getByKey(evt.item.dataItem.ID) as TDataSource;
-        console.log("aa")
-        let a = await this.shapeClicked({
+        await this.shapeClicked({
             event: evt,
             shapeData: shapeData
         });
-        console.log("bb")
-
     }
 
     public repaint = () => {
@@ -609,7 +607,9 @@ export class Diagram {
                 },
                 onRequestEditOperation: this.onRequestEditOperation,
                 onItemClick: async (e) => {
+                    GlobalLoadIndicator.show();
                     await this._shapeClicked(e);
+                    GlobalLoadIndicator.hide();
                 },
                 customShapes: this.customShapes.customShapes,
                 nodes: {

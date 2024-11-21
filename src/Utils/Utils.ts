@@ -52,4 +52,12 @@ export class Utils {
         const wordArray = CryptoJS.lib.WordArray.create(arrayBuffer);
         return CryptoJS.SHA256(wordArray).toString(CryptoJS.enc.Hex);
     }
+
+    static tryparse = (value: string): Object | undefined => {
+        try {
+            return JSON.parse(value);
+        } catch (err) {
+            return undefined;
+        }
+    }
 }

@@ -9,6 +9,7 @@ import { LanguageStore } from "../../../Data/LanguageStore";
 import scriptFileManagerHtml from "../../../html/ScriptOptions/ScriptFileManager.html";
 import scriptOptionsHtml from "../../../html/ScriptOptions/ScriptOptions.html";
 import { GlobalLoadIndicator } from "../../../UI/GlobalLoadIndicator/GlobalLoadIndicator";
+import { APIResponseContentModel } from "models/APIResponseContentModel";
 
 export class ScriptOptionsUI implements IOptionUI {
     private componentInstanceModel = new ComponentInstanceModel<ScriptModel>(new ScriptModel());
@@ -17,73 +18,63 @@ export class ScriptOptionsUI implements IOptionUI {
     private tempDirID: string | undefined;
 
     getData = async () => {
-        await this.pubTempDir();
+        let newPackageVersionID = await this.pubTempDir();
         let builtObject = this.componentInstanceModel.getBuiltObject();
         return {
             ...this.data,
-            ...builtObject
+            ...builtObject,
+            packageVersionID: newPackageVersionID
         } as ScriptModel;
     };
 
     private clearTempDir = async () => {
-        await new Promise((resolve) => {
-            setTimeout(() => {
-                resolve("Concluído após 5 segundos!");
-            }, 5000);
-        });
-        // return await new Promise<boolean>((resolve) => {
-        //     let url = "http://localhost:9090/file-manager/?command={0}&arguments={1}";
-        //     url = url.replace("{0}", "ClearTempDir");
-        //     url = url.replace("{1}", "{}");
+        let url = "http://localhost:9090/file-manager/?command={0}&arguments={1}";
+        url = url.replace("{0}", "ClearTempDir");
+        url = url.replace("{1}", "{}");
 
-        //     fetch(encodeURI(url), {
-        //         headers: {
-        //             "processID": "28e27b2d-131e-41be-88a8-82fd149f3519",
-        //             "processVersionID": "f0c2e5eb-b72e-4623-93e0-f0e48590290e",
-        //             "packageID": this.data.ID,
-        //             "tempDirID": this.tempDirID ?? ""
-        //         },
-        //         method: "POST"
-        //     }).then((resp) => {
-        //         if (!resp.ok) {
-        //             resolve(false);
-        //         }
-        //         return resp.json();
-        //     }).then((value) => {
-        //         if (value.success) {
-        //             return true;
-        //         }
-        //         return false;
-        //     });
-        // });
+        let response = await fetch(encodeURI(url), {
+            headers: {
+                "processID": "28e27b2d-131e-41be-88a8-82fd149f3519",
+                "processVersionID": "f0c2e5eb-b72e-4623-93e0-f0e48590290e",
+                "packageVersionID": this.data.packageVersionID,
+                "packageID": this.data.ID,
+                "tempDirID": this.tempDirID ?? ""
+            },
+            method: "POST"
+        });
+        if (response.ok) {
+            let json = await response.json();
+        }
     }
 
-    private pubTempDir = async () => {
-        return new Promise<boolean>((resolve) => {
-            let url = "http://localhost:9090/file-manager/?command={0}&arguments={1}";
-            url = url.replace("{0}", "PubTempDir");
-            url = url.replace("{1}", "{}");
+    private pubTempDir = async (): Promise<string> => {
+        let url = "http://localhost:9090/file-manager/?command={0}&arguments={1}";
+        url = url.replace("{0}", "PubTempDir");
+        url = url.replace("{1}", "{}");
 
-            fetch(encodeURI(url), {
-                headers: {
-                    "processID": "28e27b2d-131e-41be-88a8-82fd149f3519",
-                    "processVersionID": "f0c2e5eb-b72e-4623-93e0-f0e48590290e",
-                    "packageID": this.data.ID,
-                    "tempDirID": this.tempDirID ?? ""
-                },
-                method: "POST"
-            }).then((resp) => {
-                if (!resp.ok) {
-                    resolve(false);
-                }
-                return resp.json();
-            }).then((value) => {
-                if (value.success) {
-                    return true;
-                }
-                return false;
-            });
+        let response = await fetch(encodeURI(url), {
+            headers: {
+                "processID": "28e27b2d-131e-41be-88a8-82fd149f3519",
+                "processVersionID": "f0c2e5eb-b72e-4623-93e0-f0e48590290e",
+                "packageID": this.data.ID,
+                "packageVersionID": this.data.packageVersionID,
+                "tempDirID": this.tempDirID ?? ""
+            },
+            method: "POST"
         });
+        if (response.ok) {
+            let json = await response.json() as APIResponseContentModel;
+            if (!json.strResult) {
+                throw new Error("Sem resposta.")
+            }
+            let objNewPackageVersionID = Utils.tryparse(json.strResult) as { newPackageVersionID: string } | undefined;
+            if (!objNewPackageVersionID) {
+                throw new Error("Sem resposta.")
+            }
+            return objNewPackageVersionID.newPackageVersionID;
+        } else {
+            throw new Error("Sem resposta.")
+        }
     }
 
     distroyUI = async () => {
@@ -137,22 +128,14 @@ export class ScriptOptionsUI implements IOptionUI {
             }).dxTabPanel("instance")
         }));
 
-        /* scriptDirectoryContent */
-        this.componentInstanceModel.addInstance(new InstanceProps({
-            componentName: "ObjectFileSystemProvider",
-            tagName: "scriptDirectoryContent",
-            instance: new DevExpress.fileManagement.ObjectFileSystemProvider({
-                data: this.data.scriptDirectoryContent,
-            })
-        }));
-
         const provider = new DevExpress.fileManagement.RemoteFileSystemProvider({
             endpointUrl: 'http://localhost:9090/file-manager/',
             //endpointUrl: 'https://js.devexpress.com/Demos/Mvc/api/file-manager-file-system-scripts',
             beforeAjaxSend: (options) => {
-                options.headers.processID = "28e27b2d-131e-41be-88a8-82fd149f3519";
-                options.headers.processVersionID = "f0c2e5eb-b72e-4623-93e0-f0e48590290e";
+                options.headers.processID = data.processID;
+                options.headers.processVersionID = data.processVersionID;
                 options.headers.packageID = self.data.ID;
+                options.headers.packageVersionID = this.data.packageVersionID;
                 options.headers.tempDirID = self.tempDirID ? self.tempDirID : "";
 
                 let argumentsFormData = options?.formData?.arguments;
@@ -268,7 +251,6 @@ export class ScriptOptionsUI implements IOptionUI {
             tagName: "scriptFileManager",
             instance: $('#scriptFileManager').dxFileManager({
                 fileSystemProvider: provider,
-                //fileSystemProvider: this.componentInstanceModel.getInstanceProps("scriptDirectoryContent").getInstance(),
                 itemView: {
                     mode: 'thumbnails',
                 },
@@ -332,6 +314,40 @@ export class ScriptOptionsUI implements IOptionUI {
                 label: "ID"
             }).dxTextBox("instance")
         }));
+
+        /* processID  */
+        this.componentInstanceModel.addInstance(new InstanceProps({
+            componentName: "dxTextBox",
+            tagName: "processID",
+            instance: $('#scriptOptions_processID').dxTextBox({
+                value: this.data.processID,
+                readOnly: true,
+                label: "processID"
+            }).dxTextBox("instance")
+        }));
+
+        /* processVersionID  */
+        this.componentInstanceModel.addInstance(new InstanceProps({
+            componentName: "dxTextBox",
+            tagName: "processVersionID",
+            instance: $('#scriptOptions_processVersionID').dxTextBox({
+                value: this.data.processVersionID,
+                readOnly: true,
+                label: "processVersionID"
+            }).dxTextBox("instance")
+        }));
+
+        /* packageVersionID */
+        this.componentInstanceModel.addInstance(new InstanceProps({
+            componentName: "dxTextBox",
+            tagName: "packageVersionID",
+            instance: $('#scriptOptions_packageVersionID').dxTextBox({
+                value: this.data.packageVersionID,
+                readOnly: true,
+                label: "packageVersionID"
+            }).dxTextBox("instance")
+        }));
+
 
         /* shapeType */
         this.componentInstanceModel.addInstance(new InstanceProps({
