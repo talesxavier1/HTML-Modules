@@ -59,8 +59,8 @@ jobs:
                 ENDSSH
 
             - name: Print current directory
-              run: pwd
-              
+              run: ls
+
             # - name: (DEV) Move new tar
             #   if: ${{ github.ref == 'refs/heads/dev' }} 
             #   run: |
