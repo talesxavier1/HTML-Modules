@@ -21,24 +21,24 @@ jobs:
             - name: Check out the repository
               uses: actions/checkout@v2
 
-            - name: Set up Node.js
-              uses: actions/setup-node@v2
-              with:
-                node-version: '18.18.0'
+            # - name: Set up Node.js
+            #   uses: actions/setup-node@v2
+            #   with:
+            #     node-version: '18.18.0'
 
-            - name: Install dependencies
-              run: npm install
+            # - name: Install dependencies
+            #   run: npm install
         
-            - name: RUN WEBPACK
-              run: npx webpack --mode=production
+            # - name: RUN WEBPACK
+            #   run: npx webpack --mode=production
             
-            - name: Configurar Docker para o Build
+            - name: Set up Docker
               uses: docker/setup-buildx-action@v2
 
-            - name: RUN DOCKERBUILD
+            - name: RUN Docker Build
               run: docker build --rm -f "DockerFile" -t typescripteditor:latest "." 
             
-            - name: Salvando a imagem
+            - name: Save docker image
               run: docker save -o typescripteditor.tar typescripteditor:latest
 
             - name: Install sshpass
@@ -46,11 +46,11 @@ jobs:
             
             - name: (DEV) Remove current dist
               if: ${{ github.ref == 'refs/heads/dev' }}   
-              run: echo((DEV) Remove current dist)
+              run: echo "(DEV) Remove current dist"
 
             - name: (PROD) Remove current dist
               if: ${{ github.ref == 'refs/heads/main' }}   
-              run: echo((PROD) Remove current dist)
+              run: echo "(PROD) Remove current dist"
 
 
             # - name: (DEV) Remove current dist
