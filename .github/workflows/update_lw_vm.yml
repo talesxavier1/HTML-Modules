@@ -25,36 +25,54 @@ jobs:
               uses: actions/setup-node@v2
               with:
                 node-version: '18.18.0'
+
             - name: Install dependencies
               run: npm install
         
             - name: RUN WEBPACK
               run: npx webpack --mode=production
-            #  run: npx webpack --mode=development
-          
+            
+            - name: Configurar Docker para o Build
+              uses: docker/setup-buildx-action@v2
+
+            - name: RUN DOCKERBUILD
+              run: docker build --rm -f "DockerFile" -t typescripteditor:latest "." 
+            
+            - name: Salvando a imagem
+              run: docker save -o typescripteditor.tar typescripteditor:latest
+
             - name: Install sshpass
               run: sudo apt-get install -y sshpass
-               
+            
             - name: (DEV) Remove current dist
-              if: github.event_name == 'push' && github.ref == 'refs/heads/dev'
-              run: |
-               sshpass -p '${{env.SSH_PASSWORD}}' ssh -v -o StrictHostKeyChecking=no ${{env.SSH_USERNAME}}@${{env.VM_IP}} <<'ENDSSH'
-               rm -rf ${{env.VM_DEV_PATH}}/*
-               ENDSSH
+              if: ${{ github.ref == 'refs/heads/dev' }}   
+              run: echo((DEV) Remove current dist)
 
             - name: (PROD) Remove current dist
-              if: github.event_name == 'pull_request' && github.base_ref == 'main'
-              run: |
-                sshpass -p '${{env.SSH_PASSWORD}}' ssh -v -o StrictHostKeyChecking=no ${{env.SSH_USERNAME}}@${{env.VM_IP}} <<'ENDSSH'
-                rm -rf ${{env.VM_PROD_PATH}}/*
-                ENDSSH
+              if: ${{ github.ref == 'refs/heads/main' }}   
+              run: echo((PROD) Remove current dist)
+
+
+            # - name: (DEV) Remove current dist
+            #   if: github.event_name == 'push' && github.ref == 'refs/heads/dev'
+            #   run: |
+            #    sshpass -p '${{env.SSH_PASSWORD}}' ssh -v -o StrictHostKeyChecking=no ${{env.SSH_USERNAME}}@${{env.VM_IP}} <<'ENDSSH'
+            #    rm -rf ${{env.VM_DEV_PATH}}/*
+            #    ENDSSH
+
+            # - name: (PROD) Remove current dist
+            #   if: github.event_name == 'pull_request' && github.base_ref == 'main'
+            #   run: |
+            #     sshpass -p '${{env.SSH_PASSWORD}}' ssh -v -o StrictHostKeyChecking=no ${{env.SSH_USERNAME}}@${{env.VM_IP}} <<'ENDSSH'
+            #     rm -rf ${{env.VM_PROD_PATH}}/*
+            #     ENDSSH
                            
-            - name: (DEV) Move new dist
-              if: github.event_name == 'push' && github.ref == 'refs/heads/dev'
-              run: |
-                  sshpass -p '${{env.SSH_PASSWORD}}' scp -v -o StrictHostKeyChecking=no -r dist ${{env.SSH_USERNAME}}@${{env.VM_IP}}:${{env.VM_DEV_PATH}}
+            # - name: (DEV) Move new dist
+            #   if: github.event_name == 'push' && github.ref == 'refs/heads/dev'
+            #   run: |
+            #       sshpass -p '${{env.SSH_PASSWORD}}' scp -v -o StrictHostKeyChecking=no -r dist ${{env.SSH_USERNAME}}@${{env.VM_IP}}:${{env.VM_DEV_PATH}}
             
-            - name: (PROD) Move new dist
-              if: github.event_name == 'pull_request' && github.base_ref == 'main'
-              run: |
-                  sshpass -p '${{env.SSH_PASSWORD}}' scp -v -o StrictHostKeyChecking=no -r dist ${{env.SSH_USERNAME}}@${{env.VM_IP}}:${{env.VM_PROD_PATH}}
+            # - name: (PROD) Move new dist
+            #   if: github.event_name == 'pull_request' && github.base_ref == 'main'
+            #   run: |
+            #       sshpass -p '${{env.SSH_PASSWORD}}' scp -v -o StrictHostKeyChecking=no -r dist ${{env.SSH_USERNAME}}@${{env.VM_IP}}:${{env.VM_PROD_PATH}}
