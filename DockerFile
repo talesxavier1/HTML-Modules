@@ -1,7 +1,10 @@
-FROM node:lts-alpine AS BUILD
+FROM node:16 as build
 WORKDIR /app
-COPY . /app
-RUN npm install
+
+COPY package.json ./
+RUN npm install --verbose
+
+COPY . .
 RUN npx webpack --mode=production --progress -c ./webpack.config.js
 
 FROM nginx:alpine
