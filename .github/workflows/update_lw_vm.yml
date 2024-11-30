@@ -77,6 +77,7 @@ jobs:
               run: |
                 # $1 -> "refs/heads/dev" | "refs/heads/main"
                 sshpass -p '${{env.SSH_PASSWORD}}' ssh -v -o StrictHostKeyChecking=no ${{env.SSH_USERNAME}}@${{env.VM_IP}} <<'ENDSSH'
+                export DOCKER_HOST=unix:///var/run/docker.sock
                 main () {
                   if [ $1 == "refs/heads/dev" ]; then
                     # DROP DEV
