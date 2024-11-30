@@ -25,9 +25,9 @@ jobs:
 
             - name: Build and save docker tar.
               run: |
-                # $1 -> "refs/heads/dev" | "main"
+                # $1 -> "dev" | "main"
                 main () {
-                  if [ $1 == "refs/heads/dev" ]; then
+                  if [ $1 == "dev" ]; then
                     docker build --rm -f "DockerFile" -t image-typescripteditor-dev:latest "."
                     docker save -o image-typescripteditor-dev.tar image-typescripteditor-dev:latest
                   elif [ $1 == "main" ]; then
@@ -47,9 +47,9 @@ jobs:
             - name: Remove current tar.
               run: |
                 sshpass -p '${{env.SSH_PASSWORD}}' ssh -v -o StrictHostKeyChecking=no ${{env.SSH_USERNAME}}@${{env.VM_IP}} <<'ENDSSH'
-                # $1 -> "refs/heads/dev" | "main"
+                # $1 -> "dev" | "main"
                 main () {
-                  if [ $1 == "refs/heads/dev" ]; then
+                  if [ $1 == "dev" ]; then
                     rm -rf ${{env.VM_DEV_PATH}}/*
 
                   elif [ $1 == "main" ]; then
@@ -62,9 +62,9 @@ jobs:
 
             - name: Move new tar
               run: |
-                # $1 -> "refs/heads/dev" | "main"
+                # $1 -> "dev" | "main"
                 main () {
-                  if [ $1 == "refs/heads/dev" ]; then
+                  if [ $1 == "dev" ]; then
                     sshpass -p '${{env.SSH_PASSWORD}}' scp -v -o StrictHostKeyChecking=no -r *.tar ${{env.SSH_USERNAME}}@${{env.VM_IP}}:${{env.VM_DEV_PATH}}
                   elif [ $1 == "main" ]; then
                     sshpass -p '${{env.SSH_PASSWORD}}' scp -v -o StrictHostKeyChecking=no -r *.tar ${{env.SSH_USERNAME}}@${{env.VM_IP}}:${{env.VM_PROD_PATH}}
@@ -74,10 +74,10 @@ jobs:
 
             - name: Drop Current container and up new
               run: |
-                # $1 -> "refs/heads/dev" | "main"
+                # $1 -> "dev" | "main"
                 sshpass -p '${{env.SSH_PASSWORD}}' ssh -v -o StrictHostKeyChecking=no ${{env.SSH_USERNAME}}@${{env.VM_IP}} <<'ENDSSH'
                 main () {
-                  if [ $1 == "refs/heads/dev" ]; then
+                  if [ $1 == "dev" ]; then
                     # DROP DEV
                     docker stop typescripteditor-dev || true
                     docker rm typescripteditor-dev || true
