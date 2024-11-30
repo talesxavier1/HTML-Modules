@@ -27,12 +27,12 @@ jobs:
 
             - name: Build and save docker tar.
               run: |
-                # $1 -> "refs/heads/dev" | "refs/heads/main"
+                # $1 -> "refs/heads/dev" | "main"
                 main () {
                   if [ $1 == "refs/heads/dev" ]; then
                     docker build --rm -f "DockerFile" -t image-typescripteditor-dev:latest "."
                     docker save -o image-typescripteditor-dev.tar image-typescripteditor-dev:latest
-                  elif [ $1 == "refs/heads/main" ]; then
+                  elif [ $1 == "main" ]; then
                     docker build --rm -f "DockerFile" -t image-typescripteditor-prod:latest "."
                     docker save -o image-typescripteditor-prod.tar image-typescripteditor-prod:latest
                   else
@@ -48,12 +48,12 @@ jobs:
             - name: Remove current tar.
               run: |
                 sshpass -p '${{env.SSH_PASSWORD}}' ssh -v -o StrictHostKeyChecking=no ${{env.SSH_USERNAME}}@${{env.VM_IP}} <<'ENDSSH'
-                # $1 -> "refs/heads/dev" | "refs/heads/main"
+                # $1 -> "refs/heads/dev" | "main"
                 main () {
                   if [ $1 == "refs/heads/dev" ]; then
                     rm -rf ${{env.VM_DEV_PATH}}/*
 
-                  elif [ $1 == "refs/heads/main" ]; then
+                  elif [ $1 == "main" ]; then
                     rm -rf ${{env.VM_PROD_PATH}}/*
 
                   fi
@@ -63,11 +63,11 @@ jobs:
 
             - name: Move new tar
               run: |
-                # $1 -> "refs/heads/dev" | "refs/heads/main"
+                # $1 -> "refs/heads/dev" | "main"
                 main () {
                   if [ $1 == "refs/heads/dev" ]; then
                     sshpass -p '${{env.SSH_PASSWORD}}' scp -v -o StrictHostKeyChecking=no -r *.tar ${{env.SSH_USERNAME}}@${{env.VM_IP}}:${{env.VM_DEV_PATH}}
-                  elif [ $1 == "refs/heads/main" ]; then
+                  elif [ $1 == "main" ]; then
                     sshpass -p '${{env.SSH_PASSWORD}}' scp -v -o StrictHostKeyChecking=no -r *.tar ${{env.SSH_USERNAME}}@${{env.VM_IP}}:${{env.VM_PROD_PATH}}
                   fi
                 }
@@ -75,7 +75,7 @@ jobs:
 
             - name: Drop Current container and up new
               run: |
-                # $1 -> "refs/heads/dev" | "refs/heads/main"
+                # $1 -> "refs/heads/dev" | "main"
                 sshpass -p '${{env.SSH_PASSWORD}}' ssh -v -o StrictHostKeyChecking=no ${{env.SSH_USERNAME}}@${{env.VM_IP}} <<'ENDSSH'
                 export DOCKER_HOST=unix:///var/run/docker.sock
                 main () {
@@ -90,7 +90,7 @@ jobs:
                     docker load < image-typescripteditor-dev.tar
                     docker run -d --name typescripteditor-dev -p 2000:80 image-typescripteditor-dev
 
-                  elif [ $1 == "refs/heads/main" ]; then
+                  elif [ $1 == "main" ]; then
                     # DROP PROD
                     docker stop typescripteditor-prod || true
                     docker rm typescripteditor-prod || true
