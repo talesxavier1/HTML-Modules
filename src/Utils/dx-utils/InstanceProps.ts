@@ -1,4 +1,5 @@
-import { DxInstanceType } from "./Consts";
+import { TComponentName } from "../../Types/TComponentName";
+import { TDxInstanceType } from "../../Types/DxInstanceType";
 import { DxDefaultValues } from "./DxDefaultValues";
 
 
@@ -6,11 +7,11 @@ import { DxDefaultValues } from "./DxDefaultValues";
 export class InstanceProps {
 
     private instance: any;
-    private componentValueField: string;
+    private componentValueField: string | undefined | ((instance: any) => string)
     private defaultValue: any;
     private tagName: string;
 
-    constructor(args: { componentName: string, instance: DxInstanceType, tagName: string }) {
+    constructor(args: { componentName: TComponentName, instance: TDxInstanceType, tagName: string }) {
         let xDefaultValues = new DxDefaultValues();
         this.instance = args.instance;
         this.defaultValue = xDefaultValues.getDefaultValue(args.componentName);
@@ -18,11 +19,15 @@ export class InstanceProps {
         this.tagName = args.tagName;
     }
 
-    getInstance = (): DxInstanceType => {
+    getInstance = (): TDxInstanceType => {
         return this.instance;
     }
 
     getInstanceValue = (): any => {
+        if (this.componentValueField == undefined) { return }
+        if (typeof this.componentValueField == "function") {
+            return this.componentValueField(this.instance)
+        }
         return this.instance.option(this.componentValueField);
     }
 

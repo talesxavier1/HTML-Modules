@@ -1,7 +1,35 @@
 @import url('https://talesxavier1.github.io/GH-CDN/TypeScriptEditor/lib/DevExtreme/css/dx-diagram.min.css');
+@import url('https://talesxavier1.github.io/GH-CDN/TypeScriptEditor/lib/DevExtreme/css/dx.darkmoon.css');
 @import url('https://talesxavier1.github.io/GH-CDN/TypeScriptEditor/lib/DevExtreme/css/dx.light.css');
 @import url('https://talesxavier1.github.io/GH-CDN/TypeScriptEditor/lib/sweetalert2/sweetalert2.min.css');
-@import "./UI/Driagram.css";
+@import "./UI/Diagram/Driagram.css";
+@import "./UI/splitter/Splitter.css";
+@import "./UI/Options/ScriptOptions/ScriptOptionsUI.css";
+@import "./UI/Options/MulticastInOptions/MulticastInOptionsUI.css";
+@import "./UI/Options/MulticastOutModelOptions/MulticastOutOptions.css";
+
+/* #region default-box-shadow */
+.default-box-shadow {
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 5px 0px, rgba(0, 0, 0, 0.1) 0px 0px 1px 0px;
+    border-radius: 5px;
+}
+
+@keyframes shadow-pulse {
+    0% {
+        box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 5px 0px, rgba(0, 0, 0, 0.1) 0px 0px 1px 0px;
+    }
+
+    100% {
+        box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px, rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px, rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px;
+    }
+}
+
+.default-box-shadow:hover {
+    animation: shadow-pulse .5s ease-in-out forwards;
+}
+
+/* #endregion */
+
 
 * {
     padding: 0;
@@ -13,20 +41,6 @@ body,
 html {
     width: 100%;
     height: 100%;
-}
-
-.dx-viewport {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-}
-
-#diagrama {
-    padding: 20px;
-    width: 100%;
-    height: 700px;
-    margin-top: 10px;
 }
 
 .swal2-container {

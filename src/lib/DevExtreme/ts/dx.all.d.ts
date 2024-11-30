@@ -1,7 +1,7 @@
 /*!
 * DevExtreme (dx.all.d.ts)
-* Version: 23.2.6
-* Build date: Wed May 01 2024
+* Version: 24.1.3
+* Build date: Tue Jun 11 2024
 *
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -367,6 +367,12 @@ interface JQuery<TElement = HTMLElement> {
   dxSlider(options: string): any;
   dxSlider(options: string, ...params: any[]): any;
 
+  dxSplitter(): JQuery;
+  dxSplitter(options: 'instance'): DevExpress.ui.dxSplitter;
+  dxSplitter(options: DevExpress.ui.dxSplitter.Properties): JQuery;
+  dxSplitter(options: string): any;
+  dxSplitter(options: string, ...params: any[]): any;
+
   dxSortable(): JQuery;
   dxSortable(options: 'instance'): DevExpress.ui.dxSortable;
   dxSortable(options: DevExpress.ui.dxSortable.Properties): JQuery;
@@ -501,8 +507,8 @@ interface JQuery<TElement = HTMLElement> {
   dxVectorMap(options: string): any;
   dxVectorMap(options: string, ...params: any[]): any;
 }
-interface JQueryEventObject { }
-interface JQueryPromise<T> { }
+// interface JQueryEventObject {}
+// interface JQueryPromise<T> {}
 
 declare module DevExpress {
   /**
@@ -1519,6 +1525,10 @@ declare module DevExpress.common {
      */
     pointerEventStrategy?: 'mouse-and-touch' | 'mouse' | 'touch';
     /**
+     * @deprecated Attention! This field is not documented and should only be specified in a limited number of use cases. For more information, please submit a ticket to our Support Center.
+     */
+    timezones?: unknown[];
+    /**
      * Specifies whether the UI components support a right-to-left representation. Available for individual UI components as well.
      */
     rtlEnabled?: boolean;
@@ -1543,6 +1553,7 @@ declare module DevExpress.common {
      * A license key.
      */
     licenseKey?: string;
+    buyNowLink?: string;
   };
   /**
    * An additional type for LoadResult.
@@ -12719,173 +12730,6 @@ declare module DevExpress.ui {
       readonly item: dxDiagramShape;
     };
     /**
-     * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
-     */
-    export type DiagramAutoZoomMode = 'fitContent' | 'fitWidth' | 'disabled';
-    /**
-     * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
-     */
-    export type DiagramCommand =
-      | 'separator'
-      | 'exportSvg'
-      | 'exportPng'
-      | 'exportJpg'
-      | 'undo'
-      | 'redo'
-      | 'cut'
-      | 'copy'
-      | 'paste'
-      | 'selectAll'
-      | 'delete'
-      | 'fontName'
-      | 'fontSize'
-      | 'bold'
-      | 'italic'
-      | 'underline'
-      | 'fontColor'
-      | 'lineStyle'
-      | 'lineWidth'
-      | 'lineColor'
-      | 'fillColor'
-      | 'textAlignLeft'
-      | 'textAlignCenter'
-      | 'textAlignRight'
-      | 'lock'
-      | 'unlock'
-      | 'sendToBack'
-      | 'bringToFront'
-      | 'insertShapeImage'
-      | 'editShapeImage'
-      | 'deleteShapeImage'
-      | 'connectorLineType'
-      | 'connectorLineStart'
-      | 'connectorLineEnd'
-      | 'layoutTreeTopToBottom'
-      | 'layoutTreeBottomToTop'
-      | 'layoutTreeLeftToRight'
-      | 'layoutTreeRightToLeft'
-      | 'layoutLayeredTopToBottom'
-      | 'layoutLayeredBottomToTop'
-      | 'layoutLayeredLeftToRight'
-      | 'layoutLayeredRightToLeft'
-      | 'fullScreen'
-      | 'zoomLevel'
-      | 'showGrid'
-      | 'snapToGrid'
-      | 'gridSize'
-      | 'units'
-      | 'pageSize'
-      | 'pageOrientation'
-      | 'pageColor'
-      | 'simpleView'
-      | 'toolbox';
-    /**
-     * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
-     */
-    export type DiagramConnectorLineEnd =
-      | 'none'
-      | 'arrow'
-      | 'outlinedTriangle'
-      | 'filledTriangle';
-    /**
-     * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
-     */
-    export type DiagramConnectorLineType = 'straight' | 'orthogonal';
-    /**
-     * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
-     */
-    export type DiagramConnectorPosition = 'start' | 'end';
-    /**
-     * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
-     */
-    export type DiagramDataLayoutType = 'auto' | 'off' | 'tree' | 'layered';
-    /**
-     * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
-     */
-    export type DiagramExportFormat = 'svg' | 'png' | 'jpg';
-    /**
-     * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
-     */
-    export type DiagramItemType = 'shape' | 'connector';
-    /**
-     * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
-     */
-    export type DiagramPanelVisibility =
-      | 'auto'
-      | 'visible'
-      | 'collapsed'
-      | 'disabled';
-    /**
-     * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
-     */
-    export type DiagramRequestEditOperationReason =
-      | 'checkUIElementAvailability'
-      | 'modelModification';
-    /**
-     * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
-     */
-    export type DiagramShapeCategory =
-      | 'general'
-      | 'flowchart'
-      | 'orgChart'
-      | 'containers'
-      | 'custom';
-    /**
-     * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
-     */
-    export type DiagramShapeType =
-      | 'text'
-      | 'rectangle'
-      | 'ellipse'
-      | 'cross'
-      | 'triangle'
-      | 'diamond'
-      | 'heart'
-      | 'pentagon'
-      | 'hexagon'
-      | 'octagon'
-      | 'star'
-      | 'arrowLeft'
-      | 'arrowTop'
-      | 'arrowRight'
-      | 'arrowBottom'
-      | 'arrowNorthSouth'
-      | 'arrowEastWest'
-      | 'process'
-      | 'decision'
-      | 'terminator'
-      | 'predefinedProcess'
-      | 'document'
-      | 'multipleDocuments'
-      | 'manualInput'
-      | 'preparation'
-      | 'data'
-      | 'database'
-      | 'hardDisk'
-      | 'internalStorage'
-      | 'paperTape'
-      | 'manualOperation'
-      | 'delay'
-      | 'storedData'
-      | 'display'
-      | 'merge'
-      | 'connector'
-      | 'or'
-      | 'summingJunction'
-      | 'verticalContainer'
-      | 'horizontalContainer'
-      | 'cardWithImageOnLeft'
-      | 'cardWithImageOnTop'
-      | 'cardWithImageOnRight';
-    /**
-     * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
-     */
-    export type DiagramToolboxDisplayMode = 'icons' | 'texts';
-    /**
-     * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
-     */
-    export type DiagramUnits = 'in' | 'cm' | 'px';
-    /**
      * The type of the disposing event handler&apos;s argument.
      */
     export type DisposingEvent = DevExpress.events.EventInfo<dxDiagram>;
@@ -12952,7 +12796,7 @@ declare module DevExpress.ui {
         /**
          * 
          */
-        readonly reason: DiagramRequestEditOperationReason;
+        readonly reason: RequestEditOperationReason;
         /**
          * 
          */
@@ -13014,7 +12858,7 @@ declare module DevExpress.ui {
     /**
      * The type of the processed shape.
      */
-    shapeType?: DevExpress.ui.dxDiagram.DiagramShapeType | string;
+    shapeType?: DevExpress.ui.dxDiagram.ShapeType | string;
   }
   /**
    * Contains information about the processed connector.
@@ -13064,7 +12908,7 @@ declare module DevExpress.ui {
     /**
      * The position of the connector in the processed point.
      */
-    connectorPosition?: DevExpress.ui.dxDiagram.DiagramConnectorPosition;
+    connectorPosition?: DevExpress.ui.dxDiagram.ConnectorPosition;
   }
   /**
    * Contains information about the processed connector.
@@ -13183,32 +13027,6 @@ declare module DevExpress.ui {
     toPointIndex?: number;
   }
   /**
-   * An object that provides information about a custom command in the Diagram UI component.
-   * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
-   */
-  export interface dxDiagramCustomCommand {
-    /**
-     * Specifies the custom command&apos;s identifier.
-     */
-    name?: string;
-    /**
-     * Specifies the custom command&apos;s text and tooltip text.
-     */
-    text?: string;
-    /**
-     * Specifies the custom command&apos;s icon.
-     */
-    icon?: string;
-    /**
-     * Lists command sub items.
-     */
-    items?: Array<dxDiagramCustomCommand>;
-    /**
-     * Specifies a location for the command or separator on the main toolbar.
-     */
-    location?: DevExpress.common.ToolbarItemLocation;
-  }
-  /**
    * Contains information about the processed connector.
    * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
    */
@@ -13248,7 +13066,7 @@ declare module DevExpress.ui {
     /**
      * Returns the type of the item.
      */
-    itemType?: DevExpress.ui.dxDiagram.DiagramItemType;
+    itemType?: DevExpress.ui.dxDiagram.ItemType;
   }
   /**
    * Contains information about the processed shape.
@@ -13286,183 +13104,6 @@ declare module DevExpress.ui {
       y?: number;
     };
   }
-
-  export type TCustomShape = {
-    /**
-     * Specifies whether a card shape&apos;s image can be edited.
-     */
-    allowEditImage?: boolean;
-    /**
-     * Specifies whether the shape&apos;s text can be edited.
-     */
-    allowEditText?: boolean;
-    /**
-     * Specifies whether the shape can be resized.
-     */
-    allowResize?: boolean;
-    /**
-     * Specifies the shape background image&apos;s fractional height.
-     */
-    backgroundImageHeight?: number;
-    /**
-     * Specifies the shape background image&apos;s left offset.
-     */
-    backgroundImageLeft?: number;
-    /**
-     * Specifies the shape background image&apos;s top offset.
-     */
-    backgroundImageTop?: number;
-    /**
-     * Specifies the shape background image&apos;s URL.
-     */
-    backgroundImageUrl?: string;
-    /**
-     * Specifies the shape image displayed in the toolbox.
-     */
-    backgroundImageToolboxUrl?: string;
-    /**
-     * Specifies the shape background image&apos;s fractional width.
-     */
-    backgroundImageWidth?: number;
-    /**
-     * Specifies the base shape type for the custom shape. The built-in shape types are shown in the Shape Types section.
-     */
-    baseType?: DevExpress.ui.dxDiagram.DiagramShapeType | string;
-    /**
-     * Specifies a category to which the custom shape belongs.
-     */
-    category?: string;
-    /**
-     * An array of the shape&apos;s connection points.
-     */
-    connectionPoints?: Array<{
-      /**
-       * Specifies the horizontal offset.
-       */
-      x?: number;
-      /**
-       * Specifies the vertical offset.
-       */
-      y?: number;
-    }>;
-    /**
-     * Specifies the initial height of the shape.
-     */
-    defaultHeight?: number;
-    /**
-     * Specifies the URL of an image displayed in a card shape.
-     */
-    defaultImageUrl?: string;
-    /**
-     * Specifies the initial text of the shape.
-     */
-    defaultText?: string;
-    /**
-     * Specifies the initial width of the shape.
-     */
-    defaultWidth?: number;
-    /**
-     * Specifies the shape image&apos;s fractional height.
-     */
-    imageHeight?: number;
-    /**
-     * Specifies the shape image&apos;s left offset.
-     */
-    imageLeft?: number;
-    /**
-     * Specifies the shape image&apos;s top offset.
-     */
-    imageTop?: number;
-    /**
-     * Specifies the shape image&apos;s fractional width.
-     */
-    imageWidth?: number;
-    /**
-     * Specifies whether the shape maintains its width-to-height ratio on auto resize.
-     */
-    keepRatioOnAutoSize?: boolean;
-    /**
-     * Specifies the maximum height of the shape.
-     */
-    maxHeight?: number;
-    /**
-     * Specifies the maximum width of the shape.
-     */
-    maxWidth?: number;
-    /**
-     * Specifies the maximum height of the shape.
-     */
-    minHeight?: number;
-    /**
-     * Specifies the minimum width of the shape.
-     */
-    minWidth?: number;
-    /**
-     * Specifies a custom template for the shape.
-     */
-    template?:
-    | DevExpress.core.template
-    | ((
-      container: DevExpress.core.DxElement<SVGElement>,
-      data: DevExpress.ui.dxDiagram.CustomShapeTemplateData
-    ) => any);
-    /**
-     * Specifies the shape template&apos;s fractional height.
-     */
-    templateHeight?: number;
-    /**
-     * Specifies the shape template&apos;s left offset.
-     */
-    templateLeft?: number;
-    /**
-     * Specifies the shape template&apos;s top offset.
-     */
-    templateTop?: number;
-    /**
-     * Specifies the shape template&apos;s fractional width.
-     */
-    templateWidth?: number;
-    /**
-     * Specifies the shape text container&apos;s height.
-     */
-    textHeight?: number;
-    /**
-     * Specifies the shape text&apos;s left offset.
-     */
-    textLeft?: number;
-    /**
-     * Specifies the shape text&apos;s top offset.
-     */
-    textTop?: number;
-    /**
-     * Specifies the shape text container&apos;s width.
-     */
-    textWidth?: number;
-    /**
-     * Specifies the shape&apos;s tooltip in the toolbox panel.
-     */
-    title?: string;
-    /**
-     * Specifies a custom template for the shape in the toolbox.
-     */
-    toolboxTemplate?:
-    | DevExpress.core.template
-    | ((
-      container: DevExpress.core.DxElement<SVGElement>,
-      data: DevExpress.ui.dxDiagram.CustomShapeToolboxTemplateData
-    ) => any);
-    /**
-     * Specifies the aspect ratio of the shape in the toolbox.
-     */
-    toolboxWidthToHeightRatio?: number;
-    /**
-     * Specifies the custom shape&apos;s identifier.
-     */
-    type?: string;
-  };
-
-
-
   /**
    * 
    * @deprecated 
@@ -13472,7 +13113,7 @@ declare module DevExpress.ui {
     /**
      * Specifies how the Diagram UI component automatically zooms the work area.
      */
-    autoZoomMode?: DevExpress.ui.dxDiagram.DiagramAutoZoomMode;
+    autoZoomMode?: DevExpress.ui.dxDiagram.AutoZoomMode;
     /**
      * Configures the context menu&apos;s settings.
      */
@@ -13480,7 +13121,9 @@ declare module DevExpress.ui {
       /**
        * Lists commands in the context menu.
        */
-      commands?: Array<DevExpress.ui.dxDiagram.DiagramCommand>;
+      commands?: Array<
+        DevExpress.ui.dxDiagram.CustomCommand | DevExpress.ui.dxDiagram.Command
+      >;
       /**
        * Specifies whether the context menu is enabled.
        */
@@ -13493,11 +13136,11 @@ declare module DevExpress.ui {
       /**
        * Specifies the category of shapes that are displayed in the context toolbox.
        */
-      category?: DevExpress.ui.dxDiagram.DiagramShapeCategory | string;
+      category?: DevExpress.ui.dxDiagram.ShapeCategory | string;
       /**
        * Specifies how shapes are displayed in the context toolbox.
        */
-      displayMode?: DevExpress.ui.dxDiagram.DiagramToolboxDisplayMode;
+      displayMode?: DevExpress.ui.dxDiagram.ToolboxDisplayMode;
       /**
        * Specifies the context toolbox&apos;s availability.
        */
@@ -13509,7 +13152,7 @@ declare module DevExpress.ui {
       /**
        * Lists the shapes that are displayed in the context toolbox. The built-in shape types are shown in the Shape Types section.
        */
-      shapes?: Array<DevExpress.ui.dxDiagram.DiagramShapeType> | Array<string>;
+      shapes?: Array<DevExpress.ui.dxDiagram.ShapeType> | Array<string>;
       /**
        * Specifies the context toolbox&apos;s width in pixels.
        */
@@ -13580,7 +13223,7 @@ declare module DevExpress.ui {
       /**
        * Specifies the base shape type for the custom shape. The built-in shape types are shown in the Shape Types section.
        */
-      baseType?: DevExpress.ui.dxDiagram.DiagramShapeType | string;
+      baseType?: DevExpress.ui.dxDiagram.ShapeType | string;
       /**
        * Specifies a category to which the custom shape belongs.
        */
@@ -13728,15 +13371,15 @@ declare module DevExpress.ui {
       /**
        * Specifies the default type of a connector.
        */
-      connectorLineType?: DevExpress.ui.dxDiagram.DiagramConnectorLineType;
+      connectorLineType?: DevExpress.ui.dxDiagram.ConnectorLineType;
       /**
        * Specifies the default tip of a connector&apos;s start point.
        */
-      connectorLineStart?: DevExpress.ui.dxDiagram.DiagramConnectorLineEnd;
+      connectorLineStart?: DevExpress.ui.dxDiagram.ConnectorLineEnd;
       /**
        * Specifies the default tip of a connector&apos;s end point.
        */
-      connectorLineEnd?: DevExpress.ui.dxDiagram.DiagramConnectorLineEnd;
+      connectorLineEnd?: DevExpress.ui.dxDiagram.ConnectorLineEnd;
       /**
        * Specifies the default minimum width of a shape.
        */
@@ -13900,7 +13543,7 @@ declare module DevExpress.ui {
        * Specifies an auto-layout algorithm that the UI component uses to build a diagram.
        */
       autoLayout?:
-      | DevExpress.ui.dxDiagram.DiagramDataLayoutType
+      | DevExpress.ui.dxDiagram.DataLayoutType
       | {
         /**
          * Specifies the diagram layout orientation.
@@ -13909,7 +13552,7 @@ declare module DevExpress.ui {
         /**
          * Specifies an auto-layout algorithm that is used to automatically arrange shapes.
          */
-        type?: DevExpress.ui.dxDiagram.DiagramDataLayoutType;
+        type?: DevExpress.ui.dxDiagram.DataLayoutType;
       };
       /**
        * Specifies whether or not a shape size is automatically changed to fit the text when the UI component is bound to a data source.
@@ -14067,7 +13710,10 @@ declare module DevExpress.ui {
         /**
          * Lists commands in a tab.
          */
-        commands?: Array<DevExpress.ui.dxDiagram.DiagramCommand>;
+        commands?: Array<
+          | DevExpress.ui.dxDiagram.CustomCommand
+          | DevExpress.ui.dxDiagram.Command
+        >;
         /**
          * Contains an array of command groups in the tab.
          */
@@ -14075,7 +13721,10 @@ declare module DevExpress.ui {
           /**
            * Lists commands in a group.
            */
-          commands?: Array<DevExpress.ui.dxDiagram.DiagramCommand>;
+          commands?: Array<
+            | DevExpress.ui.dxDiagram.CustomCommand
+            | DevExpress.ui.dxDiagram.Command
+          >;
           /**
            * Specifies a title of the group.
            */
@@ -14089,7 +13738,7 @@ declare module DevExpress.ui {
       /**
        * Specifies the panel&apos;s visibility.
        */
-      visibility?: DevExpress.ui.dxDiagram.DiagramPanelVisibility;
+      visibility?: DevExpress.ui.dxDiagram.PanelVisibility;
     };
     /**
      * Specifies whether the diagram is read-only.
@@ -14118,7 +13767,9 @@ declare module DevExpress.ui {
       /**
        * Lists commands in the toolbar.
        */
-      commands?: Array<DevExpress.ui.dxDiagram.DiagramCommand>;
+      commands?: Array<
+        DevExpress.ui.dxDiagram.CustomCommand | DevExpress.ui.dxDiagram.Command
+      >;
       /**
        * Specifies the toolbar&apos;s visibility.
        */
@@ -14131,7 +13782,9 @@ declare module DevExpress.ui {
       /**
        * Lists commands in the history toolbar.
        */
-      commands?: Array<DevExpress.ui.dxDiagram.DiagramCommand>;
+      commands?: Array<
+        DevExpress.ui.dxDiagram.CustomCommand | DevExpress.ui.dxDiagram.Command
+      >;
       /**
        * Specifies the history toolbar&apos;s visibility.
        */
@@ -14144,7 +13797,9 @@ declare module DevExpress.ui {
       /**
        * Lists commands in the toolbar.
        */
-      commands?: Array<DevExpress.ui.dxDiagram.DiagramCommand>;
+      commands?: Array<
+        DevExpress.ui.dxDiagram.CustomCommand | DevExpress.ui.dxDiagram.Command
+      >;
       /**
        * Specifies the view toolbar&apos;s visibility.
        */
@@ -14162,11 +13817,11 @@ declare module DevExpress.ui {
         /**
          * Specifies the category of shapes that are displayed in the group.
          */
-        category?: DevExpress.ui.dxDiagram.DiagramShapeCategory | string;
+        category?: DevExpress.ui.dxDiagram.ShapeCategory | string;
         /**
          * Specifies how shapes are displayed in the toolbox.
          */
-        displayMode?: DevExpress.ui.dxDiagram.DiagramToolboxDisplayMode;
+        displayMode?: DevExpress.ui.dxDiagram.ToolboxDisplayMode;
         /**
          * Specifies whether the group is expanded.
          */
@@ -14174,15 +13829,13 @@ declare module DevExpress.ui {
         /**
          * Lists the shapes in the group. The built-in shape types are shown in the Shape Types section.
          */
-        shapes?:
-        | Array<DevExpress.ui.dxDiagram.DiagramShapeType>
-        | Array<string>;
+        shapes?: Array<DevExpress.ui.dxDiagram.ShapeType> | Array<string>;
         /**
          * Specifies the group title in the toolbox.
          */
         title?: string;
       }>
-      | Array<DevExpress.ui.dxDiagram.DiagramShapeCategory>;
+      | Array<DevExpress.ui.dxDiagram.ShapeCategory>;
       /**
        * Specifies the number of shape icons in a row.
        */
@@ -14194,7 +13847,7 @@ declare module DevExpress.ui {
       /**
        * Specifies the toolbar&apos;s visibility.
        */
-      visibility?: DevExpress.ui.dxDiagram.DiagramPanelVisibility;
+      visibility?: DevExpress.ui.dxDiagram.PanelVisibility;
       /**
        * Specifies the toolbox&apos;s width in pixels.
        */
@@ -14203,11 +13856,11 @@ declare module DevExpress.ui {
     /**
      * Specifies the measurement unit for size properties.
      */
-    units?: DevExpress.ui.dxDiagram.DiagramUnits;
+    units?: DevExpress.ui.dxDiagram.Units;
     /**
      * Specifies the measurement unit that is displayed in user interface elements.
      */
-    viewUnits?: DevExpress.ui.dxDiagram.DiagramUnits;
+    viewUnits?: DevExpress.ui.dxDiagram.Units;
     /**
      * Specifies the zoom level.
      */
@@ -14272,7 +13925,7 @@ declare module DevExpress.ui {
     /**
      * Specifies the shape type. The built-in shape types are shown in the Shape Types section.
      */
-    type?: DevExpress.ui.dxDiagram.DiagramShapeType | string;
+    type?: DevExpress.ui.dxDiagram.ShapeType | string;
     /**
      * Specifies the position of the top left shape corner relative to the top left corner of the diagram work area.
      */
@@ -14955,6 +14608,15 @@ declare module DevExpress.ui {
      * Specifies how the button is styled.
      */
     stylingMode?: DevExpress.common.ButtonStyle;
+    /**
+     * Specifies a custom template for the base button in DropDownButton.
+     */
+    template?:
+    | DevExpress.core.template
+    | ((
+      data: DevExpress.ui.dxButton.TemplateData,
+      contentElement: DevExpress.core.DxElement
+    ) => string | DevExpress.core.UserDefinedElement);
     /**
      * Specifies the button&apos;s text. Applies only if useSelectMode is false.
      */
@@ -17017,6 +16679,11 @@ declare module DevExpress.ui {
       | 'tabbed'
       | 'button';
     export type FormLabelMode = 'static' | 'floating' | 'hidden' | 'outside';
+    export type GroupCaptionTemplateData = {
+      readonly caption?: string;
+      readonly component: dxForm;
+      readonly name?: string;
+    };
     export type GroupItemTemplateData = {
       readonly component: dxForm;
       readonly formData?: any;
@@ -17129,6 +16796,15 @@ declare module DevExpress.ui {
      * Specifies the group caption.
      */
     caption?: string;
+    /**
+     * Specifies a template that can be used to replace group captions with custom content.
+     */
+    captionTemplate?:
+    | DevExpress.core.template
+    | ((
+      data: DevExpress.ui.dxForm.GroupCaptionTemplateData,
+      itemElement: DevExpress.core.DxElement
+    ) => string | DevExpress.core.UserDefinedElement);
     /**
      * The count of columns in the group layout.
      */
@@ -21110,7 +20786,15 @@ declare module DevExpress.ui {
       /**
        * 
        */
+      readonly itemData?: Item;
+      /**
+       * 
+       */
       readonly rootItem?: DevExpress.core.DxElement;
+      /**
+       * 
+       */
+      readonly submenuContainer?: DevExpress.core.DxElement;
     };
     /**
      * The type of the submenuHiding event handler&apos;s argument.
@@ -21120,7 +20804,15 @@ declare module DevExpress.ui {
         /**
          * 
          */
+        readonly itemData?: Item;
+        /**
+         * 
+         */
         readonly rootItem?: DevExpress.core.DxElement;
+        /**
+         * 
+         */
+        readonly submenuContainer?: DevExpress.core.DxElement;
       };
     /**
      * The type of the submenuShowing event handler&apos;s argument.
@@ -21131,7 +20823,15 @@ declare module DevExpress.ui {
       /**
        * 
        */
+      readonly itemData?: Item;
+      /**
+       * 
+       */
       readonly rootItem?: DevExpress.core.DxElement;
+      /**
+       * 
+       */
+      readonly submenuContainer?: DevExpress.core.DxElement;
     };
     /**
      * The type of the submenuShown event handler&apos;s argument.
@@ -21142,7 +20842,15 @@ declare module DevExpress.ui {
       /**
        * 
        */
+      readonly itemData?: Item;
+      /**
+       * 
+       */
       readonly rootItem?: DevExpress.core.DxElement;
+      /**
+       * 
+       */
+      readonly submenuContainer?: DevExpress.core.DxElement;
     };
   }
   /**
@@ -21751,17 +21459,12 @@ declare module DevExpress.ui {
       contentElement: DevExpress.core.DxElement
     ) => string | DevExpress.core.UserDefinedElement);
     /**
-     * Copies your custom CSS classes from the root element to the wrapper element.
-     * @deprecated Use the wrapperAttr property instead.
-     */
-    copyRootClassesToWrapper?: boolean;
-    /**
      * Specifies whether to render the UI component&apos;s content when it is displayed. If false, the content is rendered immediately.
      */
     deferRendering?: boolean;
     /**
      * Specifies the global attributes to be attached to the UI component&apos;s container element.
-     * @deprecated Use the wrapperAttr option instead.
+     * @deprecated 
      */
     elementAttr?: any;
     /**
@@ -23876,7 +23579,9 @@ declare module DevExpress.ui {
       readonly toComponent?: dxSortable | dxDraggable;
     };
     export type AppointmentDraggingStartEvent = DevExpress.events.Cancelable &
-      AppointmentDraggingEvent;
+      Omit<AppointmentDraggingEvent, 'itemData'> & {
+        itemData?: any;
+      };
     /**
      * The type of the appointmentFormOpening event handler&apos;s argument.
      */
@@ -25799,6 +25504,242 @@ declare module DevExpress.ui {
     visible?: boolean;
   }
   /**
+   * Splitter is a UI component that allows you to divide a page or section into multiple adjustable panes.
+   */
+  export class dxSplitter<
+    TItem extends DevExpress.ui.dxSplitter.ItemLike<TKey> = any,
+    TKey = any
+  > extends CollectionWidget<
+    DevExpress.ui.dxSplitter.Properties<TItem, TKey>,
+    TItem,
+    TKey
+  > { }
+  module dxSplitter {
+    /**
+     * The type of the contentReady event handler&apos;s argument.
+     */
+    export type ContentReadyEvent<
+      TItem extends ItemLike<TKey> = any,
+      TKey = any
+    > = DevExpress.events.EventInfo<dxSplitter<TItem, TKey>>;
+    /**
+     * The type of the disposing event handler&apos;s argument.
+     */
+    export type DisposingEvent<
+      TItem extends ItemLike<TKey> = any,
+      TKey = any
+    > = DevExpress.events.EventInfo<dxSplitter<TItem, TKey>>;
+    export type ExplicitTypes<TItem extends ItemLike<TKey>, TKey> = {
+      Properties: Properties<TItem, TKey>;
+      ContentReadyEvent: ContentReadyEvent<TItem, TKey>;
+      DisposingEvent: DisposingEvent<TItem, TKey>;
+      InitializedEvent: InitializedEvent<TItem, TKey>;
+      ItemClickEvent: ItemClickEvent<TItem, TKey>;
+      ItemContextMenuEvent: ItemContextMenuEvent<TItem, TKey>;
+      ItemRenderedEvent: ItemRenderedEvent<TItem, TKey>;
+      OptionChangedEvent: OptionChangedEvent<TItem, TKey>;
+    };
+    /**
+     * The type of the initialized event handler&apos;s argument.
+     */
+    export type InitializedEvent<
+      TItem extends ItemLike<TKey> = any,
+      TKey = any
+    > = DevExpress.events.InitializedEventInfo<dxSplitter<TItem, TKey>>;
+    /**
+     * The type of the itemClick event handler&apos;s argument.
+     */
+    export type ItemClickEvent<
+      TItem extends ItemLike<TKey> = any,
+      TKey = any
+    > = DevExpress.events.NativeEventInfo<
+      dxSplitter<TItem, TKey>,
+      MouseEvent | PointerEvent
+    > &
+      DevExpress.events.ItemInfo<TItem>;
+    /**
+     * The type of the itemCollapsed event handler&apos;s argument.
+     */
+    export type ItemCollapsedEvent<
+      TItem extends ItemLike<TKey> = any,
+      TKey = any
+    > = DevExpress.events.NativeEventInfo<
+      dxSplitter<TKey>,
+      KeyboardEvent | PointerEvent | MouseEvent | TouchEvent
+    > &
+      DevExpress.events.ItemInfo<TKey>;
+    /**
+     * The type of the itemContextMenu event handler&apos;s argument.
+     */
+    export type ItemContextMenuEvent<
+      TItem extends ItemLike<TKey> = any,
+      TKey = any
+    > = DevExpress.events.NativeEventInfo<
+      dxSplitter<TItem, TKey>,
+      MouseEvent | PointerEvent | TouchEvent
+    > &
+      DevExpress.events.ItemInfo<TItem>;
+    /**
+     * The type of the itemExpanded event handler&apos;s argument.
+     */
+    export type ItemExpandedEvent<
+      TItem extends ItemLike<TKey> = any,
+      TKey = any
+    > = DevExpress.events.NativeEventInfo<
+      dxSplitter<TKey>,
+      KeyboardEvent | PointerEvent | MouseEvent | TouchEvent
+    > &
+      DevExpress.events.ItemInfo<TKey>;
+    /**
+     * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+     */
+    type ItemLike<TKey> = string | Item<TKey> | any;
+    /**
+     * The type of the itemRendered event handler&apos;s argument.
+     */
+    export type ItemRenderedEvent<
+      TItem extends ItemLike<TKey> = any,
+      TKey = any
+    > = DevExpress.events.EventInfo<dxSplitter<TItem, TKey>> &
+      DevExpress.events.ItemInfo<TItem>;
+    /**
+     * The type of the optionChanged event handler&apos;s argument.
+     */
+    export type OptionChangedEvent<
+      TItem extends ItemLike<TKey> = any,
+      TKey = any
+    > = DevExpress.events.EventInfo<dxSplitter<TItem, TKey>> &
+      DevExpress.events.ChangedOptionInfo;
+    export type Properties<
+      TItem extends ItemLike<TKey> = any,
+      TKey = any
+    > = dxSplitterOptions<TItem, TKey>;
+    /**
+     * The type of the resizeEnd event handler&apos;s argument.
+     */
+    export type ResizeEndEvent<TKey = any> = DevExpress.events.Cancelable &
+      DevExpress.events.NativeEventInfo<
+        dxSplitter<TKey>,
+        KeyboardEvent | PointerEvent | MouseEvent | TouchEvent
+      > &
+      ResizeInfo;
+    /**
+     * The type of the resize event handler&apos;s argument.
+     */
+    export type ResizeEvent<TKey = any> = DevExpress.events.Cancelable &
+      DevExpress.events.NativeEventInfo<
+        dxSplitter<TKey>,
+        KeyboardEvent | PointerEvent | MouseEvent | TouchEvent
+      > &
+      ResizeInfo;
+    /**
+     * 
+     * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+     */
+    export interface ResizeInfo {
+      /**
+       * A resize handle element.
+       */
+      readonly handleElement?: DevExpress.core.DxElement;
+    }
+    /**
+     * The type of the resizeStart event handler&apos;s argument.
+     */
+    export type ResizeStartEvent<TKey = any> = DevExpress.events.Cancelable &
+      DevExpress.events.NativeEventInfo<
+        dxSplitter<TKey>,
+        KeyboardEvent | PointerEvent | MouseEvent | TouchEvent
+      > &
+      ResizeInfo;
+  }
+  /**
+   * @deprecated Use Item instead
+   * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
+   */
+  export interface dxSplitterItem<TKey = any> extends CollectionWidgetItem {
+    /**
+     * Specifies a splitter inside an item (pane).
+     */
+    splitter?: DevExpress.ui.dxSplitter.Properties<any, TKey>;
+    /**
+     * Specifies the size of an item (pane) in pixels or as a percentage.
+     */
+    size?: number | string;
+    /**
+     * Specifies the maximum size of an item (pane) in pixels or as a percentage.
+     */
+    maxSize?: number | string;
+    /**
+     * Specifies the minimum size of an item (pane) in pixels or as a percentage.
+     */
+    minSize?: number | string;
+    /**
+     * Specifies the size of a collapsible item (pane) when collapsed in pixels or as a percentage.
+     */
+    collapsedSize?: number | string;
+    /**
+     * Specifies whether an item (pane) is initially collapsed.
+     */
+    collapsed?: boolean;
+    /**
+     * Specifies whether an item (pane) is collapsible.
+     */
+    collapsible?: boolean;
+    /**
+     * Specifies whether an item (pane) is resizable.
+     */
+    resizable?: boolean;
+  }
+  /**
+   * 
+   * @deprecated 
+   */
+  export interface dxSplitterOptions<
+    TItem extends DevExpress.ui.dxSplitter.ItemLike<TKey> = any,
+    TKey = any
+  > extends CollectionWidgetOptions<dxSplitter<TItem, TKey>, TItem, TKey> {
+    /**
+     * Binds the UI component to data.
+     */
+    dataSource?: DevExpress.data.DataSource.DataSourceLike<TItem, TKey> | null;
+    /**
+     * Specifies item orientation (layout).
+     */
+    orientation?: DevExpress.common.Orientation;
+    /**
+     * An array of items (panes) displayed by the UI component.
+     */
+    items?: Array<TItem>;
+    /**
+     * Specifies whether to allow the Splitter to take focus and allow keyboard navigation.
+     */
+    allowKeyboardNavigation?: boolean;
+    /**
+     * Specifies the size of a separator bar in pixels.
+     */
+    separatorSize?: number;
+    /**
+     * A function that is executed each time an item (pane) is resized by one pixel.
+     */
+    onResize?: (e: DevExpress.ui.dxSplitter.ResizeEvent) => void;
+    /**
+     * A function that is called when resizing ends.
+     */
+    onResizeEnd?: (e: DevExpress.ui.dxSplitter.ResizeEndEvent) => void;
+    /**
+     * A function that is called when resizing starts.
+     */
+    onResizeStart?: (e: DevExpress.ui.dxSplitter.ResizeStartEvent) => void;
+    /**
+     * A function that is executed after an item (pane) is expanded.
+     */
+    onItemExpanded?: (e: DevExpress.ui.dxSplitter.ItemExpandedEvent) => void;
+    /**
+     * A function that is executed after an item (pane) is collapsed.
+     */
+    onItemCollapsed?: (e: DevExpress.ui.dxSplitter.ItemCollapsedEvent) => void;
+  }
+  /**
    * The Switch is a UI component that can be in two states: &apos;On&apos; and &apos;Off&apos;.
    */
   export class dxSwitch extends Editor<dxSwitchOptions> {
@@ -26033,7 +25974,8 @@ declare module DevExpress.ui {
    * @deprecated Use Item instead
    * @deprecated Attention! This type is for internal purposes only. If you used it previously, please submit a ticket to our {@link https://supportcenter.devexpress.com/ticket/create Support Center}. We will check if there is an alternative solution.
    */
-  export interface dxTabPanelItem extends DevExpress.ui.dxMultiView.Item {
+  export interface dxTabPanelItem
+    extends Omit<DevExpress.ui.dxMultiView.Item, 'visible'> {
     /**
      * Specifies a badge text for the tab.
      */
@@ -30511,10 +30453,169 @@ declare module DevExpress.ui.dxDataGrid {
   };
 }
 declare module DevExpress.ui.dxDiagram {
+  export type AutoZoomMode = 'fitContent' | 'fitWidth' | 'disabled';
+  export type Command =
+    | 'separator'
+    | 'exportSvg'
+    | 'exportPng'
+    | 'exportJpg'
+    | 'undo'
+    | 'redo'
+    | 'cut'
+    | 'copy'
+    | 'paste'
+    | 'selectAll'
+    | 'delete'
+    | 'fontName'
+    | 'fontSize'
+    | 'bold'
+    | 'italic'
+    | 'underline'
+    | 'fontColor'
+    | 'lineStyle'
+    | 'lineWidth'
+    | 'lineColor'
+    | 'fillColor'
+    | 'textAlignLeft'
+    | 'textAlignCenter'
+    | 'textAlignRight'
+    | 'lock'
+    | 'unlock'
+    | 'sendToBack'
+    | 'bringToFront'
+    | 'insertShapeImage'
+    | 'editShapeImage'
+    | 'deleteShapeImage'
+    | 'connectorLineType'
+    | 'connectorLineStart'
+    | 'connectorLineEnd'
+    | 'layoutTreeTopToBottom'
+    | 'layoutTreeBottomToTop'
+    | 'layoutTreeLeftToRight'
+    | 'layoutTreeRightToLeft'
+    | 'layoutLayeredTopToBottom'
+    | 'layoutLayeredBottomToTop'
+    | 'layoutLayeredLeftToRight'
+    | 'layoutLayeredRightToLeft'
+    | 'fullScreen'
+    | 'zoomLevel'
+    | 'showGrid'
+    | 'snapToGrid'
+    | 'gridSize'
+    | 'units'
+    | 'pageSize'
+    | 'pageOrientation'
+    | 'pageColor'
+    | 'simpleView'
+    | 'toolbox';
+  export type ConnectorLineEnd =
+    | 'none'
+    | 'arrow'
+    | 'outlinedTriangle'
+    | 'filledTriangle';
+  export type ConnectorLineType = 'straight' | 'orthogonal';
+  export type ConnectorPosition = 'start' | 'end';
+  /**
+   * An object that provides information about a custom command in the Diagram UI component.
+   */
+  export type CustomCommand = {
+    /**
+     * Specifies the custom command&apos;s identifier.
+     */
+    name?: string | Command;
+    /**
+     * Specifies the custom command&apos;s text and tooltip text.
+     */
+    text?: string;
+    /**
+     * Specifies the custom command&apos;s icon.
+     */
+    icon?: string;
+    /**
+     * Lists command sub items.
+     */
+    items?: Array<CustomCommand | Command>;
+    /**
+     * Specifies a location for the command or separator on the main toolbar.
+     */
+    location?: DevExpress.common.ToolbarItemLocation;
+  };
+  export type DataLayoutType = 'auto' | 'off' | 'tree' | 'layered';
+  export type DiagramExportFormat = 'svg' | 'png' | 'jpg';
   /**
    * An object that provides information about an item (shape or connector) in the Diagram UI component.
    */
   export type Item = dxDiagramItem;
+  export type ItemType = 'shape' | 'connector';
+  export type ModelOperation =
+    | 'addShape'
+    | 'addShapeFromToolbox'
+    | 'deleteShape'
+    | 'deleteConnector'
+    | 'changeConnection'
+    | 'changeConnectorPoints'
+    | 'beforeChangeShapeText'
+    | 'changeShapeText'
+    | 'beforeChangeConnectorText'
+    | 'changeConnectorText'
+    | 'resizeShape'
+    | 'moveShape';
+  export type PanelVisibility = 'auto' | 'visible' | 'collapsed' | 'disabled';
+  export type RequestEditOperationReason =
+    | 'checkUIElementAvailability'
+    | 'modelModification';
+  export type ShapeCategory =
+    | 'general'
+    | 'flowchart'
+    | 'orgChart'
+    | 'containers'
+    | 'custom';
+  export type ShapeType =
+    | 'text'
+    | 'rectangle'
+    | 'ellipse'
+    | 'cross'
+    | 'triangle'
+    | 'diamond'
+    | 'heart'
+    | 'pentagon'
+    | 'hexagon'
+    | 'octagon'
+    | 'star'
+    | 'arrowLeft'
+    | 'arrowTop'
+    | 'arrowRight'
+    | 'arrowBottom'
+    | 'arrowNorthSouth'
+    | 'arrowEastWest'
+    | 'process'
+    | 'decision'
+    | 'terminator'
+    | 'predefinedProcess'
+    | 'document'
+    | 'multipleDocuments'
+    | 'manualInput'
+    | 'preparation'
+    | 'data'
+    | 'database'
+    | 'hardDisk'
+    | 'internalStorage'
+    | 'paperTape'
+    | 'manualOperation'
+    | 'delay'
+    | 'storedData'
+    | 'display'
+    | 'merge'
+    | 'connector'
+    | 'or'
+    | 'summingJunction'
+    | 'verticalContainer'
+    | 'horizontalContainer'
+    | 'cardWithImageOnLeft'
+    | 'cardWithImageOnTop'
+    | 'cardWithImageOnRight';
+  export type ToolboxDisplayMode = 'icons' | 'texts';
+  export type Units = 'in' | 'cm' | 'px';
 }
 declare module DevExpress.ui.dxDropDownButton {
   export type Item = dxDropDownButtonItem;
@@ -30584,6 +30685,9 @@ declare module DevExpress.ui.dxPopup {
 }
 declare module DevExpress.ui.dxResponsiveBox {
   export type Item = dxResponsiveBoxItem;
+}
+declare module DevExpress.ui.dxSplitter {
+  export type Item<TKey = any> = dxSplitterItem<TKey>;
 }
 declare module DevExpress.ui.dxTabPanel {
   export type Item = dxTabPanelItem;
@@ -41931,7 +42035,7 @@ declare module DevExpress.viz {
    * Allows you to export UI components using their SVG markup.
    */
   export function exportFromMarkup(
-    markup: string,
+    markup: string | DevExpress.core.UserDefinedElement,
     options: {
       fileName?: string;
       format?: string;
@@ -43082,4 +43186,55 @@ declare module DevExpress.ui.dxDataGrid {
   /** @deprecated Use DevExpress.ui.dxDataGrid.EditingTexts instead */
   export type EditingTextsBase = DevExpress.ui.dxDataGrid.EditingTexts;
 
+}
+
+// v24.1
+
+declare module DevExpress.ui {
+  /** @deprecated DevExpress.ui.dxDiagram.CustomCommand instead */
+  export type dxDiagramCustomCommand = DevExpress.ui.dxDiagram.CustomCommand;
+}
+
+declare module DevExpress.ui.dxDiagram {
+  /** @deprecated Use DevExpress.ui.dxDiagram.AutoZoomMode instead */
+  export type DiagramAutoZoomMode = DevExpress.ui.dxDiagram.AutoZoomMode;
+
+  /** @deprecated Use DevExpress.ui.dxDiagram.Command instead */
+  export type DiagramCommand = DevExpress.ui.dxDiagram.Command;
+
+  /** @deprecated Use DevExpress.ui.dxDiagram.ConnectorLineEnd instead */
+  export type DiagramConnectorLineEnd = DevExpress.ui.dxDiagram.ConnectorLineEnd;
+
+  /** @deprecated Use DevExpress.ui.dxDiagram.ConnectorLineType instead */
+  export type DiagramConnectorLineType = DevExpress.ui.dxDiagram.ConnectorLineType;
+
+  /** @deprecated Use DevExpress.ui.dxDiagram.ConnectorPosition instead */
+  export type DiagramConnectorPosition = DevExpress.ui.dxDiagram.ConnectorPosition;
+
+  /** @deprecated Use DevExpress.ui.dxDiagram.DataLayoutType instead */
+  export type DiagramDataLayoutType = DevExpress.ui.dxDiagram.DataLayoutType;
+
+  /** @deprecated Use DevExpress.ui.dxDiagram.ItemType instead */
+  export type DiagramItemType = DevExpress.ui.dxDiagram.ItemType;
+
+  /** @deprecated Use DevExpress.ui.dxDiagram.ModelOperation instead */
+  export type DiagramModelOperation = DevExpress.ui.dxDiagram.ModelOperation;
+
+  /** @deprecated Use DevExpress.ui.dxDiagram.PanelVisibility instead */
+  export type DiagramPanelVisibility = DevExpress.ui.dxDiagram.PanelVisibility;
+
+  /** @deprecated Use DevExpress.ui.dxDiagram.RequestEditOperationReason instead */
+  export type DiagramRequestEditOperationReason = DevExpress.ui.dxDiagram.RequestEditOperationReason;
+
+  /** @deprecated Use DevExpress.ui.dxDiagram.ShapeCategory instead */
+  export type DiagramShapeCategory = DevExpress.ui.dxDiagram.ShapeCategory;
+
+  /** @deprecated Use DevExpress.ui.dxDiagram.ShapeType instead */
+  export type DiagramShapeType = DevExpress.ui.dxDiagram.ShapeType;
+
+  /** @deprecated Use DevExpress.ui.dxDiagram.ToolboxDisplayMode instead */
+  export type DiagramToolboxDisplayMode = DevExpress.ui.dxDiagram.ToolboxDisplayMode;
+
+  /** @deprecated Use DevExpress.ui.dxDiagram.Units instead */
+  export type DiagramUnits = DevExpress.ui.dxDiagram.Units;
 }

@@ -6,82 +6,6 @@ export class ComponentInstanceModel<T> {
     private ARRAY_COMPONENTS_FUNCTIONS: Array<FunctionProps> = [];
     private dataObject: T;
 
-    addInstance = (instanceProps: InstanceProps) => {
-        this.ARRAY_COMPONENTS_INSTANCES.push(instanceProps);
-    }
-
-    getInstanceProps = (tagName: string): InstanceProps => {
-        let value = this.ARRAY_COMPONENTS_INSTANCES.find(VALUE => VALUE.getTagName() == tagName);
-        if (!value) {
-            throw new Error(`[ERRO]-[ComponentInstanceModel] instancia com tagName '${tagName} não encontrada'.`);
-        }
-        return value;
-    }
-
-    getInstanceValue = (tagName: string) => {
-        let instance = this.getInstanceProps(tagName);
-        return instance.getInstanceValue();
-    }
-
-    setInstanceValue = (tagName: string, value: any): void => {
-        let instance = this.getInstanceProps(tagName);
-        instance.setInstanceValue(value);
-    }
-
-    clearInstanceValue = (tagName: string): void => {
-        let instance = this.getInstanceProps(tagName);
-        instance.clearInstanceValue();
-    }
-
-    disableEnableInstance = (tagName: string, valueParam: boolean): void => {
-        let instance = this.getInstanceProps(tagName);
-        instance.disableEnableInstance(valueParam);
-    }
-
-    disableInstance = (tagName: string): void => {
-        let instance = this.getInstanceProps(tagName);
-        instance.disableInstance();
-    }
-
-    enableInstance = (tagName: string): void => {
-        let instance = this.getInstanceProps(tagName);
-        instance.enableInstance();
-    }
-
-    setVisibleInvisibleInstance = (tagName: string, valueParam?: boolean): void => {
-        let instance = this.getInstanceProps(tagName);
-        instance.setVisibleInvisibleInstance(valueParam);
-    }
-
-    setInvisibleInstance = (tagName: string) => {
-        let instance = this.getInstanceProps(tagName);
-        instance.setInvisibleInstance();
-    }
-
-    setVisibleInstance = (tagName: string) => {
-        let instance = this.getInstanceProps(tagName);
-        instance.setVisibleInstance();
-    }
-
-    getBuiltObject = (): T => {
-        let data: any = this.dataObject;
-        for (let KEY of Object.keys(data)) {
-            data[KEY] = this.getInstanceValue(KEY);
-        }
-        return data;
-    }
-
-    setBuiltObject = (dataObject: T) => {
-        let data: any = dataObject;
-        for (let KEY of Object.keys(data)) {
-            this.setInstanceValue(KEY, data[KEY]);
-        }
-    }
-
-    addFunction = (functionProps: FunctionProps) => {
-        this.ARRAY_COMPONENTS_FUNCTIONS.push(functionProps);
-    }
-
     private getFullFunctionDefinition = (tagName: string) => {
         let result = this.ARRAY_COMPONENTS_FUNCTIONS.find(VALUE => VALUE.tagName == tagName);
         if (!result) {
@@ -107,13 +31,134 @@ export class ComponentInstanceModel<T> {
         }
     }
 
-    getFunction = (tagName: string, functionName?: string) => {
+    private removeInstance = (tagName: string) => {
+        this.ARRAY_COMPONENTS_INSTANCES = this.ARRAY_COMPONENTS_INSTANCES.filter(VALUE => VALUE.getTagName() != tagName);
+    }
+
+    public addInstance = (instanceProps: InstanceProps) => {
+        this.ARRAY_COMPONENTS_INSTANCES.push(instanceProps);
+    }
+
+    public getInstanceProps = (tagName: string): InstanceProps => {
+        let value = this.ARRAY_COMPONENTS_INSTANCES.find(VALUE => VALUE.getTagName() == tagName);
+        if (!value) {
+            throw new Error(`[ERRO]-[ComponentInstanceModel] instancia com tagName '${tagName} não encontrada'.`);
+        }
+        return value;
+    }
+
+    public tryGetInstanceProps = (tagName: string): (InstanceProps | undefined) => {
+        try {
+            return this.getInstanceProps(tagName);
+        } catch (err) {
+            return;
+        }
+    }
+
+    public getInstanceValue = (tagName: string) => {
+        let instance = this.getInstanceProps(tagName);
+        return instance.getInstanceValue();
+    }
+
+    public setInstanceValue = (tagName: string, value: any): void => {
+        let instance = this.getInstanceProps(tagName);
+        instance.setInstanceValue(value);
+    }
+
+    public clearInstanceValue = (tagName: string): void => {
+        let instance = this.getInstanceProps(tagName);
+        instance.clearInstanceValue();
+    }
+
+    public disableEnableInstance = (tagName: string, valueParam: boolean): void => {
+        let instance = this.getInstanceProps(tagName);
+        instance.disableEnableInstance(valueParam);
+    }
+
+    public disableInstance = (tagName: string): void => {
+        let instance = this.getInstanceProps(tagName);
+        instance.disableInstance();
+    }
+
+    public enableInstance = (tagName: string): void => {
+        let instance = this.getInstanceProps(tagName);
+        instance.enableInstance();
+    }
+
+    public setVisibleInvisibleInstance = (tagName: string, valueParam?: boolean): void => {
+        let instance = this.getInstanceProps(tagName);
+        instance.setVisibleInvisibleInstance(valueParam);
+    }
+
+    public setInvisibleInstance = (tagName: string) => {
+        let instance = this.getInstanceProps(tagName);
+        instance.setInvisibleInstance();
+    }
+
+    public setVisibleInstance = (tagName: string) => {
+        let instance = this.getInstanceProps(tagName);
+        instance.setVisibleInstance();
+    }
+
+    public getBuiltObject = (): T => {
+        let data: any = this.dataObject;
+        for (let KEY of Object.keys(data)) {
+            data[KEY] = this.getInstanceValue(KEY);
+        }
+        return data;
+    }
+
+    public setBuiltObject = (dataObject: T) => {
+        let data: any = dataObject;
+        for (let KEY of Object.keys(data)) {
+            this.setInstanceValue(KEY, data[KEY]);
+        }
+    }
+
+    public addFunction = (functionProps: FunctionProps) => {
+        this.ARRAY_COMPONENTS_FUNCTIONS.push(functionProps);
+    }
+
+    public getFunction = (tagName: string, functionName?: string) => {
         if (functionName) {
             return this.getFunctionIntances(tagName, functionName);
         } else {
             return this.getFullFunctionDefinition(tagName);
         }
 
+    }
+
+    public disposeInstance = (tagName: string) => {
+        let instanceProps = this.getInstanceProps(tagName);
+        let instance: any = instanceProps?.getInstance()
+        try {
+            instance.dispose();
+        } catch { }
+        this.removeInstance(tagName);
+    }
+
+    public disposeAllInstances = () => {
+        this.ARRAY_COMPONENTS_INSTANCES.forEach(VALUE => {
+            this.disposeInstance(VALUE.getTagName());
+        })
+    }
+
+    public repaint = (tagName: string) => {
+        let instanceProps = this.getInstanceProps(tagName);
+        let instance: any = instanceProps?.getInstance();
+        try {
+            instance.repaint();
+        } catch (e) { }
+    }
+
+    public repaintAllInstances = () => {
+        this.ARRAY_COMPONENTS_INSTANCES.forEach(VALUE => {
+            this.repaint(VALUE.getTagName())
+        });
+    }
+
+    public existInstance = (tagName: string): boolean => {
+        return !!this.ARRAY_COMPONENTS_INSTANCES.find(VALUE => VALUE.getTagName() == tagName);
     }
 
     constructor(dataObject: T) {
