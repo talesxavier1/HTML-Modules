@@ -20,26 +20,29 @@ jobs:
         steps:
             - name: Check out the repository
               uses: actions/checkout@v2
-
-            # - name: Set up Node.js
-            #   uses: actions/setup-node@v2
-            #   with:
-            #     node-version: '18.18.0'
-
-            # - name: Install dependencies
-            #   run: npm install
-        
-            # - name: RUN WEBPACK
-            #   run: npx webpack --mode=production
-            
+          
             - name: Set up Docker
               uses: docker/setup-buildx-action@v2
 
             - name: RUN Docker Build
-              run: docker build --rm -f "DockerFile" -t typescripteditor:latest "." 
+              run: |
+                if [ ${{github.ref}} == "refs/heads/dev" ]; then
+                  docker build --rm -f "DockerFile" -t image-typescripteditor-dev:latest "."
+                elif [ ${{github.ref}} == "refs/heads/main" ]; then
+                  docker build --rm -f "DockerFile" -t image-typescripteditor-prod:latest "."
+                else
+                  docker save -o image-typescripteditor.tar image-typescripteditor:latest "."
+                fi
             
             - name: Save docker image
-              run: docker save -o typescripteditor.tar typescripteditor:latest
+              run: |
+                if [ ${{github.ref}} == "refs/heads/dev" ]; then
+                  docker save -o image-typescripteditor-dev.tar image-typescripteditor-dev:latest
+                elif [ ${{github.ref}} == "refs/heads/main" ]; then
+                  docker save -o image-typescripteditor-prod.tar image-typescripteditor-prod:latest
+                else
+                  docker save -o image-typescripteditor.tar image-typescripteditor:latest
+                fi
 
             - name: Install sshpass
               run: sudo apt-get install -y sshpass
@@ -57,41 +60,49 @@ jobs:
                 sshpass -p '${{env.SSH_PASSWORD}}' ssh -v -o StrictHostKeyChecking=no ${{env.SSH_USERNAME}}@${{env.VM_IP}} <<'ENDSSH'
                 rm -rf ${{env.VM_PROD_PATH}}/*
                 ENDSSH
-
-            - name: Print current directory
-              run: ls
-
+                
             - name: (DEV) Move new tar
               if: ${{ github.ref == 'refs/heads/dev' }} 
               run: |
-                  sshpass -p '${{env.SSH_PASSWORD}}' scp -v -o StrictHostKeyChecking=no -r typescripteditor.tar ${{env.SSH_USERNAME}}@${{env.VM_IP}}:${{env.VM_DEV_PATH}}
+                  sshpass -p '${{env.SSH_PASSWORD}}' scp -v -o StrictHostKeyChecking=no -r *.tar ${{env.SSH_USERNAME}}@${{env.VM_IP}}:${{env.VM_DEV_PATH}}
             
             - name: (PROD) Move new tar
               if: ${{ github.ref == 'refs/heads/main' }}  
               run: |
-                  sshpass -p '${{env.SSH_PASSWORD}}' scp -v -o StrictHostKeyChecking=no -r typescripteditor.tar ${{env.SSH_USERNAME}}@${{env.VM_IP}}:${{env.VM_PROD_PATH}}
+                  sshpass -p '${{env.SSH_PASSWORD}}' scp -v -o StrictHostKeyChecking=no -r *.tar ${{env.SSH_USERNAME}}@${{env.VM_IP}}:${{env.VM_PROD_PATH}}
 
+            - name: (DEV) Drop Current container
+              if: ${{ github.ref == 'refs/heads/dev' }}
+              run: |
+                sshpass -p '${{env.SSH_PASSWORD}}' ssh -v -o StrictHostKeyChecking=no ${{env.SSH_USERNAME}}@${{env.VM_IP}} <<'ENDSSH'
+                docker stop typescripteditor-dev
+                docker rm typescripteditor-dev
+                docker rmi image-typescripteditor-dev
+                ENDSSH
 
-            # - name: (DEV) Remove current dist
-            #   if: github.event_name == 'push' && github.ref == 'refs/heads/dev'
-            #   run: |
-            #    sshpass -p '${{env.SSH_PASSWORD}}' ssh -v -o StrictHostKeyChecking=no ${{env.SSH_USERNAME}}@${{env.VM_IP}} <<'ENDSSH'
-            #    rm -rf ${{env.VM_DEV_PATH}}/*
-            #    ENDSSH
+            - name: (PROD) Drop Current container
+              if: ${{ github.ref == 'refs/heads/main' }}
+              run: |
+                sshpass -p '${{env.SSH_PASSWORD}}' ssh -v -o StrictHostKeyChecking=no ${{env.SSH_USERNAME}}@${{env.VM_IP}} <<'ENDSSH'
+                docker stop typescripteditor-prod
+                docker rm typescripteditor-prod
+                docker rmi image-typescripteditor-prod
+                ENDSSH
 
-            # - name: (PROD) Remove current dist
-            #   if: github.event_name == 'pull_request' && github.base_ref == 'main'
-            #   run: |
-            #     sshpass -p '${{env.SSH_PASSWORD}}' ssh -v -o StrictHostKeyChecking=no ${{env.SSH_USERNAME}}@${{env.VM_IP}} <<'ENDSSH'
-            #     rm -rf ${{env.VM_PROD_PATH}}/*
-            #     ENDSSH
-                           
-            # - name: (DEV) Move new dist
-            #   if: github.event_name == 'push' && github.ref == 'refs/heads/dev'
-            #   run: |
-            #       sshpass -p '${{env.SSH_PASSWORD}}' scp -v -o StrictHostKeyChecking=no -r dist ${{env.SSH_USERNAME}}@${{env.VM_IP}}:${{env.VM_DEV_PATH}}
-            
-            # - name: (PROD) Move new dist
-            #   if: github.event_name == 'pull_request' && github.base_ref == 'main'
-            #   run: |
-            #       sshpass -p '${{env.SSH_PASSWORD}}' scp -v -o StrictHostKeyChecking=no -r dist ${{env.SSH_USERNAME}}@${{env.VM_IP}}:${{env.VM_PROD_PATH}}
+            - name: (DEV) Up new container
+              if: ${{ github.ref == 'refs/heads/dev' }}
+              run: |
+                sshpass -p '${{env.SSH_PASSWORD}}' ssh -v -o StrictHostKeyChecking=no ${{env.SSH_USERNAME}}@${{env.VM_IP}} <<'ENDSSH'
+                cd ${{env.VM_DEV_PATH}}/
+                docker load < image-typescripteditor-dev.tar
+                docker run -d --name typescripteditor-dev -p 2000:80 image-typescripteditor-dev
+                ENDSSH
+
+            - name: (PROD) Up new container
+              if: ${{ github.ref == 'refs/heads/main' }}
+              run: |
+                sshpass -p '${{env.SSH_PASSWORD}}' ssh -v -o StrictHostKeyChecking=no ${{env.SSH_USERNAME}}@${{env.VM_IP}} <<'ENDSSH'
+                cd ${{env.VM_PROD_PATH}}/
+                docker load < image-typescripteditor-prod.tar
+                docker run -d --name typescripteditor-dev -p 2000:80 image-typescripteditor-prod
+                ENDSSH
