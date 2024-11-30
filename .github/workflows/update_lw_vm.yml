@@ -24,85 +24,81 @@ jobs:
             - name: Set up Docker
               uses: docker/setup-buildx-action@v2
 
-            - name: RUN Docker Build
+
+            - name: Build and save docker tar.
               run: |
-                if [ ${{github.ref}} == "refs/heads/dev" ]; then
-                  docker build --rm -f "DockerFile" -t image-typescripteditor-dev:latest "."
-                elif [ ${{github.ref}} == "refs/heads/main" ]; then
-                  docker build --rm -f "DockerFile" -t image-typescripteditor-prod:latest "."
-                else
-                  docker save -o image-typescripteditor.tar image-typescripteditor:latest "."
-                fi
-            
-            - name: Save docker image
-              run: |
-                if [ ${{github.ref}} == "refs/heads/dev" ]; then
-                  docker save -o image-typescripteditor-dev.tar image-typescripteditor-dev:latest
-                elif [ ${{github.ref}} == "refs/heads/main" ]; then
-                  docker save -o image-typescripteditor-prod.tar image-typescripteditor-prod:latest
-                else
-                  docker save -o image-typescripteditor.tar image-typescripteditor:latest
-                fi
+                # $1 -> "refs/heads/dev" | "refs/heads/main"
+                main () {
+                  if [ $1 == "refs/heads/dev" ]; then
+                    docker build --rm -f "DockerFile" -t image-typescripteditor-dev:latest "."
+                    docker save -o image-typescripteditor-dev.tar image-typescripteditor-dev:latest
+                  elif [ $1 == "refs/heads/main" ]; then
+                    docker build --rm -f "DockerFile" -t image-typescripteditor-prod:latest "."
+                    docker save -o image-typescripteditor-prod.tar image-typescripteditor-prod:latest
+                  else
+                    docker build --rm -f "DockerFile" -t image-typescripteditor:latest "."
+                    docker save -o image-typescripteditor.tar image-typescripteditor:latest "."
+                  fi
+                }
+                main ${{github.ref}} 
 
             - name: Install sshpass
               run: sudo apt-get install -y sshpass
             
-            - name: (DEV) Remove current tar
-              if: ${{ github.ref == 'refs/heads/dev' }}   
+            - name: Remove current tar.
               run: |
                 sshpass -p '${{env.SSH_PASSWORD}}' ssh -v -o StrictHostKeyChecking=no ${{env.SSH_USERNAME}}@${{env.VM_IP}} <<'ENDSSH'
-                rm -rf ${{env.VM_DEV_PATH}}/*
+                # $1 -> "refs/heads/dev" | "refs/heads/main"
+                main () {
+                  if [ $1 == "refs/heads/dev" ]; then
+                    rm -rf ${{env.VM_DEV_PATH}}/*
+
+                  elif [ $1 == "refs/heads/main" ]; then
+                    rm -rf ${{env.VM_PROD_PATH}}/*
+
+                  fi
+                }
+                main ${{github.ref}} 
                 ENDSSH
 
-            - name: (PROD) Remove current tar
-              if: ${{ github.ref == 'refs/heads/main' }}   
+            - name: Move new tar
               run: |
-                sshpass -p '${{env.SSH_PASSWORD}}' ssh -v -o StrictHostKeyChecking=no ${{env.SSH_USERNAME}}@${{env.VM_IP}} <<'ENDSSH'
-                rm -rf ${{env.VM_PROD_PATH}}/*
-                ENDSSH
-                
-            - name: (DEV) Move new tar
-              if: ${{ github.ref == 'refs/heads/dev' }} 
-              run: |
-                  sshpass -p '${{env.SSH_PASSWORD}}' scp -v -o StrictHostKeyChecking=no -r *.tar ${{env.SSH_USERNAME}}@${{env.VM_IP}}:${{env.VM_DEV_PATH}}
-            
-            - name: (PROD) Move new tar
-              if: ${{ github.ref == 'refs/heads/main' }}  
-              run: |
-                  sshpass -p '${{env.SSH_PASSWORD}}' scp -v -o StrictHostKeyChecking=no -r *.tar ${{env.SSH_USERNAME}}@${{env.VM_IP}}:${{env.VM_PROD_PATH}}
+                # $1 -> "refs/heads/dev" | "refs/heads/main"
+                main () {
+                  if [ $1 == "refs/heads/dev" ]; then
+                    sshpass -p '${{env.SSH_PASSWORD}}' scp -v -o StrictHostKeyChecking=no -r *.tar ${{env.SSH_USERNAME}}@${{env.VM_IP}}:${{env.VM_DEV_PATH}}
+                  elif [ $1 == "refs/heads/main" ]; then
+                    sshpass -p '${{env.SSH_PASSWORD}}' scp -v -o StrictHostKeyChecking=no -r *.tar ${{env.SSH_USERNAME}}@${{env.VM_IP}}:${{env.VM_PROD_PATH}}
+                  fi
+                }
+                main ${{github.ref}} 
 
-            - name: (DEV) Drop Current container
-              if: ${{ github.ref == 'refs/heads/dev' }}
+            - name: Drop Current container and up new
               run: |
+                # $1 -> "refs/heads/dev" | "refs/heads/main"
                 sshpass -p '${{env.SSH_PASSWORD}}' ssh -v -o StrictHostKeyChecking=no ${{env.SSH_USERNAME}}@${{env.VM_IP}} <<'ENDSSH'
-                docker stop typescripteditor-dev
-                docker rm typescripteditor-dev
-                docker rmi image-typescripteditor-dev
-                ENDSSH
+                main () {
+                  if [ $1 == "refs/heads/dev" ]; then
+                    # DROP DEV
+                    docker stop typescripteditor-dev || true
+                    docker rm typescripteditor-dev || true
+                    docker rmi image-typescripteditor-dev || true
 
-            - name: (PROD) Drop Current container
-              if: ${{ github.ref == 'refs/heads/main' }}
-              run: |
-                sshpass -p '${{env.SSH_PASSWORD}}' ssh -v -o StrictHostKeyChecking=no ${{env.SSH_USERNAME}}@${{env.VM_IP}} <<'ENDSSH'
-                docker stop typescripteditor-prod
-                docker rm typescripteditor-prod
-                docker rmi image-typescripteditor-prod
-                ENDSSH
+                    # UP DEV
+                    cd ${{env.VM_DEV_PATH}}/
+                    docker load < image-typescripteditor-dev.tar
+                    docker run -d --name typescripteditor-dev -p 2000:80 image-typescripteditor-dev
 
-            - name: (DEV) Up new container
-              if: ${{ github.ref == 'refs/heads/dev' }}
-              run: |
-                sshpass -p '${{env.SSH_PASSWORD}}' ssh -v -o StrictHostKeyChecking=no ${{env.SSH_USERNAME}}@${{env.VM_IP}} <<'ENDSSH'
-                cd ${{env.VM_DEV_PATH}}/
-                docker load < image-typescripteditor-dev.tar
-                docker run -d --name typescripteditor-dev -p 2000:80 image-typescripteditor-dev
-                ENDSSH
-
-            - name: (PROD) Up new container
-              if: ${{ github.ref == 'refs/heads/main' }}
-              run: |
-                sshpass -p '${{env.SSH_PASSWORD}}' ssh -v -o StrictHostKeyChecking=no ${{env.SSH_USERNAME}}@${{env.VM_IP}} <<'ENDSSH'
-                cd ${{env.VM_PROD_PATH}}/
-                docker load < image-typescripteditor-prod.tar
-                docker run -d --name typescripteditor-dev -p 2000:80 image-typescripteditor-prod
+                  elif [ $1 == "refs/heads/main" ]; then
+                    # DROP PROD
+                    docker stop typescripteditor-prod || true
+                    docker rm typescripteditor-prod || true
+                    docker rmi image-typescripteditor-prod || true
+                    # UP PROD
+                    cd ${{env.VM_PROD_PATH}}/
+                    docker load < image-typescripteditor-prod.tar
+                    docker run -d --name typescripteditor-dev -p 2000:80 image-typescripteditor-prod
+                  fi
+                }
+                main ${{github.ref}} 
                 ENDSSH
