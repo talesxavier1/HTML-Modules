@@ -38,8 +38,8 @@ jobs:
                     docker save -o image-typescripteditor.tar image-typescripteditor:latest "."
                   fi
                 }
-                echo ">>>>>>>>>>>>>>>>>>>>>> ${{github.head_ref}}"
-                main ${{github.head_ref}} 
+                echo ">>>>>>>>>>>>>>>>>>>>>> ${{github.base_ref}}"
+                main ${{github.base_ref}} 
 
             - name: Install sshpass
               run: sudo apt-get install -y sshpass
@@ -57,7 +57,7 @@ jobs:
 
                   fi
                 }
-                main ${{github.head_ref}} 
+                main ${{github.base_ref}} 
                 ENDSSH
 
             - name: Move new tar
@@ -70,7 +70,7 @@ jobs:
                     sshpass -p '${{env.SSH_PASSWORD}}' scp -v -o StrictHostKeyChecking=no -r *.tar ${{env.SSH_USERNAME}}@${{env.VM_IP}}:${{env.VM_PROD_PATH}}
                   fi
                 }
-                main ${{github.head_ref}} 
+                main ${{github.base_ref}} 
 
             - name: Drop Current container and up new
               run: |
@@ -99,5 +99,5 @@ jobs:
                     docker run -d --name typescripteditor-dev -p 2000:80 image-typescripteditor-prod
                   fi
                 }
-                main ${{github.head_ref}} 
+                main ${{github.base_ref}} 
                 ENDSSH
