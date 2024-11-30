@@ -96,7 +96,7 @@ jobs:
                     # UP PROD
                     cd ${{env.VM_PROD_PATH}}/
                     docker load < image-typescripteditor-prod.tar
-                    docker run -d --name typescripteditor-dev -p 2000:80 image-typescripteditor-prod
+                    docker run -d --name typescripteditor-prod -p 2001:80 image-typescripteditor-prod
                   fi
                 }
                 main ${{github.base_ref}} 
