@@ -40,7 +40,7 @@ jobs:
                     docker save -o image-typescripteditor.tar image-typescripteditor:latest "."
                   fi
                 }
-                echo >>>>>>>>>>>>>>>>>>>>>> ${{github.ref}}
+                echo ">>>>>>>>>>>>>>>>>>>>>> ${{github.ref}}"
                 main ${{github.ref}} 
 
             - name: Install sshpass
