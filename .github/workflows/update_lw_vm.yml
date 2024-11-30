@@ -13,7 +13,7 @@ jobs:
         env:
           SSH_USERNAME: ${{ secrets.LW_VM001_USER_NAME }}
           SSH_PASSWORD: ${{ secrets.LW_VM001_USER_PASSD }}
-          VM_IP: ${{ vars.LOCAL_WEB_IP_VM_001 }}
+          VM_IP: ${{ secrets.LOCAL_WEB_IP_VM_001 }}
           VM_DEV_PATH: ${{ vars.LOCAL_WEB_DEV_PATH_MV_001 }}
           VM_PROD_PATH: ${{vars.LOCAL_WEB_PROD_PATH_MV_001}}
 
