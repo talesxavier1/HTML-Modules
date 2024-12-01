@@ -14,7 +14,9 @@ jobs:
           VM_IP: ${{ secrets.LOCAL_WEB_IP_VM_001 }}
           VM_DEV_PATH: ${{ vars.LOCAL_WEB_DEV_PATH_MV_001 }}
           VM_PROD_PATH: ${{vars.LOCAL_WEB_PROD_PATH_MV_001}}
-
+          VM_MAC: ${{ secrets.LOCAL_WEB_MAC_VM_001 }}
+          VM_INT_IP: ${{secrets.LOCAL_WEB_INT_IP_VM_001}}
+          
         steps:
             - name: Check out the repository
               uses: actions/checkout@v2
