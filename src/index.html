@@ -17,18 +17,23 @@
 </head>
 
 <body class="dx-viewport">
-    <!-- <div class="btns_teste" style="display: none;"> -->
-    <div class="btns_teste">
+    <div class="btns_teste" style="display: none;">
         <div id="botao01"></div>
         <div id="botao02"></div>
         <div id="botao03"></div>
     </div>
+    <div id="txtPass"></div>
+    <div id="btnConfirm"></div>
+
     <div id="globalLoadIndicator"></div>
     <div id="splitter"></div>
+    <script>
+        //localStorage.setItem("FILE_MANAGEMENT_BASE_API", "https://lw001tallesandrade.ddns.net/storageInterface/dev");
+        localStorage.setItem("FILE_MANAGEMENT_BASE_API", "http://localhost:9090");
 
+    </script>
     <!-- <script data-env="prod" type="module" src="./index.js"></script> -->
     <script data-env="dev" type="module" src="./dist/index.js"></script>
-
 </body>
 
 </html>

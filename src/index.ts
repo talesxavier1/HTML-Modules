@@ -9,7 +9,6 @@ import optionsHTML from "./html/Splitter/Options.html";
 import DIAGRAM_DATA from "./Data/DIAGRAM_DATA.json";
 import DIAGRAM_PROPS from "./Data/DIAGRAM_PROPS.json"
 
-
 let splitter: Splitter;
 let diagram: Diagram;
 let optionsUI: OptionsUI;
@@ -39,7 +38,12 @@ const main = async (): Promise<void> => {
     }
 }
 
-$(() => {
+
+
+$(async () => {
     main();
 })
+
+
+
 
