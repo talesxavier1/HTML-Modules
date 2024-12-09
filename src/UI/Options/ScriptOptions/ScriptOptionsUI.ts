@@ -16,6 +16,7 @@ export class ScriptOptionsUI implements IOptionUI {
     private data: ScriptModel;
     public optionsHTMLContainer: string;
     private tempDirID: string | undefined;
+    private FILE_MANAGEMENT_BASE_API: string = localStorage.getItem("FILE_MANAGEMENT_BASE_API") ?? "";
 
     getData = async () => {
         let newPackageVersionID = await this.pubTempDir();
@@ -28,7 +29,7 @@ export class ScriptOptionsUI implements IOptionUI {
     };
 
     private clearTempDir = async () => {
-        let url = "http://localhost:9090/file-manager/?command={0}&arguments={1}";
+        let url = `${this.FILE_MANAGEMENT_BASE_API}/file-manager/?command={0}&arguments={1}`;
         url = url.replace("{0}", "ClearTempDir");
         url = url.replace("{1}", "{}");
 
@@ -48,7 +49,7 @@ export class ScriptOptionsUI implements IOptionUI {
     }
 
     private pubTempDir = async (): Promise<string> => {
-        let url = "http://localhost:9090/file-manager/?command={0}&arguments={1}";
+        let url = `${this.FILE_MANAGEMENT_BASE_API}/file-manager/?command={0}&arguments={1}`;
         url = url.replace("{0}", "PubTempDir");
         url = url.replace("{1}", "{}");
 
@@ -129,7 +130,8 @@ export class ScriptOptionsUI implements IOptionUI {
         }));
 
         const provider = new DevExpress.fileManagement.RemoteFileSystemProvider({
-            endpointUrl: 'http://localhost:9090/file-manager/',
+            endpointUrl: `${this.FILE_MANAGEMENT_BASE_API}/file-manager/`,
+            //endpointUrl: 'http://localhost:9090/file-manager/',
             //endpointUrl: 'https://js.devexpress.com/Demos/Mvc/api/file-manager-file-system-scripts',
             beforeAjaxSend: (options) => {
                 options.headers.processID = data.processID;

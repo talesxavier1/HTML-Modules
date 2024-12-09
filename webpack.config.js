@@ -37,7 +37,8 @@ module.exports = (env, argv) => {
                             presets: [
                                 '@babel/preset-env',
                                 '@babel/preset-typescript'
-                            ]
+                            ],
+                            // sourceMaps: true,
                         }
                     }
                 },
@@ -87,11 +88,8 @@ module.exports = (env, argv) => {
                     },
 
                 ]
-            }),
-            new WebpackObfuscator({
-                rotateStringArray: true
-            }, [])
-        ],
+            })
+        ]
     };
 
     if (WPMode == "development") {
@@ -99,6 +97,11 @@ module.exports = (env, argv) => {
         config.output.path = path.resolve(__dirname, "./src/dist");
     } else {
         config.output.path = path.resolve(__dirname, "./dist");
+        config.module.plugins.push(
+            new WebpackObfuscator({
+                rotateStringArray: true
+            }, [])
+        )
     }
 
     return config
