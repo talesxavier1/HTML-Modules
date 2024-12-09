@@ -97,7 +97,7 @@ module.exports = (env, argv) => {
         config.output.path = path.resolve(__dirname, "./src/dist");
     } else {
         config.output.path = path.resolve(__dirname, "./dist");
-        config.module.plugins.push(
+        config.plugins.push(
             new WebpackObfuscator({
                 rotateStringArray: true
             }, [])
