@@ -58,7 +58,12 @@ export class OptionsUI {
 
     public btnConfirmDeclineCliked = async (action?: "CONFIRM" | "DECLINE", data?: TDataSource) => { }
     private _btnConfirmDeclineCliked = async (action: "CONFIRM" | "DECLINE") => {
-        this.btnConfirmDeclineCliked(action, await this.getData());
+        if (action == "DECLINE") {
+            this.btnConfirmDeclineCliked(action);
+        } else {
+            this.btnConfirmDeclineCliked(action, await this.getData());
+        }
+
         this.distroyOptionsUI();
     }
 
