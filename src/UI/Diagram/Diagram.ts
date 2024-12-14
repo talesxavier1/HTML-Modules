@@ -72,7 +72,7 @@ export class Diagram {
         /* Adição dos shapes no box */
         if (event.operation == "addShapeFromToolbox") { return }
 
-        console.log(event)
+        // console.log(event)
 
         /* connector sem toShape */
         if (event.args.connector && (!event.args.connector.toKey && !event.args.connector.fromKey)) { return }
@@ -591,11 +591,22 @@ export class Diagram {
         });
     }
 
+    public getDiagramOptions = (): { data: TDataSource[], diagramPropsValue: string } => {
+        let data: TDataSource[] = this._nodeStore.getAll();
+
+        let diagramProps = this.componentInstanceModel.getInstanceProps("diagrama");
+        let diagramInstance = diagramProps.getInstance() as DevExpress.ui.dxDiagram;
+        let diagramPropsValue = diagramInstance.export();
+
+        return {
+            data: data,
+            diagramPropsValue: diagramPropsValue
+        }
+    }
+
     public updateNode = (key: string, data: TDataSource) => {
         this._nodeStore.store.update(key, data);
     }
-
-
 
     constructor() {
         this.componentInstanceModel.addInstance(new InstanceProps({
@@ -630,102 +641,6 @@ export class Diagram {
                 height: "100%"
             }).dxDiagram('instance')
         }));
-
-        this.componentInstanceModel.addInstance(new InstanceProps({
-            "componentName": "dxButton",
-            "instance": $("#botao01").dxButton({
-                text: "copy diagramProps",
-                type: "danger",
-
-                onClick: () => {
-
-                    let diagramProps = this.componentInstanceModel.getInstanceProps("diagrama");
-                    let diagramInstance = diagramProps.getInstance() as DevExpress.ui.dxDiagram;
-                    let diagramPropsValue = diagramInstance.export();
-
-                    const tempTextArea = document.createElement('textarea');
-                    tempTextArea.value = diagramPropsValue;
-                    document.body.appendChild(tempTextArea);
-                    tempTextArea.select();
-                    document.execCommand('copy');
-                    document.body.removeChild(tempTextArea);
-
-                    DevExpress.ui.notify({
-                        message: `diagramProps copiado ${Utils.getGuid()}`,
-                        height: 45,
-                        width: 550,
-                        minWidth: 150,
-                        type: "success",
-                        displayTime: 1000,
-
-                    }, {
-                        position: "top center",
-                        direction: "down-push"
-                    });
-                }
-            }).dxButton("instance"),
-            tagName: "botao01"
-        }))
-
-        this.componentInstanceModel.addInstance(new InstanceProps({
-            "componentName": "dxButton",
-            "instance": $("#botao02").dxButton({
-                text: "copy data",
-                type: "danger",
-                onClick: () => {
-                    let data = this._nodeStore.getAll();
-
-                    const tempTextArea = document.createElement('textarea');
-                    tempTextArea.value = JSON.stringify(data);
-                    document.body.appendChild(tempTextArea);
-                    tempTextArea.select();
-                    document.execCommand('copy');
-                    document.body.removeChild(tempTextArea);
-
-                    DevExpress.ui.notify({
-                        message: `data copiado ${Utils.getGuid()}`,
-                        height: 45,
-                        width: 550,
-                        minWidth: 150,
-                        type: "success",
-                        displayTime: 1000,
-
-                    }, {
-                        position: "top center",
-                        direction: "down-push"
-                    });
-                }
-            }).dxButton("instance"),
-            tagName: "botao01"
-        }))
-
-        this.componentInstanceModel.addInstance(new InstanceProps({
-            "componentName": "dxButton",
-            "instance": $("#botao03").dxButton({
-                text: "limpar log",
-                type: "danger",
-                onClick: () => {
-                    let data = this._nodeStore.getAll();
-
-                    console.clear()
-
-                    DevExpress.ui.notify({
-                        message: `log limpo ${Utils.getGuid()}`,
-                        height: 45,
-                        width: 550,
-                        minWidth: 150,
-                        type: "success",
-                        displayTime: 1000,
-
-                    }, {
-                        position: "top center",
-                        direction: "down-push"
-                    });
-
-                }
-            }).dxButton("instance"),
-            tagName: "botao01"
-        }))
     }
 }
 

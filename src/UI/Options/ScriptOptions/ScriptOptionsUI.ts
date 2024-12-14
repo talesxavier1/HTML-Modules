@@ -16,7 +16,9 @@ export class ScriptOptionsUI implements IOptionUI {
     private data: ScriptModel;
     public optionsHTMLContainer: string;
     private tempDirID: string | undefined;
-    private FILE_MANAGEMENT_BASE_API: string = localStorage.getItem("FILE_MANAGEMENT_BASE_API") ?? "";
+    private getFileManagementBaseAPI = (): string => {
+        return localStorage.getItem("FILE_MANAGEMENT_BASE_API") ?? "";
+    }
 
     getData = async () => {
         let newPackageVersionID = await this.pubTempDir();
@@ -29,11 +31,11 @@ export class ScriptOptionsUI implements IOptionUI {
     };
 
     private clearTempDir = async () => {
-        let url = `${this.FILE_MANAGEMENT_BASE_API}/file-manager/?command={0}&arguments={1}`;
+        let url = `${this.getFileManagementBaseAPI()}/file-manager/?command={0}&arguments={1}`;
         url = url.replace("{0}", "ClearTempDir");
         url = url.replace("{1}", "{}");
 
-        let response = await fetch(encodeURI(url), {
+        await fetch(encodeURI(url), {
             headers: {
                 "processID": "28e27b2d-131e-41be-88a8-82fd149f3519",
                 "processVersionID": "f0c2e5eb-b72e-4623-93e0-f0e48590290e",
@@ -42,14 +44,14 @@ export class ScriptOptionsUI implements IOptionUI {
                 "tempDirID": this.tempDirID ?? ""
             },
             method: "POST"
+        }).catch((res) => {
+            console.error(res);
         });
-        if (response.ok) {
-            let json = await response.json();
-        }
+
     }
 
     private pubTempDir = async (): Promise<string> => {
-        let url = `${this.FILE_MANAGEMENT_BASE_API}/file-manager/?command={0}&arguments={1}`;
+        let url = `${this.getFileManagementBaseAPI()}/file-manager/?command={0}&arguments={1}`;
         url = url.replace("{0}", "PubTempDir");
         url = url.replace("{1}", "{}");
 
@@ -130,7 +132,7 @@ export class ScriptOptionsUI implements IOptionUI {
         }));
 
         const provider = new DevExpress.fileManagement.RemoteFileSystemProvider({
-            endpointUrl: `${this.FILE_MANAGEMENT_BASE_API}/file-manager/`,
+            endpointUrl: `${this.getFileManagementBaseAPI()}/file-manager/`,
             //endpointUrl: 'http://localhost:9090/file-manager/',
             //endpointUrl: 'https://js.devexpress.com/Demos/Mvc/api/file-manager-file-system-scripts',
             beforeAjaxSend: (options) => {
