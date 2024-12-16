@@ -115,14 +115,14 @@ export class ScriptOptionsUI implements IOptionUI {
                 height: "100%",
                 dataSource: [
                     {
-                        id: "scriptFileManager",
-                        title: "File Manager",
-                        html: $(scriptFileManagerHtml)
-                    },
-                    {
                         id: "scriptOptions",
                         title: "Options",
                         html: $(scriptOptionsHtml)
+                    },
+                    {
+                        id: "scriptFileManager",
+                        title: "File Manager",
+                        html: $(scriptFileManagerHtml)
                     }
                 ],
                 selectedIndex: 0,
@@ -169,14 +169,17 @@ export class ScriptOptionsUI implements IOptionUI {
 
             GlobalLoadIndicator.show();
             let strFile: string = await new Promise((resolve) => {
-                let url = "http://localhost:9090/file-manager/?command={0}&arguments={1}";
+                let url = `${this.getFileManagementBaseAPI()}/file-manager/?command={0}&arguments={1}`;
                 url = url.replace("{0}", "GetFileContent");
                 url = url.replace("{1}", JSON.stringify({ "pathInfo": pathInfo, "name": selectedItem[0].name }));
+
                 fetch(encodeURI(url), {
                     headers: {
-                        "processID": "28e27b2d-131e-41be-88a8-82fd149f3519",
-                        "processVersionID": "f0c2e5eb-b72e-4623-93e0-f0e48590290e",
+                        "processID": self.data.processID,
+                        "processVersionID": self.data.processVersionID,
                         "packageID": self.data.ID,
+                        "packageVersionID": self.data.packageVersionID,
+                        "tempDirID": this.tempDirID ?? ""
                     },
                     method: "GET"
                 }).then((response) => {
