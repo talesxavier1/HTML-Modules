@@ -215,7 +215,7 @@ export class ScriptOptionsUI implements IOptionUI {
             });
 
             let result: Blob | null = await new Promise((resolve) => {
-                let url = this.getFileManagementBaseAPI() + "/Download";
+                let url = this.getFileManagementBaseAPI() + "/file-manager/Download";
                 let headers: any = {
                     "processID": "28e27b2d-131e-41be-88a8-82fd149f3519",
                     "processVersionID": "f0c2e5eb-b72e-4623-93e0-f0e48590290e",
