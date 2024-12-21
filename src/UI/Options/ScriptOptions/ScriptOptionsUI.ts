@@ -9,7 +9,8 @@ import { LanguageStore } from "../../../Data/LanguageStore";
 import scriptFileManagerHtml from "../../../html/ScriptOptions/ScriptFileManager.html";
 import scriptOptionsHtml from "../../../html/ScriptOptions/ScriptOptions.html";
 import { GlobalLoadIndicator } from "../../../UI/GlobalLoadIndicator/GlobalLoadIndicator";
-import { APIResponseContentModel } from "models/APIResponseContentModel";
+import { StorageModule } from "../../../Modules/StorageModule";
+import { APIModule } from "../../../Modules/APIModule";
 
 export class ScriptOptionsUI implements IOptionUI {
     private componentInstanceModel = new ComponentInstanceModel<ScriptModel>(new ScriptModel());
@@ -66,7 +67,7 @@ export class ScriptOptionsUI implements IOptionUI {
             method: "POST"
         });
         if (response.ok) {
-            let json = await response.json() as APIResponseContentModel;
+            let json = await response.json() as APIModule.Response.IContent;
             if (!json.strResult) {
                 throw new Error("Sem resposta.")
             }
@@ -78,6 +79,84 @@ export class ScriptOptionsUI implements IOptionUI {
         } else {
             throw new Error("Sem resposta.")
         }
+    };
+
+    private getFileContent = async (pathInfo: Array<StorageModule.IStorageItemPathInfo>, name: string): Promise<string> => {
+        return new Promise((resolve) => {
+            let url = `${this.getFileManagementBaseAPI()}/file-manager/?command={0}&arguments={1}`;
+            url = url.replace("{0}", "GetFileContent");
+            url = url.replace("{1}", JSON.stringify({ "pathInfo": pathInfo, "name": name }));
+
+            fetch(encodeURI(url), {
+                headers: {
+                    "processID": this.data.processID,
+                    "processVersionID": this.data.processVersionID,
+                    "packageID": this.data.ID,
+                    "packageVersionID": this.data.packageVersionID,
+                    "tempDirID": this.tempDirID ?? ""
+                },
+                method: "GET"
+            }).then((response) => {
+                if (!response.ok) {
+                    resolve("");
+                }
+                return response.json();
+            }).then((body) => {
+                resolve(body.strResult);
+            });;
+        });
+    }
+
+    private updateFileContent = async (storageItem: StorageModule.IStorageItem, content: string): Promise<void> => {
+        let argumentsPost: APIModule.Request.IArguments = {
+            isDirectory: false,
+            name: storageItem.name,
+            sourceIsDirectory: false,
+            pathInfo: storageItem.pathInfo
+        };
+
+        const body = [
+            `------WebKitFormBoundary7TqmsuGGMt2xPEmu`,
+            `Content-Disposition: form-data; name="chunk"; filename="blob"`,
+            `Content-Type: application/octet-stream`,
+            "",
+            content,
+            // new TextEncoder().encode(content),
+            `------WebKitFormBoundary7TqmsuGGMt2xPEmu--`,
+            ""
+        ].join("\r\n");
+
+
+        let response = await fetch(encodeURI(`${this.getFileManagementBaseAPI()}/file-manager/`), {
+            headers: {
+                "processID": this.data.processID,
+                "processVersionID": this.data.processVersionID,
+                "packageID": this.data.ID,
+                "packageVersionID": this.data.packageVersionID,
+                "tempDirID": this.tempDirID ?? "",
+                "arguments": JSON.stringify(argumentsPost),
+                "command": "UpdateFileContent",
+                "Content-Type": `multipart/form-data; boundary=----WebKitFormBoundary7TqmsuGGMt2xPEmu`,
+
+            },
+
+            body: body,
+            method: "POST"
+        });
+        if (response.ok) {
+            let json = await response.json() as APIModule.Response.IContent;
+            if (!json.strResult) {
+                throw new Error("Sem resposta.")
+            }
+            let objNewPackageVersionID = Utils.tryparse(json.strResult) as { newPackageVersionID: string } | undefined;
+            if (!objNewPackageVersionID) {
+                throw new Error("Sem resposta.")
+            }
+            //return objNewPackageVersionID.newPackageVersionID;
+        } else {
+            throw new Error("Sem resposta.")
+        }
+
     }
 
     distroyUI = async () => {
@@ -133,8 +212,6 @@ export class ScriptOptionsUI implements IOptionUI {
 
         const provider = new DevExpress.fileManagement.RemoteFileSystemProvider({
             endpointUrl: `${this.getFileManagementBaseAPI()}/file-manager/`,
-            //endpointUrl: 'http://localhost:9090/file-manager/',
-            //endpointUrl: 'https://js.devexpress.com/Demos/Mvc/api/file-manager-file-system-scripts',
             beforeAjaxSend: (options) => {
                 options.headers.processID = data.processID;
                 options.headers.processVersionID = data.processVersionID;
@@ -155,60 +232,52 @@ export class ScriptOptionsUI implements IOptionUI {
             }
         });
 
-        /* scriptFileManager */
         const btnEditarVisualizarClick = async () => {
             let instance = this.componentInstanceModel.getInstanceProps("scriptFileManager").getInstance() as DevExpress.ui.dxFileManager;
-            let selectedItem = instance.getSelectedItems();
-            let dataItem = selectedItem[0].dataItem;
+            let selectedItem: Array<StorageModule.IStorageItem> = instance.getSelectedItems();
+            if (selectedItem[0].isDirectory) {
+                return;
+            }
 
-            let pathInfo = JSON.parse(JSON.stringify(selectedItem[0].pathInfo));
+            let dataItem: StorageModule.IStorageItemData = selectedItem[0].dataItem;
+
+            let pathInfo: Array<StorageModule.IStorageItemPathInfo> = JSON.parse(JSON.stringify(selectedItem[0].pathInfo));
             pathInfo.push({
                 "key": selectedItem[0].key,
                 "name": selectedItem[0].name
             });
 
             GlobalLoadIndicator.show();
-            let strFile: string = await new Promise((resolve) => {
-                let url = `${this.getFileManagementBaseAPI()}/file-manager/?command={0}&arguments={1}`;
-                url = url.replace("{0}", "GetFileContent");
-                url = url.replace("{1}", JSON.stringify({ "pathInfo": pathInfo, "name": selectedItem[0].name }));
-
-                fetch(encodeURI(url), {
-                    headers: {
-                        "processID": self.data.processID,
-                        "processVersionID": self.data.processVersionID,
-                        "packageID": self.data.ID,
-                        "packageVersionID": self.data.packageVersionID,
-                        "tempDirID": this.tempDirID ?? ""
-                    },
-                    method: "GET"
-                }).then((response) => {
-                    if (!response.ok) {
-                        resolve("");
-                    }
-                    return response.json();
-                }).then((body) => {
-                    resolve(body.strResult);
-                });;
-            });
+            let strFile: string = await this.getFileContent(pathInfo, selectedItem[0].name);
             GlobalLoadIndicator.hide();
 
             let language = LanguageStore.getLenguageFromFileName(dataItem.name);
 
             const scriptPopUp = new ScriptPopUp(readonly, language, strFile);
             await scriptPopUp.init();
+            let result: string | null = await scriptPopUp.asyncOnCompletedOperation();
+            if (!result) { return }
 
-            let result: String | null = await scriptPopUp.asyncOnCompletedOperation();
-            if (!readonly && typeof result == "string") {
-                selectedItem[0].dataItem.content = result;
-                instance.refresh();
+            if (strFile != result) {
+                let copySelectedItem: StorageModule.IStorageItem = JSON.parse(JSON.stringify(selectedItem[0]));
+                copySelectedItem.pathInfo = pathInfo;
+
+                this.updateFileContent(copySelectedItem, result);
             }
+
+
+            // if (!readonly && typeof result == "string") {
+            //     selectedItem[0].dataItem.content = result;
+            //     instance.refresh();
+            // }
         };
 
         const btnDownloadClick = async () => {
             GlobalLoadIndicator.show();
             let instance = self.componentInstanceModel.getInstanceProps("scriptFileManager").getInstance() as DevExpress.ui.dxFileManager;
             let selectedItem = instance.getSelectedItems();
+
+            if (selectedItem[0].isDirectory) { return }
 
             let pathInfo = selectedItem[0].pathInfo;
             let name = selectedItem[0].name;
@@ -300,8 +369,7 @@ export class ScriptOptionsUI implements IOptionUI {
                                 text: readonly ? "Visualizar" : "Editar",
                                 icon: readonly ? "eyeopen" : "edit",
                                 location: 'before'
-                            },
-
+                            }
                         }
                     ],
                 },
@@ -359,7 +427,6 @@ export class ScriptOptionsUI implements IOptionUI {
             }).dxTextBox("instance")
         }));
 
-
         /* shapeType */
         this.componentInstanceModel.addInstance(new InstanceProps({
             componentName: "dxTextBox",
@@ -411,7 +478,6 @@ export class ScriptOptionsUI implements IOptionUI {
             }).dxSelectBox("instance"),
             "tagName": "scriptType"
         }));
-
     }
 }
 
@@ -447,7 +513,7 @@ class ScriptPopUp {
         let value = (() => {
             let value = this.monacoEditor?.getValue();
             if (!value) { return "" }
-            return btoa(value);
+            return value;
         })();
         this.monacoEditor?.getValue() ?? "";
         this.monacoEditor?.dispose();
@@ -565,7 +631,7 @@ class ScriptPopUp {
         this.monacoContent = content;
     }
 
-    public asyncOnCompletedOperation = (): Promise<String | null> => {
+    public asyncOnCompletedOperation = (): Promise<string | null> => {
         return new Promise((resolve) => {
             this._asyncOnCompletedOperation = (content: string | null) => {
                 resolve(content)
