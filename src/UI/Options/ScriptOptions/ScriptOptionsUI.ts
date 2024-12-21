@@ -112,7 +112,14 @@ export class ScriptOptionsUI implements IOptionUI {
             isDirectory: false,
             name: storageItem.name,
             sourceIsDirectory: false,
-            pathInfo: storageItem.pathInfo
+            pathInfo: storageItem.pathInfo,
+            chunkMetadata: JSON.stringify({
+                FileName: storageItem.name,
+                Index: 0,
+                FileSize: 0,
+                TotalCount: 1,
+                UploadId: Utils.getGuid()
+            } as APIModule.Request.IChunkMetadata)
         };
 
         const body = [
@@ -121,12 +128,11 @@ export class ScriptOptionsUI implements IOptionUI {
             `Content-Type: application/octet-stream`,
             "",
             content,
-            // new TextEncoder().encode(content),
             `------WebKitFormBoundary7TqmsuGGMt2xPEmu--`,
             ""
         ].join("\r\n");
 
-
+        GlobalLoadIndicator.show();
         let response = await fetch(encodeURI(`${this.getFileManagementBaseAPI()}/file-manager/`), {
             headers: {
                 "processID": this.data.processID,
@@ -143,17 +149,8 @@ export class ScriptOptionsUI implements IOptionUI {
             body: body,
             method: "POST"
         });
-        if (response.ok) {
-            let json = await response.json() as APIModule.Response.IContent;
-            if (!json.strResult) {
-                throw new Error("Sem resposta.")
-            }
-            let objNewPackageVersionID = Utils.tryparse(json.strResult) as { newPackageVersionID: string } | undefined;
-            if (!objNewPackageVersionID) {
-                throw new Error("Sem resposta.")
-            }
-            //return objNewPackageVersionID.newPackageVersionID;
-        } else {
+        GlobalLoadIndicator.hide();
+        if (!response.ok) {
             throw new Error("Sem resposta.")
         }
 
@@ -262,14 +259,8 @@ export class ScriptOptionsUI implements IOptionUI {
                 let copySelectedItem: StorageModule.IStorageItem = JSON.parse(JSON.stringify(selectedItem[0]));
                 copySelectedItem.pathInfo = pathInfo;
 
-                this.updateFileContent(copySelectedItem, result);
+                await this.updateFileContent(copySelectedItem, result);
             }
-
-
-            // if (!readonly && typeof result == "string") {
-            //     selectedItem[0].dataItem.content = result;
-            //     instance.refresh();
-            // }
         };
 
         const btnDownloadClick = async () => {
