@@ -284,6 +284,7 @@ export class ScriptOptionsUI implements IOptionUI {
                     "processVersionID": "f0c2e5eb-b72e-4623-93e0-f0e48590290e",
                     "packageID": self.data.ID,
                     "arguments": JSON.stringify({ "pathInfo": pathInfo, "name": name }),
+                    "_": Utils.getGuid()
                 }
                 if (self.tempDirID) { headers.tempDirID = self.tempDirID; }
 
