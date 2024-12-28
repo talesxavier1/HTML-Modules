@@ -618,9 +618,9 @@ export class Diagram {
                 },
                 onRequestEditOperation: this.onRequestEditOperation,
                 onItemClick: async (e) => {
-                    GlobalLoadIndicator.show();
+                    GlobalLoadIndicator.show("Diagram - constructor - addInstance - InstanceProps - onItemClick ");
                     await this._shapeClicked(e);
-                    GlobalLoadIndicator.hide();
+                    GlobalLoadIndicator.hide("Diagram - constructor - addInstance - InstanceProps - onItemClick ");
                 },
                 customShapes: this.customShapes.customShapes,
                 nodes: {

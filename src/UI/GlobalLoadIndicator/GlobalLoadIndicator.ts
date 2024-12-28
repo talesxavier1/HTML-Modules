@@ -1,11 +1,12 @@
-
-
 export class GlobalLoadIndicator {
-
-    static show() {
+    static show(origem?: string) {
         let localWindow: any = window;
         let loadIndicatorInstance = localWindow.loadIndicatorInstance;
         if (!loadIndicatorInstance) {
+            let log = localStorage.getItem("LOG_GlobalLoadIndicator") ?? "false";
+            if (origem && log == "true") {
+                console.log("GlobalLoadIndicator - SHOW - origem:" + origem);
+            }
             let instance = $('#globalLoadIndicator').dxLoadPanel({
                 indicatorSrc: './images/loading.svg',
                 shadingColor: 'rgba(0,0,0,0.4)',
@@ -28,13 +29,16 @@ export class GlobalLoadIndicator {
         }
     }
 
-    static hide() {
+    static hide(origem?: string) {
         let localWindow: any = window;
         let loadIndicatorInstance = localWindow.loadIndicatorInstance;
         if (loadIndicatorInstance) {
+            let log = localStorage.getItem("LOG_GlobalLoadIndicator") ?? "false";
+            if (origem && log == "true") {
+                console.log("GlobalLoadIndicator - HIDE - origem:" + origem);
+            }
             (loadIndicatorInstance as DevExpress.ui.dxLoadPanel).dispose();
         }
         localWindow.loadIndicatorInstance = null;
     }
-
 }

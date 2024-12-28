@@ -25,9 +25,9 @@
         "processID": "5818aaa6-32c6-4f9d-97de-78d855b129f2",
         "processVersionID": "e10b672b-1121-4459-a4e0-27bb93d10ffe",
         "shapeType": "script",
-        "scriptType": "",
+        "scriptType": "Script",
         "packageID": "1ce9cbab-f5f3-44a8-99b5-58d3e0c0edaf",
-        "packageVersionID": "9626d526-2b60-4891-9687-089e5d9861bf"
+        "packageVersionID": "444c2a27-9f51-40ba-b049-716746cdaaf3"
     },
     {
         "ID": "65846fb6-eadd-40df-af7f-420af10188a1",
@@ -47,7 +47,7 @@
         "processID": "5818aaa6-32c6-4f9d-97de-78d855b129f2",
         "processVersionID": "e10b672b-1121-4459-a4e0-27bb93d10ffe",
         "shapeType": "script",
-        "scriptType": "",
+        "scriptType": "Module",
         "packageID": "",
         "packageVersionID": ""
     },
@@ -59,7 +59,7 @@
         "processID": "5818aaa6-32c6-4f9d-97de-78d855b129f2",
         "processVersionID": "e10b672b-1121-4459-a4e0-27bb93d10ffe",
         "shapeType": "script",
-        "scriptType": "",
+        "scriptType": "Module",
         "packageID": "",
         "packageVersionID": ""
     },
@@ -99,7 +99,7 @@
         "processID": "5818aaa6-32c6-4f9d-97de-78d855b129f2",
         "processVersionID": "e10b672b-1121-4459-a4e0-27bb93d10ffe",
         "shapeType": "script",
-        "scriptType": "",
+        "scriptType": "Module",
         "packageID": "",
         "packageVersionID": ""
     },
@@ -111,7 +111,7 @@
         "processID": "5818aaa6-32c6-4f9d-97de-78d855b129f2",
         "processVersionID": "e10b672b-1121-4459-a4e0-27bb93d10ffe",
         "shapeType": "script",
-        "scriptType": "",
+        "scriptType": "Module",
         "packageID": "",
         "packageVersionID": ""
     },
@@ -133,7 +133,7 @@
         "processID": "5818aaa6-32c6-4f9d-97de-78d855b129f2",
         "processVersionID": "e10b672b-1121-4459-a4e0-27bb93d10ffe",
         "shapeType": "script",
-        "scriptType": "",
+        "scriptType": "Module",
         "packageID": "",
         "packageVersionID": ""
     },
@@ -145,7 +145,7 @@
         "processID": "5818aaa6-32c6-4f9d-97de-78d855b129f2",
         "processVersionID": "e10b672b-1121-4459-a4e0-27bb93d10ffe",
         "shapeType": "script",
-        "scriptType": "",
+        "scriptType": "Module",
         "packageID": "",
         "packageVersionID": ""
     },

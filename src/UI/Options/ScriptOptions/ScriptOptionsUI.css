@@ -2,7 +2,7 @@
     height: 100%;
 }
 
-#ScriptPopUp {
+#MonacoArea {
     height: 100%;
 }
 
@@ -27,5 +27,9 @@
 
 #scriptFileManager_container {
     padding: 15px;
+    height: 100%;
+}
+
+#scriptFileManager {
     height: 100%;
 }

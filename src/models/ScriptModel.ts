@@ -1,12 +1,12 @@
 import { ShapeModel } from "./ShapeModel"
 
 export interface IScriptModel {
-    scriptType: string,
+    scriptType: "Script" | "Module" | "",
     packageVersionID: string
 }
 
 export class ScriptModel extends ShapeModel implements IScriptModel {
-    scriptType: string = "";
+    scriptType: "Script" | "Module" | "" = "";
     packageVersionID: string = "";
 
     constructor(ID?: string) {

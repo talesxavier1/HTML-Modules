@@ -66,7 +66,7 @@ const botoesSuporte = (diagram: Diagram) => {
                 displayTime: 1000,
 
             }, {
-                position: "top center",
+                position: "top right",
                 direction: "down-push"
             });
         }
@@ -93,7 +93,7 @@ const botoesSuporte = (diagram: Diagram) => {
                 displayTime: 1000,
 
             }, {
-                position: "top center",
+                position: "top right",
                 direction: "down-push"
             });
         }
@@ -113,7 +113,7 @@ const botoesSuporte = (diagram: Diagram) => {
                 displayTime: 1000,
 
             }, {
-                position: "top center",
+                position: "top right",
                 direction: "down-push"
             });
 
@@ -152,11 +152,41 @@ const botoesSuporte = (diagram: Diagram) => {
                     displayTime: 1000,
 
                 }, {
-                    position: "top center",
+                    position: "top right",
                     direction: "down-push"
                 });
             }
 
+        }
+    }).dxButton("instance");
+
+    $("#botao05").dxButton({
+        text: "GlobalLoadIndicator true/false",
+        type: "danger",
+        onClick: () => {
+            let log = localStorage.getItem("LOG_GlobalLoadIndicator") ?? "false";
+
+            let val = "";
+            if (log == "false") {
+                localStorage.setItem("LOG_GlobalLoadIndicator", "true");
+                val = "true";
+            } else {
+                localStorage.setItem("LOG_GlobalLoadIndicator", "false");
+                val = "false";
+            }
+
+            DevExpress.ui.notify({
+                message: `LOG_GlobalLoadIndicator ${val}`,
+                height: 45,
+                width: 550,
+                minWidth: 150,
+                type: "success",
+                displayTime: 1000,
+
+            }, {
+                position: "top right",
+                direction: "down-push"
+            });
         }
     }).dxButton("instance");
 }
