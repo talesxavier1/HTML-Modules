@@ -23,13 +23,13 @@ export class ScriptOptionsUI implements IOptionUI {
     private getFileManagementBaseAPI = (): string => {
         return localStorage.getItem("FILE_MANAGEMENT_BASE_API") ?? "";
     }
-    private mountScriptManager = (type: "Script" | "Module" | "") => {
+    private mountScriptManager = async (type: "Script" | "Module" | "") => {
         if (type == "Module") {
             if (this.scriptArea) { this.scriptArea.dispose() }
             this.scriptManager = new ScriptFileManager(this.getFileManagementBaseAPI(), this.data, this.readonly, this.tempDirID);
         } else if (type == "Script") {
-            if (this.scriptManager) { this.scriptManager.dispose() }
-            this.scriptArea = new ScriptArea();
+            if (this.scriptManager) { await this.scriptManager.dispose() }
+            this.scriptArea = new ScriptArea(this.getFileManagementBaseAPI(), this.data, this.readonly, this.tempDirID);
         } else {
             throw new Error("Não foi possível inicar o editor de script.");
         }
@@ -202,8 +202,8 @@ export class ScriptOptionsUI implements IOptionUI {
                 displayExpr: "VALUE",
                 disabled: readonly,
                 value: this.data.scriptType ? this.data.scriptType : null,
-                onValueChanged(e) {
-                    self.mountScriptManager(e.value);
+                async onValueChanged(e) {
+                    await self.mountScriptManager(e.value);
                 },
             }).dxSelectBox("instance"),
             "tagName": "scriptType"
@@ -368,6 +368,10 @@ class ScriptEditor {
 
 class ScriptArea {
     private scriptEditor: ScriptEditor;
+    private data: ScriptModel;
+    private fileManagerBaseEndPoint: string;
+    private readonly: boolean;
+    private tempDirID?: string;
 
     private lastHeigth: number | null = null;
     private initObserveMonacoAreaSize = () => {
@@ -386,6 +390,41 @@ class ScriptArea {
         observer.observe(elemento as HTMLElement);
     }
 
+    private initScriptArea = (): ScriptEditor => {
+        let monacoArea = $(`<div id="MonacoArea"></div>`);
+        $("#scriptFileManager").append(monacoArea);
+        let scriptEditor = new ScriptEditor(false, "javascript", "BASE", "");
+        scriptEditor.init();
+        this.initObserveMonacoAreaSize();
+        return scriptEditor;
+    }
+
+    private getFileContent = async (pathInfo: Array<StorageModule.IStorageItemPathInfo>, name: string): Promise<string> => {
+        return new Promise((resolve) => {
+            let url = `${this.fileManagerBaseEndPoint}/file-manager/?command={0}&arguments={1}`;
+            url = url.replace("{0}", "GetFileContent");
+            url = url.replace("{1}", JSON.stringify({ "pathInfo": pathInfo, "name": name }));
+
+            fetch(encodeURI(url), {
+                headers: {
+                    "processID": this.data.processID,
+                    "processVersionID": this.data.processVersionID,
+                    "packageID": this.data.ID,
+                    "packageVersionID": this.data.packageVersionID,
+                    "tempDirID": this.tempDirID ?? ""
+                },
+                method: "GET"
+            }).then((response) => {
+                if (!response.ok) {
+                    resolve("");
+                }
+                return response.json();
+            }).then((body) => {
+                resolve(body.strResult);
+            });
+        });
+    }
+
     public pubContent = async (): Promise<string> => {
 
         return new Promise((res) => res(""));
@@ -401,12 +440,12 @@ class ScriptArea {
     }
 
 
-    constructor() {
-        let monacoArea = $(`<div id="MonacoArea"></div>`);
-        $("#scriptFileManager").append(monacoArea);
-        this.scriptEditor = new ScriptEditor(false, "javascript", "BASE", "");
-        this.scriptEditor.init();
-        this.initObserveMonacoAreaSize();
+    constructor(fileManagerBaseEndPoint: string, data: ScriptModel, readonly: boolean, tempDirID?: string) {
+        this.scriptEditor = this.initScriptArea();
+        this.data = data;
+        this.fileManagerBaseEndPoint = fileManagerBaseEndPoint;
+        this.readonly = readonly;
+        this.tempDirID = tempDirID;
     }
 }
 
@@ -637,7 +676,7 @@ class ScriptFileManager {
         GlobalLoadIndicator.hide("ScriptFileManager - btnDownloadClick");
     };
 
-    constructor(fileManagerBaseEndPoint: string, data: ScriptModel, readonly: boolean, tempDirID?: string,) {
+    constructor(fileManagerBaseEndPoint: string, data: ScriptModel, readonly: boolean, tempDirID?: string) {
 
         this.fileManagerBaseEndPoint = fileManagerBaseEndPoint;
         this.data = data;
