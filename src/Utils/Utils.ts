@@ -25,15 +25,35 @@ export class Utils {
         });
     }
 
-    static debounce(func: (...args: any[]) => void, delay: number): (...args: any[]) => void {
+    // static debounce(func: (...args: any[]) => void, delay: number): (...args: any[]) => void {
+    //     let timeoutId: ReturnType<typeof setTimeout> | undefined;
+    //     return function (this: any, ...args: any[]) {
+    //         if (timeoutId) {
+    //             clearTimeout(timeoutId);
+    //         }
+    //         timeoutId = setTimeout(() => {
+    //             func.apply(this, args);
+    //         }, delay);
+    //     };
+    // }
+
+    static debounce(func: (...args: any[]) => Promise<any> | void, delay: number): (...args: any[]) => Promise<void> {
         let timeoutId: ReturnType<typeof setTimeout> | undefined;
-        return function (this: any, ...args: any[]) {
+        return async function (this: any, ...args: any[]) {
             if (timeoutId) {
                 clearTimeout(timeoutId);
             }
-            timeoutId = setTimeout(() => {
-                func.apply(this, args);
-            }, delay);
+            return new Promise<void>((resolve) => {
+                timeoutId = setTimeout(async () => {
+                    try {
+                        await func.apply(this, args);
+                    } catch (error) {
+                        console.error("Error in debounced function:", error);
+                    } finally {
+                        resolve();
+                    }
+                }, delay);
+            });
         };
     }
 
@@ -67,5 +87,13 @@ export class Utils {
         const hashArray = Array.from(new Uint8Array(hashBuffer));
         const hashHex = hashArray.map(b => ('00' + b.toString(16)).slice(-2)).join('');
         return hashHex;
+    }
+
+    static delay(sec: number): Promise<void> {
+        return new Promise((resolve) => {
+            setTimeout(() => {
+                resolve();
+            }, sec * 1000); // 2000 ms = 2 segundos
+        });
     }
 }
