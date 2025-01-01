@@ -288,4 +288,12 @@ export class LanguageStore {
         }
         return language;
     }
+
+    static getExtensionFromLanguage = (language: TMonacoLanguage): string => {
+        let valueFind = this.data[language];
+        if (valueFind && valueFind.length > 0) {
+            return valueFind[0];
+        }
+        throw new Error(`[ERRO]-[LanguageStore] Não foi possível encontrar extenção para a linguagem "${language}"`);
+    }
 }

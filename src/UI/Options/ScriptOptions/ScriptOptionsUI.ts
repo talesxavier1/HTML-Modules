@@ -23,13 +23,14 @@ export class ScriptOptionsUI implements IOptionUI {
     private getFileManagementBaseAPI = (): string => {
         return localStorage.getItem("FILE_MANAGEMENT_BASE_API") ?? "";
     }
-    private mountScriptManager = async (type: "Script" | "Module" | "") => {
+    private mountScriptManager = async (type: "Script" | "Module" | ""): Promise<void> => {
         if (type == "Module") {
             if (this.scriptArea) { this.scriptArea.dispose() }
             this.scriptManager = new ScriptFileManager(this.getFileManagementBaseAPI(), this.data, this.readonly, this.tempDirID);
         } else if (type == "Script") {
             if (this.scriptManager) { await this.scriptManager.dispose() }
             this.scriptArea = new ScriptArea(this.getFileManagementBaseAPI(), this.data, this.readonly, this.tempDirID);
+            await this.scriptArea.init();
         } else {
             throw new Error("Não foi possível inicar o editor de script.");
         }
@@ -54,14 +55,14 @@ export class ScriptOptionsUI implements IOptionUI {
     };
 
     distroyUI = async () => {
-        this.componentInstanceModel.disposeAllInstances();
-        this.hideShowHTMLContainer("HIDE");
         if (this.scriptManager) {
             await this.scriptManager.dispose();
         }
         if (this.scriptArea) {
             this.scriptArea.dispose();
         }
+        this.componentInstanceModel.disposeAllInstances();
+        this.hideShowHTMLContainer("HIDE");
     };
 
     hideShowHTMLContainer = (action: "SHOW" | "HIDE") => {
@@ -79,6 +80,10 @@ export class ScriptOptionsUI implements IOptionUI {
         if (this.scriptArea) { this.scriptArea.repaint(); }
         if (this.scriptManager) { this.scriptManager.repaint() }
     };
+
+    init = async () => {
+        await this.mountScriptManager(this.data.scriptType);
+    }
 
     constructor(data: TDataSource, readonly: boolean = false, optionsHTMLContainer: string) {
         const self = this;
@@ -111,7 +116,7 @@ export class ScriptOptionsUI implements IOptionUI {
                 deferRendering: false,
             }).dxTabPanel("instance")
         }));
-        this.mountScriptManager(this.data.scriptType);
+
         /* ID */
         this.componentInstanceModel.addInstance(new InstanceProps({
             componentName: "dxTextBox",
@@ -204,9 +209,37 @@ export class ScriptOptionsUI implements IOptionUI {
                 value: this.data.scriptType ? this.data.scriptType : null,
                 async onValueChanged(e) {
                     await self.mountScriptManager(e.value);
+                    if (e.value == "Script") {
+                        self.componentInstanceModel.setVisibleInstance("scriptLanguage");
+                    } else {
+                        self.componentInstanceModel.setInstanceValue("scriptLanguage", null);
+                        self.componentInstanceModel.setInvisibleInstance("scriptLanguage");
+                    }
                 },
             }).dxSelectBox("instance"),
             "tagName": "scriptType"
+        }));
+
+        /* scriptLanguage */
+        this.componentInstanceModel.addInstance(new InstanceProps({
+            "componentName": "dxSelectBox",
+            "instance": $("#scriptOptions_scriptLanguage").dxSelectBox({
+                dataSource: [
+                    { "ID": "", "VALUE": "" },
+                    { "ID": "javascript", "VALUE": "Javascript" },
+                    { "ID": "groovy", "VALUE": "Groovy" },
+                ] as Array<{
+                    ID: TMonacoLanguage | "",
+                    VALUE: string
+                }>,
+                label: "Script Language",
+                valueExpr: "ID",
+                displayExpr: "VALUE",
+                disabled: readonly,
+                visible: this.data.scriptType == "Script",
+                value: this.data.scriptLanguage ? this.data.scriptLanguage : null,
+            }).dxSelectBox("instance"),
+            "tagName": "scriptLanguage"
         }));
     }
 }
@@ -218,16 +251,15 @@ class ScriptEditor {
     private monacoLanguage: TMonacoLanguage;
     private monacoContent: string
     private scriptEditorType: "POPUP" | "BASE";
+    private containerID: string;
 
     private monacoEditor: monaco.editor.IStandaloneCodeEditor | undefined;
-    private _repaint = async () => {
+    private _repaint = () => {
         if (!this.monacoEditor) { return }
-        let curretValue = this.monacoEditor.getValue();
-        this.monacoEditor.dispose();
-        this.monacoEditor = await this.initMonaco(this.monacoLanguage);
-        this.monacoEditor.setValue(curretValue);
+        let $container = $(`#${this.containerID}`);
+        this.monacoEditor.layout({ height: $container.height(), width: $container.width() });
     }
-    public repaint = Utils.debounce(this._repaint, 100);
+    public repaint = this._repaint
 
     private _asyncOnCompletedOperation?: (content: string | null) => void;
 
@@ -256,7 +288,8 @@ class ScriptEditor {
         this._asyncOnCompletedOperation ? this._asyncOnCompletedOperation(value) : "";
     }
 
-    private initMonaco = async (language: TMonacoLanguage, content?: string): Promise<monaco.editor.IStandaloneCodeEditor> => {
+    private initMonaco = async (): Promise<monaco.editor.IStandaloneCodeEditor> => {
+        const self = this;
         return new Promise((resolve) => {
             requirejs.config({
                 paths: {
@@ -264,16 +297,15 @@ class ScriptEditor {
                 }
             });
             requirejs(['vs/editor/editor.main'], function () {
-                let comp = document.getElementById('MonacoArea');
+                let comp = document.getElementById(self.containerID);
                 if (!comp) { return }
                 let monacoInstance = monaco.editor.create(comp, {
-                    language: language,
+                    language: self.monacoLanguage,
                     theme: "vs-dark",
-                    value: content ? content : ""
+                    value: self.monacoContent
                 });
                 resolve(monacoInstance);
             });
-
         })
     }
 
@@ -330,13 +362,21 @@ class ScriptEditor {
         if (this.scriptEditorType == "POPUP") {
             this.initDxPopupComponents();
         }
-        this.monacoEditor = await this.initMonaco(this.monacoLanguage, this.monacoContent);
+        this.monacoEditor = await this.initMonaco();
         GlobalLoadIndicator.hide("ScriptEditor - init");
+    }
+
+    public dispose = () => {
+        this.monacoEditor?.dispose()
     }
 
     public setContent = (content: string) => {
         this.monacoEditor?.setValue(content);
         this.monacoContent = content;
+    }
+
+    public getContent = (): string => {
+        return this.monacoEditor?.getValue() ?? "";
     }
 
     public asyncOnCompletedOperation = (): Promise<string | null> => {
@@ -358,49 +398,85 @@ class ScriptEditor {
     public onSubmit?: (content: string) => void
     public onPopUpHidden?: () => void
 
-    constructor(readonly: boolean, language: TMonacoLanguage, scriptEditorType: "POPUP" | "BASE", content?: string) {
+    constructor(readonly: boolean, language: TMonacoLanguage, scriptEditorType: "POPUP" | "BASE", containerID: string, content: string) {
         this.readonly = readonly;
         this.monacoLanguage = language;
         this.monacoContent = content ?? "";
         this.scriptEditorType = scriptEditorType;
+        this.containerID = containerID;
     }
 }
 
 class ScriptArea {
-    private scriptEditor: ScriptEditor;
+    private scriptEditor: ScriptEditor | undefined;
     private data: ScriptModel;
     private fileManagerBaseEndPoint: string;
     private readonly: boolean;
     private tempDirID?: string;
+    private scriptLanguage: TMonacoLanguage;
+    private scriptExtension: string;
+    private scriptFinalName: string;
 
     private lastHeigth: number | null = null;
+    private observeMonacoAreaSize: ResizeObserver | null = null;
     private initObserveMonacoAreaSize = () => {
-        const elemento = document.getElementById("MonacoArea");
-        const observer = new ResizeObserver(entries => {
+        const self = this;
+        this.observeMonacoAreaSize = new ResizeObserver((entries) => {
             for (const entry of entries) {
                 let height = entry.contentRect.height;
-                if (!this.lastHeigth) {
-                    this.lastHeigth = height;
-                } else if (this.lastHeigth != height) {
+                if (!self.lastHeigth) {
+                    self.lastHeigth = height;
+                } else if (self.lastHeigth != height) {
                     this.repaint();
                 }
-
             }
         });
-        observer.observe(elemento as HTMLElement);
+
+        this.observeMonacoAreaSize.observe($(`#MonacoArea`)[0]);
     }
 
-    private initScriptArea = (): ScriptEditor => {
+    private initScriptArea = async (strContent: string) => {
         let monacoArea = $(`<div id="MonacoArea"></div>`);
         $("#scriptFileManager").append(monacoArea);
-        let scriptEditor = new ScriptEditor(false, "javascript", "BASE", "");
-        scriptEditor.init();
+        let scriptEditor = new ScriptEditor(false, this.scriptLanguage, "BASE", "MonacoArea", strContent);
+        await scriptEditor.init();
         this.initObserveMonacoAreaSize();
-        return scriptEditor;
+        this.scriptEditor = scriptEditor;
+    }
+
+    public init = async () => {
+        await this.initScriptArea("sadasdasda");
+    }
+
+    private getDirContent = async () => {
+        return await new Promise((resolve) => {
+            let url = `${this.fileManagerBaseEndPoint}/file-manager/?command={0}&arguments={1}`;
+            url = url.replace("{0}", "GetDirContents");
+            url = url.replace("{1}", JSON.stringify({}));
+            fetch(encodeURI(url), {
+                headers: {
+                    "processID": this.data.processID,
+                    "processVersionID": this.data.processVersionID,
+                    "packageID": this.data.ID,
+                    "packageVersionID": this.data.packageVersionID,
+                    "tempDirID": this.tempDirID ?? ""
+                },
+                method: "GET"
+            }).then((response) => {
+                if (!response.ok) {
+                    resolve("");
+                }
+                return response.json();
+            }).then((body) => {
+                resolve(body);
+            });
+        })
     }
 
     private getFileContent = async (pathInfo: Array<StorageModule.IStorageItemPathInfo>, name: string): Promise<string> => {
-        return new Promise((resolve) => {
+        let dirContent = await this.getDirContent();
+
+        /* return new Promise((resolve) => {
             let url = `${this.fileManagerBaseEndPoint}/file-manager/?command={0}&arguments={1}`;
             url = url.replace("{0}", "GetFileContent");
             url = url.replace("{1}", JSON.stringify({ "pathInfo": pathInfo, "name": name }));
@@ -422,31 +498,122 @@ class ScriptArea {
             }).then((body) => {
                 resolve(body.strResult);
             });
+        }); */
+
+        return "";
+    }
+
+    private callSaveContent = async (): Promise<boolean> => {
+        if (!this.scriptEditor) {
+            throw new Error("scriptEditor não iniciado.");
+        }
+        let argumentsPost: APIModule.Request.IArguments = {
+            isDirectory: false,
+            name: this.scriptFinalName,
+            sourceIsDirectory: false,
+            pathInfo: [],
+            chunkMetadata: JSON.stringify({
+                FileName: this.scriptFinalName,
+                Index: 0,
+                FileSize: 0,
+                TotalCount: 1,
+                UploadId: Utils.getGuid()
+            } as APIModule.Request.IChunkMetadata)
+        };
+
+        let boundary = `----${Utils.getGuid().split("-").join("")}`
+        const body = [
+            `--${boundary}`,
+            `Content-Disposition: form-data; name="chunk"; filename="${this.scriptFinalName}"`,
+            `Content-Type: application/octet-stream`,
+            "",
+            this.scriptEditor.getContent(),
+            `--${boundary}--`,
+            ""
+        ].join("\r\n");
+
+        GlobalLoadIndicator.show("ScriptFileManager - updateFileContent");
+        let response = await fetch(encodeURI(`${this.fileManagerBaseEndPoint}/file-manager/`), {
+            headers: {
+                "processID": this.data.processID,
+                "processVersionID": this.data.processVersionID,
+                "packageID": this.data.ID,
+                "packageVersionID": this.data.packageVersionID,
+                "tempDirID": this.tempDirID ?? "",
+                "arguments": JSON.stringify(argumentsPost),
+                "command": "SaveUniqueFileContent",
+                "Content-Type": `multipart/form-data; boundary=${boundary}`,
+            },
+            body: body,
+            method: "POST"
         });
+        GlobalLoadIndicator.hide("ScriptFileManager - updateFileContent");
+        return response.ok
+    }
+
+    private callPubContent = async (): Promise<string> => {
+        let url = `${this.fileManagerBaseEndPoint}/file-manager/?command={0}&arguments={1}`;
+        url = url.replace("{0}", "PubTempDir");
+        url = url.replace("{1}", "{}");
+
+        let response = await fetch(encodeURI(url), {
+            headers: {
+                "processID": "28e27b2d-131e-41be-88a8-82fd149f3519",
+                "processVersionID": "f0c2e5eb-b72e-4623-93e0-f0e48590290e",
+                "packageID": this.data.ID,
+                "packageVersionID": this.data.packageVersionID,
+                "tempDirID": this.tempDirID ?? ""
+            },
+            method: "POST"
+        });
+        if (response.ok) {
+            let json = await response.json() as APIModule.Response.IContent;
+            if (!json.strResult) {
+                throw new Error("Sem resposta.")
+            }
+            let objNewPackageVersionID = Utils.tryparse(json.strResult) as { newPackageVersionID: string } | undefined;
+            if (!objNewPackageVersionID) {
+                throw new Error("Sem resposta.")
+            }
+            return objNewPackageVersionID.newPackageVersionID;
+        } else {
+            throw new Error("Sem resposta.")
+        }
     }
 
     public pubContent = async (): Promise<string> => {
-
-        return new Promise((res) => res(""));
+        let saveResult = await this.callSaveContent();
+        if (!saveResult) {
+            throw new Error("Não foi possível salvar o conteúdo do script.");
+        }
+        return await this.callPubContent();
     }
 
-    public dispose = () => {
-        let monacoArea = $("#MonacoArea");
-        if (monacoArea) { monacoArea.remove() }
+    public dispose = async () => {
+        this.scriptEditor?.dispose();
+        this.observeMonacoAreaSize?.unobserve($(`#MonacoArea`)[0]);
+        $(`#MonacoArea`).remove();
     }
 
     public repaint = () => {
+        if (!this.scriptEditor) {
+            throw new Error("scriptEditor não inciado");
+        }
         this.scriptEditor.repaint();
     }
 
-
     constructor(fileManagerBaseEndPoint: string, data: ScriptModel, readonly: boolean, tempDirID?: string) {
-        this.scriptEditor = this.initScriptArea();
         this.data = data;
         this.fileManagerBaseEndPoint = fileManagerBaseEndPoint;
         this.readonly = readonly;
         this.tempDirID = tempDirID;
+        this.scriptExtension = LanguageStore.getExtensionFromLanguage(this.data.scriptLanguage as TMonacoLanguage);
+        this.scriptFinalName = `Main${this.scriptExtension}`;
+        this.scriptLanguage = LanguageStore.getLenguageFromFileName(this.scriptFinalName);
+        // this.monacoContainerID = `MonacoArea_${Utils.getGuid().split("-")[0]}`;
     }
+
+
 }
 
 class ScriptFileManager {
@@ -555,13 +722,14 @@ class ScriptFileManager {
             } as APIModule.Request.IChunkMetadata)
         };
 
+        let boundary = `----${Utils.getGuid().split("-").join("")}`
         const body = [
-            `------WebKitFormBoundary7TqmsuGGMt2xPEmu`,
+            `--${boundary}`,
             `Content-Disposition: form-data; name="chunk"; filename="blob"`,
             `Content-Type: application/octet-stream`,
             "",
             content,
-            `------WebKitFormBoundary7TqmsuGGMt2xPEmu--`,
+            `--${boundary}--`,
             ""
         ].join("\r\n");
 
@@ -575,10 +743,9 @@ class ScriptFileManager {
                 "tempDirID": this.tempDirID ?? "",
                 "arguments": JSON.stringify(argumentsPost),
                 "command": "UpdateFileContent",
-                "Content-Type": `multipart/form-data; boundary=----WebKitFormBoundary7TqmsuGGMt2xPEmu`,
+                "Content-Type": `multipart/form-data; boundary=${boundary}`,
 
             },
-
             body: body,
             method: "POST"
         });
@@ -609,7 +776,7 @@ class ScriptFileManager {
 
         let language = LanguageStore.getLenguageFromFileName(dataItem.name);
 
-        const scriptPopUp = new ScriptEditor(this.readonly, language, "POPUP", strFile);
+        const scriptPopUp = new ScriptEditor(this.readonly, language, "POPUP", "MonacoArea", strFile);
         await scriptPopUp.init();
         let result: string | null = await scriptPopUp.asyncOnCompletedOperation();
         if (!result) { return }

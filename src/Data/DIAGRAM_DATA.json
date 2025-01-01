@@ -26,6 +26,7 @@
         "processVersionID": "e10b672b-1121-4459-a4e0-27bb93d10ffe",
         "shapeType": "script",
         "scriptType": "Script",
+        "scriptLanguage": "javascript",
         "packageID": "1ce9cbab-f5f3-44a8-99b5-58d3e0c0edaf",
         "packageVersionID": "444c2a27-9f51-40ba-b049-716746cdaaf3"
     },

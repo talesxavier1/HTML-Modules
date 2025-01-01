@@ -14,7 +14,8 @@ export class OptionsUI {
     private instanceUI?: TInstanceUI;
     private nodeStore: NodeStore;
 
-    private setInstanceUI = (data: TDataSource) => {
+    private setInstanceUI = async (data: TDataSource) => {
+
         switch (data.type) {
             case "condition":
                 break;
@@ -38,6 +39,7 @@ export class OptionsUI {
                 break;
             case "script":
                 this.instanceUI = new ScriptOptionsUI(data, false, "script_options");
+                await this.instanceUI.init();
                 break;
             case "sender":
                 this.instanceUI = new SenderOptionsUI(data, false, "multicastIn_options");
@@ -91,7 +93,7 @@ export class OptionsUI {
 
     public mountOptions = async (data: TDataSource) => {
         await this.distroyOptionsUI();
-        this.setInstanceUI(data);
+        await this.setInstanceUI(data);
         this.mountButtonsConfirmDecline();
     }
 
