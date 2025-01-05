@@ -28,7 +28,7 @@ export namespace APIModule {
         export interface IContent {
             success: boolean
             errorText: string;
-            result?: StorageModule.StorageItemData[];
+            result: StorageModule.StorageItemData[];
             strResult?: string;
         }
     }

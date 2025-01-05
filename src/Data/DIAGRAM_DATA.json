@@ -26,9 +26,9 @@
         "processVersionID": "e10b672b-1121-4459-a4e0-27bb93d10ffe",
         "shapeType": "script",
         "scriptType": "Script",
+        "packageVersionID": "9c89b12c-d48a-47ef-a890-e72bf9b66e3a",
         "scriptLanguage": "javascript",
-        "packageID": "1ce9cbab-f5f3-44a8-99b5-58d3e0c0edaf",
-        "packageVersionID": "444c2a27-9f51-40ba-b049-716746cdaaf3"
+        "packageID": "1ce9cbab-f5f3-44a8-99b5-58d3e0c0edaf"
     },
     {
         "ID": "65846fb6-eadd-40df-af7f-420af10188a1",
@@ -49,8 +49,9 @@
         "processVersionID": "e10b672b-1121-4459-a4e0-27bb93d10ffe",
         "shapeType": "script",
         "scriptType": "Module",
-        "packageID": "",
-        "packageVersionID": ""
+        "packageVersionID": "",
+        "scriptLanguage": "",
+        "packageID": ""
     },
     {
         "ID": "c76932d6-feb9-4f06-b7ec-36e2f34aef4c",
@@ -61,8 +62,9 @@
         "processVersionID": "e10b672b-1121-4459-a4e0-27bb93d10ffe",
         "shapeType": "script",
         "scriptType": "Module",
-        "packageID": "",
-        "packageVersionID": ""
+        "packageVersionID": "",
+        "scriptLanguage": "",
+        "packageID": ""
     },
     {
         "ID": "866f89d7-d03c-45ea-8384-5da786cef71f",
@@ -101,8 +103,9 @@
         "processVersionID": "e10b672b-1121-4459-a4e0-27bb93d10ffe",
         "shapeType": "script",
         "scriptType": "Module",
-        "packageID": "",
-        "packageVersionID": ""
+        "packageVersionID": "",
+        "scriptLanguage": "",
+        "packageID": ""
     },
     {
         "ID": "23c4280a-a9cf-4e6f-9c57-1c89da730eb1",
@@ -113,8 +116,9 @@
         "processVersionID": "e10b672b-1121-4459-a4e0-27bb93d10ffe",
         "shapeType": "script",
         "scriptType": "Module",
-        "packageID": "",
-        "packageVersionID": ""
+        "packageVersionID": "",
+        "scriptLanguage": "",
+        "packageID": ""
     },
     {
         "ID": "65fee9c2-891e-4e98-bf88-990e7f1ad325",
@@ -135,8 +139,9 @@
         "processVersionID": "e10b672b-1121-4459-a4e0-27bb93d10ffe",
         "shapeType": "script",
         "scriptType": "Module",
-        "packageID": "",
-        "packageVersionID": ""
+        "packageVersionID": "",
+        "scriptLanguage": "",
+        "packageID": ""
     },
     {
         "ID": "e1287b7c-c0d7-459d-a98d-b9db768ee307",
@@ -147,8 +152,9 @@
         "processVersionID": "e10b672b-1121-4459-a4e0-27bb93d10ffe",
         "shapeType": "script",
         "scriptType": "Module",
-        "packageID": "",
-        "packageVersionID": ""
+        "packageVersionID": "",
+        "scriptLanguage": "",
+        "packageID": ""
     },
     {
         "ID": "b966f3fe-f20a-44e6-9357-408891629639",
