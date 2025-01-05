@@ -244,7 +244,6 @@ export class ScriptOptionsUI implements IOptionUI {
     }
 }
 
-
 class ScriptEditor {
     private componentInstanceModel = new ComponentInstanceModel<ScriptModel>(new ScriptModel());
     private readonly: boolean;
@@ -445,26 +444,30 @@ class ScriptArea {
     }
 
     public init = async () => {
-        await this.initScriptArea("sadasdasda");
+
+        let result = await this.getFileContent();
+
+        await this.initScriptArea(result);
     }
 
-    private getDirContent = async () => {
-        return await new Promise((resolve) => {
+    private getDirContent = async (): Promise<APIModule.Response.IContent | null> => {
+        return new Promise((resolve) => {
             let url = `${this.fileManagerBaseEndPoint}/file-manager/?command={0}&arguments={1}`;
             url = url.replace("{0}", "GetDirContents");
-            url = url.replace("{1}", JSON.stringify({}));
+            url = url.replace("{1}", JSON.stringify({ "pathInfo": [], "name": "" }));
             fetch(encodeURI(url), {
                 headers: {
                     "processID": this.data.processID,
                     "processVersionID": this.data.processVersionID,
                     "packageID": this.data.ID,
                     "packageVersionID": this.data.packageVersionID,
-                    "tempDirID": this.tempDirID ?? ""
+                    "tempDirID": this.tempDirID ?? "",
+                    "scriptModule": "UNIQUE_SCRIPT"
                 },
                 method: "GET"
             }).then((response) => {
                 if (!response.ok) {
-                    resolve("");
+                    resolve(null);
                 }
                 return response.json();
             }).then((body) => {
@@ -473,34 +476,35 @@ class ScriptArea {
         })
     }
 
-    private getFileContent = async (pathInfo: Array<StorageModule.IStorageItemPathInfo>, name: string): Promise<string> => {
+    private getFileContent = async (): Promise<string> => {
         let dirContent = await this.getDirContent();
+        if (!dirContent || dirContent.result.length == 0) {
+            return "";
+        }
 
-        /* return new Promise((resolve) => {
-            let url = `${this.fileManagerBaseEndPoint}/file-manager/?command={0}&arguments={1}`;
-            url = url.replace("{0}", "GetFileContent");
-            url = url.replace("{1}", JSON.stringify({ "pathInfo": pathInfo, "name": name }));
+        let pathInfo: Array<StorageModule.IStorageItemPathInfo> = [{
+            key: dirContent.result[0].key,
+            name: ""
+        }];
+        let url = `${this.fileManagerBaseEndPoint}/file-manager/?command={0}&arguments={1}`;
+        url = url.replace("{0}", "GetFileContent");
+        url = url.replace("{1}", JSON.stringify({ "pathInfo": pathInfo, "name": name }));
 
-            fetch(encodeURI(url), {
-                headers: {
-                    "processID": this.data.processID,
-                    "processVersionID": this.data.processVersionID,
-                    "packageID": this.data.ID,
-                    "packageVersionID": this.data.packageVersionID,
-                    "tempDirID": this.tempDirID ?? ""
-                },
-                method: "GET"
-            }).then((response) => {
-                if (!response.ok) {
-                    resolve("");
-                }
-                return response.json();
-            }).then((body) => {
-                resolve(body.strResult);
-            });
-        }); */
-
-        return "";
+        let result = await fetch(encodeURI(url), {
+            headers: {
+                "processID": this.data.processID,
+                "processVersionID": this.data.processVersionID,
+                "packageID": this.data.ID,
+                "packageVersionID": this.data.packageVersionID,
+                "tempDirID": this.tempDirID ?? ""
+            },
+            method: "GET"
+        });
+        if (!result.ok) {
+            return "";
+        }
+        let json = await result.json() as APIModule.Response.IContent;
+        return json.strResult ?? "";
     }
 
     private callSaveContent = async (): Promise<boolean> => {
@@ -532,7 +536,7 @@ class ScriptArea {
             ""
         ].join("\r\n");
 
-        GlobalLoadIndicator.show("ScriptFileManager - updateFileContent");
+
         let response = await fetch(encodeURI(`${this.fileManagerBaseEndPoint}/file-manager/`), {
             headers: {
                 "processID": this.data.processID,
@@ -547,7 +551,7 @@ class ScriptArea {
             body: body,
             method: "POST"
         });
-        GlobalLoadIndicator.hide("ScriptFileManager - updateFileContent");
+
         return response.ok
     }
 
@@ -582,17 +586,24 @@ class ScriptArea {
     }
 
     public pubContent = async (): Promise<string> => {
+        GlobalLoadIndicator.show("ScriptArea - pubContent");
         let saveResult = await this.callSaveContent();
         if (!saveResult) {
             throw new Error("Não foi possível salvar o conteúdo do script.");
         }
-        return await this.callPubContent();
+        let result = await this.callPubContent();
+        GlobalLoadIndicator.hide("ScriptArea - pubContent");
+        return result
+
     }
 
     public dispose = async () => {
         this.scriptEditor?.dispose();
-        this.observeMonacoAreaSize?.unobserve($(`#MonacoArea`)[0]);
-        $(`#MonacoArea`).remove();
+        let component = $(`#MonacoArea`);
+        if (component && component.length > 0) {
+            this.observeMonacoAreaSize?.unobserve(component[0]);
+            $(`#MonacoArea`).remove();
+        }
     }
 
     public repaint = () => {
