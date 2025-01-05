@@ -111,7 +111,7 @@ export class ScriptOptionsUI implements IOptionUI {
                         html: $(scriptFileManagerHtml)
                     }
                 ],
-                selectedIndex: 0,
+                selectedIndex: 1,
                 animationEnabled: true,
                 deferRendering: false,
             }).dxTabPanel("instance")
@@ -636,6 +636,7 @@ class ScriptFileManager {
         url = url.replace("{0}", "ClearTempDir");
         url = url.replace("{1}", "{}");
 
+        GlobalLoadIndicator.show("ScriptFileManager - clearTempDir");
         await fetch(encodeURI(url), {
             headers: {
                 "processID": "28e27b2d-131e-41be-88a8-82fd149f3519",
@@ -648,7 +649,7 @@ class ScriptFileManager {
         }).catch((res) => {
             console.error(res);
         });
-
+        GlobalLoadIndicator.hide("ScriptFileManager - clearTempDir");
     }
 
     public pubContent = async (): Promise<string> => {
@@ -656,6 +657,7 @@ class ScriptFileManager {
         url = url.replace("{0}", "PubTempDir");
         url = url.replace("{1}", "{}");
 
+        GlobalLoadIndicator.show("ScriptFileManager - pubContent");
         let response = await fetch(encodeURI(url), {
             headers: {
                 "processID": "28e27b2d-131e-41be-88a8-82fd149f3519",
@@ -675,7 +677,9 @@ class ScriptFileManager {
             if (!objNewPackageVersionID) {
                 throw new Error("Sem resposta.")
             }
+            GlobalLoadIndicator.hide("ScriptFileManager - pubContent");
             return objNewPackageVersionID.newPackageVersionID;
+
         } else {
             throw new Error("Sem resposta.")
         }
@@ -853,12 +857,15 @@ class ScriptFileManager {
 
         const provider = new DevExpress.fileManagement.RemoteFileSystemProvider({
             endpointUrl: `${fileManagerBaseEndPoint}/file-manager/`,
+            requestHeaders: {
+                "processID": this.data.processID,
+                "processVersionID": this.data.processVersionID,
+                "packageID": this.data.ID,
+                "packageVersionID": this.data.packageVersionID,
+                "tempDirID": this.tempDirID ? this.tempDirID : ""
+            },
             beforeAjaxSend: (options) => {
-                options.headers.processID = data.processID;
-                options.headers.processVersionID = data.processVersionID;
-                options.headers.packageID = data.ID;
-                options.headers.packageVersionID = data.packageVersionID;
-                options.headers.tempDirID = tempDirID ? tempDirID : "";
+
 
                 let argumentsFormData = options?.formData?.arguments;
                 if (argumentsFormData) {
