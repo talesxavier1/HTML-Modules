@@ -17,7 +17,7 @@ export class NodeStore {
 
     private _store: DevExpress.data.ArrayStore<TDataSource, String>;
 
-    private onInserting = (data: TDataSource): void => {
+    private onInserting(data: TDataSource): void {
         switch (data.type) {
             case "sender":
                 Object.assign(data, new SenderModel(data.ID));
@@ -63,16 +63,16 @@ export class NodeStore {
         }
     }
 
-    private errorHandler = (Error: any): void => {
+    private errorHandler(Error: any): void {
     }
 
-    public getAll = (): Array<TDataSource> => {
+    public getAll(): Array<TDataSource> {
         let data: Array<TDataSource> = []
         this._store.load().done((res: Array<TDataSource>) => data = res);
         return data;
     }
 
-    public getByKey = (key?: string): TDataSource | undefined => {
+    public getByKey(key?: string): TDataSource | undefined {
         if (!key) { return }
 
         let query = this._store.createQuery().filter(["ID", key]);

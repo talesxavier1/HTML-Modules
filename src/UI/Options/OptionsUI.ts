@@ -97,10 +97,13 @@ export class OptionsUI {
         this.mountButtonsConfirmDecline();
     }
 
-    public getData = async (): Promise<TDataSource | undefined> => {
-        let result = this.instanceUI?.getData();
-        if (result) { return result }
+    public async getData(): Promise<TDataSource | undefined> {
+        let result = await this.instanceUI?.getData();
+        if (result) {
+            return result
+        }
     }
+
 
     constructor(nodeStore: NodeStore) {
         this.nodeStore = nodeStore;
