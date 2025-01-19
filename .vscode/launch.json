@@ -16,6 +16,9 @@
             "sourceMaps": true,
             "outFiles": [
                 "${workspaceFolder}"
+            ],
+            "skipFiles": [
+                "<anonymous>"
             ]
         }
     ]

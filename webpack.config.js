@@ -15,7 +15,7 @@ module.exports = (env, argv) => {
             hot: false
         },
         entry: {
-            "main": ["./src/index.ts", "./src/index.css"],
+            "main": ["@babel/polyfill", "./src/index.ts", "./src/index.css"],
         },
         output: {
             filename: "index.js",
@@ -36,10 +36,13 @@ module.exports = (env, argv) => {
                         options: {
                             presets: [
                                 '@babel/preset-env',
-                                '@babel/preset-typescript'
+                                '@babel/preset-typescript',
                             ],
-                            // sourceMaps: true,
+                            plugins: ['@babel/plugin-proposal-class-properties'],
+                            sourceMaps: true,
+                            retainLines: true,
                         }
+
                     }
                 },
                 {
@@ -93,7 +96,7 @@ module.exports = (env, argv) => {
     };
 
     if (WPMode == "development") {
-        config.devtool = 'source-map';
+        config.devtool = 'inline-source-map';
         config.output.path = path.resolve(__dirname, "./src/dist");
     } else {
         config.output.path = path.resolve(__dirname, "./dist");

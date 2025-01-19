@@ -11,6 +11,7 @@ import scriptOptionsHtml from "../../../html/ScriptOptions/ScriptOptions.html";
 import { GlobalLoadIndicator } from "../../../UI/GlobalLoadIndicator/GlobalLoadIndicator";
 import { StorageModule } from "../../../Modules/StorageModule";
 import { APIModule } from "../../../Modules/APIModule";
+import { GlobalAlert } from "../../../UI/GlobalAlert/GlobalAlert";
 
 export class ScriptOptionsUI implements IOptionUI {
     private componentInstanceModel = new ComponentInstanceModel<ScriptModel>(new ScriptModel());
@@ -20,15 +21,21 @@ export class ScriptOptionsUI implements IOptionUI {
     private scriptManager: ScriptFileManager | undefined;
     private scriptArea: ScriptArea | undefined;
     private readonly: boolean;
-    private getFileManagementBaseAPI = (): string => {
+    private getFileManagementBaseAPI(): string {
         return localStorage.getItem("FILE_MANAGEMENT_BASE_API") ?? "";
     }
-    private mountScriptManager = async (type: "Script" | "Module" | ""): Promise<void> => {
+    private async mountScriptManager(type: "Script" | "Module" | ""): Promise<void> {
         if (type == "Module") {
-            if (this.scriptArea) { this.scriptArea.dispose() }
+            if (this.scriptArea) {
+                this.scriptArea.dispose();
+                this.scriptArea = undefined;
+            }
             this.scriptManager = new ScriptFileManager(this.getFileManagementBaseAPI(), this.data, this.readonly, this.tempDirID);
         } else if (type == "Script") {
-            if (this.scriptManager) { await this.scriptManager.dispose() }
+            if (this.scriptManager) {
+                await this.scriptManager.dispose();
+                this.scriptManager = undefined;
+            }
             this.scriptArea = new ScriptArea(this.getFileManagementBaseAPI(), this.data, this.readonly, this.tempDirID);
             await this.scriptArea.init();
         } else {
@@ -36,7 +43,7 @@ export class ScriptOptionsUI implements IOptionUI {
         }
     }
 
-    getData = async () => {
+    async getData() {
         let newPackageVersionID;
         if (this.scriptManager) {
             newPackageVersionID = await this.scriptManager.pubContent();
@@ -54,7 +61,7 @@ export class ScriptOptionsUI implements IOptionUI {
         } as ScriptModel;
     };
 
-    distroyUI = async () => {
+    async distroyUI() {
         if (this.scriptManager) {
             await this.scriptManager.dispose();
         }
@@ -65,7 +72,7 @@ export class ScriptOptionsUI implements IOptionUI {
         this.hideShowHTMLContainer("HIDE");
     };
 
-    hideShowHTMLContainer = (action: "SHOW" | "HIDE") => {
+    hideShowHTMLContainer(action: "SHOW" | "HIDE") {
         let J_optionsHTMLContainer = $(`#${this.optionsHTMLContainer}`);
         if (!J_optionsHTMLContainer) { return }
         if (action == "SHOW") {
@@ -75,13 +82,13 @@ export class ScriptOptionsUI implements IOptionUI {
         }
     };
 
-    repaint = () => {
+    repaint() {
         this.componentInstanceModel.repaintAllInstances();
         if (this.scriptArea) { this.scriptArea.repaint(); }
         if (this.scriptManager) { this.scriptManager.repaint() }
     };
 
-    init = async () => {
+    async init() {
         await this.mountScriptManager(this.data.scriptType);
     }
 
@@ -194,6 +201,17 @@ export class ScriptOptionsUI implements IOptionUI {
             }).dxTextBox("instance")
         }));
 
+        /* text */
+        this.componentInstanceModel.addInstance(new InstanceProps({
+            componentName: "dxTextBox",
+            tagName: "containerKey",
+            instance: $('#scriptOptions_containerKey').dxTextBox({
+                value: this.data.containerKey ? this.data.containerKey : "",
+                label: "Container Key",
+                readOnly: true
+            }).dxTextBox("instance")
+        }));
+
         /* scriptType */
         this.componentInstanceModel.addInstance(new InstanceProps({
             "componentName": "dxSelectBox",
@@ -253,7 +271,7 @@ class ScriptEditor {
     private containerID: string;
 
     private monacoEditor: monaco.editor.IStandaloneCodeEditor | undefined;
-    private _repaint = () => {
+    private _repaint() {
         if (!this.monacoEditor) { return }
         let $container = $(`#${this.containerID}`);
         this.monacoEditor.layout({ height: $container.height(), width: $container.width() });
@@ -263,7 +281,7 @@ class ScriptEditor {
     private _asyncOnCompletedOperation?: (content: string | null) => void;
 
     private _asyncOnPopUpHidden?: () => void;
-    private _onPopUpHidden = () => {
+    private _onPopUpHidden() {
         this.componentInstanceModel.disposeAllInstances();
         this.monacoEditor?.dispose();
         this.onPopUpHidden ? this.onPopUpHidden() : "";
@@ -272,7 +290,7 @@ class ScriptEditor {
     }
 
     private _asyncOnSubmit?: (content: string) => void
-    private _onSubmit = () => {
+    private _onSubmit() {
         let value = (() => {
             let value = this.monacoEditor?.getValue();
             if (!value) { return "" }
@@ -356,7 +374,7 @@ class ScriptEditor {
         }
     }
 
-    public init = async () => {
+    public async init() {
         GlobalLoadIndicator.show("ScriptEditor - init");
         if (this.scriptEditorType == "POPUP") {
             this.initDxPopupComponents();
@@ -365,11 +383,11 @@ class ScriptEditor {
         GlobalLoadIndicator.hide("ScriptEditor - init");
     }
 
-    public dispose = () => {
+    public dispose() {
         this.monacoEditor?.dispose()
     }
 
-    public setContent = (content: string) => {
+    public setContent(content: string) {
         this.monacoEditor?.setValue(content);
         this.monacoContent = content;
     }
@@ -418,7 +436,7 @@ class ScriptArea {
 
     private lastHeigth: number | null = null;
     private observeMonacoAreaSize: ResizeObserver | null = null;
-    private initObserveMonacoAreaSize = () => {
+    private initObserveMonacoAreaSize() {
         const self = this;
         this.observeMonacoAreaSize = new ResizeObserver((entries) => {
             for (const entry of entries) {
@@ -434,7 +452,7 @@ class ScriptArea {
         this.observeMonacoAreaSize.observe($(`#MonacoArea`)[0]);
     }
 
-    private initScriptArea = async (strContent: string) => {
+    private async initScriptArea(strContent: string) {
         let monacoArea = $(`<div id="MonacoArea"></div>`);
         $("#scriptFileManager").append(monacoArea);
         let scriptEditor = new ScriptEditor(false, this.scriptLanguage, "BASE", "MonacoArea", strContent);
@@ -443,10 +461,8 @@ class ScriptArea {
         this.scriptEditor = scriptEditor;
     }
 
-    public init = async () => {
-
+    public async init() {
         let result = await this.getFileContent();
-
         await this.initScriptArea(result);
     }
 
@@ -526,12 +542,13 @@ class ScriptArea {
         };
 
         let boundary = `----${Utils.getGuid().split("-").join("")}`
+        let content = this.scriptEditor.getContent();
         const body = [
             `--${boundary}`,
             `Content-Disposition: form-data; name="chunk"; filename="${this.scriptFinalName}"`,
             `Content-Type: application/octet-stream`,
             "",
-            this.scriptEditor.getContent(),
+            content ? content : "empty",
             `--${boundary}--`,
             ""
         ].join("\r\n");
@@ -585,7 +602,7 @@ class ScriptArea {
         }
     }
 
-    public pubContent = async (): Promise<string> => {
+    public async pubContent(): Promise<string> {
         GlobalLoadIndicator.show("ScriptArea - pubContent");
         let saveResult = await this.callSaveContent();
         if (!saveResult) {
@@ -593,11 +610,10 @@ class ScriptArea {
         }
         let result = await this.callPubContent();
         GlobalLoadIndicator.hide("ScriptArea - pubContent");
-        return result
-
+        return result;
     }
 
-    public dispose = async () => {
+    public async dispose() {
         this.scriptEditor?.dispose();
         let component = $(`#MonacoArea`);
         if (component && component.length > 0) {
@@ -606,7 +622,7 @@ class ScriptArea {
         }
     }
 
-    public repaint = () => {
+    public repaint() {
         if (!this.scriptEditor) {
             throw new Error("scriptEditor não inciado");
         }
@@ -618,13 +634,12 @@ class ScriptArea {
         this.fileManagerBaseEndPoint = fileManagerBaseEndPoint;
         this.readonly = readonly;
         this.tempDirID = tempDirID;
-        this.scriptExtension = LanguageStore.getExtensionFromLanguage(this.data.scriptLanguage as TMonacoLanguage);
+        let language = this.data.scriptLanguage as TMonacoLanguage
+
+        this.scriptExtension = LanguageStore.getExtensionFromLanguage(language ?? "javascript");
         this.scriptFinalName = `Main${this.scriptExtension}`;
         this.scriptLanguage = LanguageStore.getLenguageFromFileName(this.scriptFinalName);
-        // this.monacoContainerID = `MonacoArea_${Utils.getGuid().split("-")[0]}`;
     }
-
-
 }
 
 class ScriptFileManager {
@@ -635,14 +650,14 @@ class ScriptFileManager {
     private tempDirID?: string;
     readonly: boolean;
 
-    public dispose = async () => {
+    public async dispose() {
         await this.clearTempDir();
         this.fileManagerinstance.dispose();
     }
 
-    public repaint = () => { }
+    public repaint() { }
 
-    private clearTempDir = async () => {
+    private async clearTempDir() {
         let url = `${this.fileManagerBaseEndPoint}/file-manager/?command={0}&arguments={1}`;
         url = url.replace("{0}", "ClearTempDir");
         url = url.replace("{1}", "{}");
@@ -690,9 +705,9 @@ class ScriptFileManager {
             }
             GlobalLoadIndicator.hide("ScriptFileManager - pubContent");
             return objNewPackageVersionID.newPackageVersionID;
-
         } else {
-            throw new Error("Sem resposta.")
+            GlobalAlert.showAlert("Não foi possível salvar alterações.", "error");
+            return "";
         }
     };
 
@@ -771,7 +786,7 @@ class ScriptFileManager {
 
     }
 
-    private btnEditarVisualizarClick = async () => {
+    private async btnEditarVisualizarClick() {
         let selectedItem: Array<StorageModule.IStorageItem> = this.fileManagerinstance.getSelectedItems();
         if (selectedItem[0].isDirectory) {
             return;
@@ -804,7 +819,7 @@ class ScriptFileManager {
         }
     };
 
-    private btnDownloadClick = async () => {
+    private async btnDownloadClick() {
         GlobalLoadIndicator.show("ScriptFileManager - btnDownloadClick");
         let selectedItem = this.fileManagerinstance.getSelectedItems();
 
@@ -873,7 +888,8 @@ class ScriptFileManager {
                 "processVersionID": this.data.processVersionID,
                 "packageID": this.data.ID,
                 "packageVersionID": this.data.packageVersionID,
-                "tempDirID": this.tempDirID ? this.tempDirID : ""
+                "tempDirID": this.tempDirID ? this.tempDirID : "",
+                "scriptModule": "FILE_MANAGER"
             },
             beforeAjaxSend: (options) => {
 
