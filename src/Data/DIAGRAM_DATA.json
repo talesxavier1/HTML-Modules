@@ -4,8 +4,11 @@
         "type": "processContainer",
         "text": "",
         "shapeType": "processContainer",
-        "processID": "5818aaa6-32c6-4f9d-97de-78d855b129f2",
-        "processVersionID": "e10b672b-1121-4459-a4e0-27bb93d10ffe",
+        "processContext": {
+            "processID": "5818aaa6-32c6-4f9d-97de-78d855b129f2",
+            "processVersionID": "e10b672b-1121-4459-a4e0-27bb93d10ffe",
+            "assID": "b882275f-0e39-498d-b8d3-ece83fca1899"
+        },
         "name": ""
     },
     {
@@ -13,8 +16,11 @@
         "type": "startProcess",
         "text": "",
         "shapeType": "startProcess",
-        "processID": "5818aaa6-32c6-4f9d-97de-78d855b129f2",
-        "processVersionID": "e10b672b-1121-4459-a4e0-27bb93d10ffe",
+        "processContext": {
+            "processID": "5818aaa6-32c6-4f9d-97de-78d855b129f2",
+            "processVersionID": "e10b672b-1121-4459-a4e0-27bb93d10ffe",
+            "assID": "b882275f-0e39-498d-b8d3-ece83fca1899"
+        },
         "containerKey": "cdc4371d-631d-4f1f-9de0-ef4bff9dbe83"
     },
     {
@@ -22,8 +28,11 @@
         "type": "script",
         "text": "",
         "shapeType": "script",
-        "processID": "5818aaa6-32c6-4f9d-97de-78d855b129f2",
-        "processVersionID": "e10b672b-1121-4459-a4e0-27bb93d10ffe",
+        "processContext": {
+            "processID": "5818aaa6-32c6-4f9d-97de-78d855b129f2",
+            "processVersionID": "e10b672b-1121-4459-a4e0-27bb93d10ffe",
+            "assID": "b882275f-0e39-498d-b8d3-ece83fca1899"
+        },
         "scriptType": "Script",
         "packageVersionID": "13ad1a26-d412-40d7-a6ae-1862286246a6",
         "scriptLanguage": "javascript",
@@ -35,8 +44,11 @@
         "type": "multicastIn",
         "text": "",
         "shapeType": "multicastIn",
-        "processID": "5818aaa6-32c6-4f9d-97de-78d855b129f2",
-        "processVersionID": "e10b672b-1121-4459-a4e0-27bb93d10ffe",
+        "processContext": {
+            "processID": "5818aaa6-32c6-4f9d-97de-78d855b129f2",
+            "processVersionID": "e10b672b-1121-4459-a4e0-27bb93d10ffe",
+            "assID": "b882275f-0e39-498d-b8d3-ece83fca1899"
+        },
         "trackName": "2886c524",
         "containerKey": "cdc4371d-631d-4f1f-9de0-ef4bff9dbe83"
     },
@@ -45,11 +57,14 @@
         "type": "script",
         "text": "",
         "shapeType": "script",
-        "processID": "5818aaa6-32c6-4f9d-97de-78d855b129f2",
-        "processVersionID": "e10b672b-1121-4459-a4e0-27bb93d10ffe",
-        "scriptType": "Module",
-        "packageVersionID": "",
-        "scriptLanguage": "",
+        "processContext": {
+            "processID": "5818aaa6-32c6-4f9d-97de-78d855b129f2",
+            "processVersionID": "e10b672b-1121-4459-a4e0-27bb93d10ffe",
+            "assID": "b882275f-0e39-498d-b8d3-ece83fca1899"
+        },
+        "scriptType": "Script",
+        "packageVersionID": "586288d5-729e-46c7-812c-a4deb235092c",
+        "scriptLanguage": "javascript",
         "containerKey": "cdc4371d-631d-4f1f-9de0-ef4bff9dbe83",
         "packageID": ""
     },
@@ -58,8 +73,11 @@
         "type": "script",
         "text": "",
         "shapeType": "script",
-        "processID": "5818aaa6-32c6-4f9d-97de-78d855b129f2",
-        "processVersionID": "e10b672b-1121-4459-a4e0-27bb93d10ffe",
+        "processContext": {
+            "processID": "5818aaa6-32c6-4f9d-97de-78d855b129f2",
+            "processVersionID": "e10b672b-1121-4459-a4e0-27bb93d10ffe",
+            "assID": "b882275f-0e39-498d-b8d3-ece83fca1899"
+        },
         "scriptType": "Module",
         "packageVersionID": "",
         "scriptLanguage": "",
@@ -71,8 +89,11 @@
         "type": "multicastOut",
         "text": "",
         "shapeType": "multicastOut",
-        "processID": "5818aaa6-32c6-4f9d-97de-78d855b129f2",
-        "processVersionID": "e10b672b-1121-4459-a4e0-27bb93d10ffe",
+        "processContext": {
+            "processID": "5818aaa6-32c6-4f9d-97de-78d855b129f2",
+            "processVersionID": "e10b672b-1121-4459-a4e0-27bb93d10ffe",
+            "assID": "b882275f-0e39-498d-b8d3-ece83fca1899"
+        },
         "trackNameOrigin": "",
         "containerKey": "cdc4371d-631d-4f1f-9de0-ef4bff9dbe83"
     },
@@ -81,8 +102,11 @@
         "type": "endProcess",
         "text": "",
         "shapeType": "endProcess",
-        "processID": "5818aaa6-32c6-4f9d-97de-78d855b129f2",
-        "processVersionID": "e10b672b-1121-4459-a4e0-27bb93d10ffe",
+        "processContext": {
+            "processID": "5818aaa6-32c6-4f9d-97de-78d855b129f2",
+            "processVersionID": "e10b672b-1121-4459-a4e0-27bb93d10ffe",
+            "assID": "b882275f-0e39-498d-b8d3-ece83fca1899"
+        },
         "containerKey": "cdc4371d-631d-4f1f-9de0-ef4bff9dbe83"
     },
     {
@@ -90,8 +114,11 @@
         "type": "condition",
         "text": "",
         "shapeType": "condition",
-        "processID": "5818aaa6-32c6-4f9d-97de-78d855b129f2",
-        "processVersionID": "e10b672b-1121-4459-a4e0-27bb93d10ffe",
+        "processContext": {
+            "processID": "5818aaa6-32c6-4f9d-97de-78d855b129f2",
+            "processVersionID": "e10b672b-1121-4459-a4e0-27bb93d10ffe",
+            "assID": "b882275f-0e39-498d-b8d3-ece83fca1899"
+        },
         "containerKey": "cdc4371d-631d-4f1f-9de0-ef4bff9dbe83"
     },
     {
@@ -99,8 +126,11 @@
         "type": "script",
         "text": "",
         "shapeType": "script",
-        "processID": "5818aaa6-32c6-4f9d-97de-78d855b129f2",
-        "processVersionID": "e10b672b-1121-4459-a4e0-27bb93d10ffe",
+        "processContext": {
+            "processID": "5818aaa6-32c6-4f9d-97de-78d855b129f2",
+            "processVersionID": "e10b672b-1121-4459-a4e0-27bb93d10ffe",
+            "assID": "b882275f-0e39-498d-b8d3-ece83fca1899"
+        },
         "scriptType": "Module",
         "packageVersionID": "",
         "scriptLanguage": "",
@@ -112,8 +142,11 @@
         "type": "script",
         "text": "",
         "shapeType": "script",
-        "processID": "5818aaa6-32c6-4f9d-97de-78d855b129f2",
-        "processVersionID": "e10b672b-1121-4459-a4e0-27bb93d10ffe",
+        "processContext": {
+            "processID": "5818aaa6-32c6-4f9d-97de-78d855b129f2",
+            "processVersionID": "e10b672b-1121-4459-a4e0-27bb93d10ffe",
+            "assID": "b882275f-0e39-498d-b8d3-ece83fca1899"
+        },
         "scriptType": "Module",
         "packageVersionID": "",
         "scriptLanguage": "",
@@ -125,8 +158,11 @@
         "type": "multicastIn",
         "text": "",
         "shapeType": "multicastIn",
-        "processID": "5818aaa6-32c6-4f9d-97de-78d855b129f2",
-        "processVersionID": "e10b672b-1121-4459-a4e0-27bb93d10ffe",
+        "processContext": {
+            "processID": "5818aaa6-32c6-4f9d-97de-78d855b129f2",
+            "processVersionID": "e10b672b-1121-4459-a4e0-27bb93d10ffe",
+            "assID": "b882275f-0e39-498d-b8d3-ece83fca1899"
+        },
         "trackName": "599b3172",
         "containerKey": "cdc4371d-631d-4f1f-9de0-ef4bff9dbe83"
     },
@@ -135,8 +171,11 @@
         "type": "script",
         "text": "",
         "shapeType": "script",
-        "processID": "5818aaa6-32c6-4f9d-97de-78d855b129f2",
-        "processVersionID": "e10b672b-1121-4459-a4e0-27bb93d10ffe",
+        "processContext": {
+            "processID": "5818aaa6-32c6-4f9d-97de-78d855b129f2",
+            "processVersionID": "e10b672b-1121-4459-a4e0-27bb93d10ffe",
+            "assID": "b882275f-0e39-498d-b8d3-ece83fca1899"
+        },
         "scriptType": "Module",
         "packageVersionID": "",
         "scriptLanguage": "",
@@ -148,8 +187,11 @@
         "type": "script",
         "text": "",
         "shapeType": "script",
-        "processID": "5818aaa6-32c6-4f9d-97de-78d855b129f2",
-        "processVersionID": "e10b672b-1121-4459-a4e0-27bb93d10ffe",
+        "processContext": {
+            "processID": "5818aaa6-32c6-4f9d-97de-78d855b129f2",
+            "processVersionID": "e10b672b-1121-4459-a4e0-27bb93d10ffe",
+            "assID": "b882275f-0e39-498d-b8d3-ece83fca1899"
+        },
         "scriptType": "Module",
         "packageVersionID": "",
         "scriptLanguage": "",
@@ -161,8 +203,11 @@
         "type": "multicastOut",
         "text": "",
         "shapeType": "multicastOut",
-        "processID": "5818aaa6-32c6-4f9d-97de-78d855b129f2",
-        "processVersionID": "e10b672b-1121-4459-a4e0-27bb93d10ffe",
+        "processContext": {
+            "processID": "5818aaa6-32c6-4f9d-97de-78d855b129f2",
+            "processVersionID": "e10b672b-1121-4459-a4e0-27bb93d10ffe",
+            "assID": "b882275f-0e39-498d-b8d3-ece83fca1899"
+        },
         "trackNameOrigin": "",
         "containerKey": "cdc4371d-631d-4f1f-9de0-ef4bff9dbe83"
     }

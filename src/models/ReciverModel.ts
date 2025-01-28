@@ -1,3 +1,4 @@
+import { ProcessContext } from "./ProcessContext";
 import { ShapeModel } from "./ShapeModel"
 
 export interface IReciverModel {
@@ -7,8 +8,9 @@ export interface IReciverModel {
 export class ReciverModel extends ShapeModel implements IReciverModel {
     name: string;
 
-    constructor(ID?: string) {
-        super("reciver", ID);
+    constructor(processContext?: ProcessContext, ID?: string) {
+        super("reciver", processContext, ID);
         this.name = "";
     }
+
 }

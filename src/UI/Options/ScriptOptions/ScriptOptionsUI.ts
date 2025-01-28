@@ -12,9 +12,12 @@ import { GlobalLoadIndicator } from "../../../UI/GlobalLoadIndicator/GlobalLoadI
 import { StorageModule } from "../../../Modules/StorageModule";
 import { APIModule } from "../../../Modules/APIModule";
 import { GlobalAlert } from "../../../UI/GlobalAlert/GlobalAlert";
+import { ProcessContext } from "../../../models/ProcessContext";
 
 export class ScriptOptionsUI implements IOptionUI {
     private componentInstanceModel = new ComponentInstanceModel<ScriptModel>(new ScriptModel());
+    private processContextInstanceModel = new ComponentInstanceModel<ProcessContext>(new ProcessContext());
+
     private data: ScriptModel;
     public optionsHTMLContainer: string;
     private tempDirID: string | undefined;
@@ -52,10 +55,12 @@ export class ScriptOptionsUI implements IOptionUI {
         }
 
         let builtObject = this.componentInstanceModel.getBuiltObject();
+        let processContext = this.processContextInstanceModel.getBuiltObject();
         return {
             ...this.data,
             ...builtObject,
-            packageVersionID: newPackageVersionID
+            packageVersionID: newPackageVersionID,
+            processContext: processContext
         } as ScriptModel;
     };
 
@@ -133,23 +138,34 @@ export class ScriptOptionsUI implements IOptionUI {
             }).dxTextBox("instance")
         }));
 
-        /* processID  */
-        this.componentInstanceModel.addInstance(new InstanceProps({
+        /* processContext.processID  */
+        this.processContextInstanceModel.addInstance(new InstanceProps({
             componentName: "dxTextBox",
             tagName: "processID",
-            instance: $('#scriptOptions_processID').dxTextBox({
-                value: this.data.processID,
+            instance: $('#scriptOptions_processContext_processID').dxTextBox({
+                value: this.data.processContext.processID,
                 readOnly: true,
                 label: "processID"
             }).dxTextBox("instance")
         }));
 
-        /* processVersionID  */
-        this.componentInstanceModel.addInstance(new InstanceProps({
+        /* processContext.assID  */
+        this.processContextInstanceModel.addInstance(new InstanceProps({
+            componentName: "dxTextBox",
+            tagName: "assID",
+            instance: $('#scriptOptions_processContext_assID').dxTextBox({
+                value: this.data.processContext.assID,
+                readOnly: true,
+                label: "assID"
+            }).dxTextBox("instance")
+        }));
+
+        /* processContext.processVersionID  */
+        this.processContextInstanceModel.addInstance(new InstanceProps({
             componentName: "dxTextBox",
             tagName: "processVersionID",
-            instance: $('#scriptOptions_processVersionID').dxTextBox({
-                value: this.data.processVersionID,
+            instance: $('#scriptOptions_processContext_processVersionID').dxTextBox({
+                value: this.data.processContext.processVersionID,
                 readOnly: true,
                 label: "processVersionID"
             }).dxTextBox("instance")
@@ -265,7 +281,7 @@ export class ScriptOptionsUI implements IOptionUI {
 }
 
 class ScriptEditor {
-    private componentInstanceModel = new ComponentInstanceModel<ScriptModel>(new ScriptModel());
+    private componentInstanceModel = new ComponentInstanceModel<ScriptModel>(new ScriptModel(new ProcessContext()));
     private readonly: boolean;
     private monacoLanguage: TMonacoLanguage;
     private monacoContent: string
@@ -506,8 +522,8 @@ class ScriptArea {
             url = url.replace("{1}", JSON.stringify({ "pathInfo": [], "name": "" }));
             fetch(encodeURI(url), {
                 headers: {
-                    "processID": this.data.processID,
-                    "processVersionID": this.data.processVersionID,
+                    "processID": this.data.processContext.processID,
+                    "processVersionID": this.data.processContext.processVersionID,
                     "packageID": this.data.ID,
                     "packageVersionID": this.data.packageVersionID,
                     "tempDirID": this.tempDirID ?? "",
@@ -541,8 +557,8 @@ class ScriptArea {
 
         let result = await fetch(encodeURI(url), {
             headers: {
-                "processID": this.data.processID,
-                "processVersionID": this.data.processVersionID,
+                "processID": this.data.processContext.processID,
+                "processVersionID": this.data.processContext.processVersionID,
                 "packageID": this.data.ID,
                 "packageVersionID": this.data.packageVersionID,
                 "tempDirID": this.tempDirID ?? ""
@@ -589,8 +605,8 @@ class ScriptArea {
 
         let response = await fetch(encodeURI(`${this.fileManagerBaseEndPoint}/file-manager/`), {
             headers: {
-                "processID": this.data.processID,
-                "processVersionID": this.data.processVersionID,
+                "processID": this.data.processContext.processID,
+                "processVersionID": this.data.processContext.processVersionID,
                 "packageID": this.data.ID,
                 "packageVersionID": this.data.packageVersionID,
                 "tempDirID": this.tempDirID ?? "",
@@ -752,8 +768,8 @@ class ScriptFileManager {
 
             fetch(encodeURI(url), {
                 headers: {
-                    "processID": this.data.processID,
-                    "processVersionID": this.data.processVersionID,
+                    "processID": this.data.processContext.processID,
+                    "processVersionID": this.data.processContext.processVersionID,
                     "packageID": this.data.ID,
                     "packageVersionID": this.data.packageVersionID,
                     "tempDirID": this.tempDirID ?? ""
@@ -804,8 +820,8 @@ class ScriptFileManager {
         GlobalLoadIndicator.show("ScriptFileManager - updateFileContent");
         let response = await fetch(encodeURI(`${this.fileManagerBaseEndPoint}/file-manager/`), {
             headers: {
-                "processID": this.data.processID,
-                "processVersionID": this.data.processVersionID,
+                "processID": this.data.processContext.processID,
+                "processVersionID": this.data.processContext.processVersionID,
                 "packageID": this.data.ID,
                 "packageVersionID": this.data.packageVersionID,
                 "tempDirID": this.tempDirID ?? "",
@@ -928,8 +944,8 @@ class ScriptFileManager {
         const provider = new DevExpress.fileManagement.RemoteFileSystemProvider({
             endpointUrl: `${fileManagerBaseEndPoint}/file-manager/`,
             requestHeaders: {
-                "processID": this.data.processID,
-                "processVersionID": this.data.processVersionID,
+                "processID": this.data.processContext.processID,
+                "processVersionID": this.data.processContext.processVersionID,
                 "packageID": this.data.ID,
                 "packageVersionID": this.data.packageVersionID,
                 "tempDirID": this.tempDirID ? this.tempDirID : "",

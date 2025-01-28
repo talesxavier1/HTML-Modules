@@ -1,3 +1,4 @@
+import { ProcessContext } from "./ProcessContext";
 import { ShapeModel } from "./ShapeModel"
 
 export interface ISenderModel {
@@ -6,7 +7,7 @@ export interface ISenderModel {
 export class SenderModel extends ShapeModel implements ISenderModel {
     senderPath!: string
     senderName!: string
-    constructor(ID?: string) {
-        super("sender", ID);
+    constructor(processContext?: ProcessContext, ID?: string) {
+        super("sender", processContext, ID);
     }
 }
