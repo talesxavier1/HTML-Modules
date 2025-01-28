@@ -21,22 +21,20 @@ export class ScriptOptionsUI implements IOptionUI {
     private scriptManager: ScriptFileManager | undefined;
     private scriptArea: ScriptArea | undefined;
     private readonly: boolean;
-    private getFileManagementBaseAPI(): string {
-        return localStorage.getItem("FILE_MANAGEMENT_BASE_API") ?? "";
-    }
+
     private async mountScriptManager(type: "Script" | "Module" | ""): Promise<void> {
+        if (this.scriptArea) {
+            this.scriptArea.dispose();
+            this.scriptArea = undefined;
+        }
+        if (this.scriptManager) {
+            await this.scriptManager.dispose();
+            this.scriptManager = undefined;
+        }
         if (type == "Module") {
-            if (this.scriptArea) {
-                this.scriptArea.dispose();
-                this.scriptArea = undefined;
-            }
-            this.scriptManager = new ScriptFileManager(this.getFileManagementBaseAPI(), this.data, this.readonly, this.tempDirID);
+            this.scriptManager = new ScriptFileManager(Utils.getBaseAPI("FILE-MANAGER"), this.data, this.readonly, this.tempDirID);
         } else if (type == "Script") {
-            if (this.scriptManager) {
-                await this.scriptManager.dispose();
-                this.scriptManager = undefined;
-            }
-            this.scriptArea = new ScriptArea(this.getFileManagementBaseAPI(), this.data, this.readonly, this.tempDirID);
+            this.scriptArea = new ScriptArea(Utils.getBaseAPI("FILE-MANAGER"), this.data, this.readonly, this.tempDirID);
             await this.scriptArea.init();
         } else {
             throw new Error("Não foi possível inicar o editor de script.");
@@ -229,6 +227,7 @@ export class ScriptOptionsUI implements IOptionUI {
                     await self.mountScriptManager(e.value);
                     if (e.value == "Script") {
                         self.componentInstanceModel.setVisibleInstance("scriptLanguage");
+                        self.componentInstanceModel.setInstanceValue("scriptLanguage", "groovy");
                     } else {
                         self.componentInstanceModel.setInstanceValue("scriptLanguage", null);
                         self.componentInstanceModel.setInvisibleInstance("scriptLanguage");
@@ -243,7 +242,6 @@ export class ScriptOptionsUI implements IOptionUI {
             "componentName": "dxSelectBox",
             "instance": $("#scriptOptions_scriptLanguage").dxSelectBox({
                 dataSource: [
-                    { "ID": "", "VALUE": "" },
                     { "ID": "javascript", "VALUE": "Javascript" },
                     { "ID": "groovy", "VALUE": "Groovy" },
                 ] as Array<{
@@ -255,7 +253,11 @@ export class ScriptOptionsUI implements IOptionUI {
                 displayExpr: "VALUE",
                 disabled: readonly,
                 visible: this.data.scriptType == "Script",
-                value: this.data.scriptLanguage ? this.data.scriptLanguage : null,
+                value: this.data.scriptLanguage ? this.data.scriptLanguage : "groovy",
+                async onValueChanged(e) {
+                    self.data.scriptLanguage = e.value;
+                    await self.mountScriptManager("Script");
+                }
             }).dxSelectBox("instance"),
             "tagName": "scriptLanguage"
         }));
@@ -305,21 +307,49 @@ class ScriptEditor {
         this._asyncOnCompletedOperation ? this._asyncOnCompletedOperation(value) : "";
     }
 
+    private async getTokenizerLangDefinition(language: string) {
+        return await new Promise((resolve) => {
+            requirejs.config({
+                paths: {
+                    'tokenizer': `${Utils.getCDNBase()}/monaco-ace-tokenizer/dist`
+                }
+            });
+            requirejs(['tokenizer/definitions/' + language], function (LangDefinition: any) {
+                resolve(LangDefinition);
+            });
+        });
+    }
+
+
+
     private initMonaco = async (): Promise<monaco.editor.IStandaloneCodeEditor> => {
         const self = this;
         return new Promise((resolve) => {
             requirejs.config({
                 paths: {
-                    'vs': 'https://talesxavier1.github.io/GH-CDN/TypeScriptEditor/lib/monaco-editor/min/vs'
+                    'vs': `${Utils.getCDNBase()}/monaco-editor/min/vs`,
+                    'tokenizer': `${Utils.getCDNBase()}/monaco-ace-tokenizer/dist`
                 }
             });
-            requirejs(['vs/editor/editor.main'], function () {
+
+            requirejs(['vs/editor/editor.main', 'tokenizer/monaco-tokenizer'], async function (_: any, MonacoAceTokenizer: any) {
                 let comp = document.getElementById(self.containerID);
                 if (!comp) { return }
+                let languages = MonacoAceTokenizer.AVAILABLE_LANGUAGES.filter((VALUE: string) => VALUE != "octave")
+                for (const language of languages) {
+                    let LangDefinition: any = await self.getTokenizerLangDefinition(language);
+                    monaco.languages.register({
+                        id: language,
+                    });
+
+                    MonacoAceTokenizer.registerRulesForLanguage(language, new LangDefinition.default);
+                }
+
                 let monacoInstance = monaco.editor.create(comp, {
                     language: self.monacoLanguage,
                     theme: "vs-dark",
-                    value: self.monacoContent
+                    value: self.monacoContent,
+
                 });
                 resolve(monacoInstance);
             });
@@ -380,6 +410,7 @@ class ScriptEditor {
             this.initDxPopupComponents();
         }
         this.monacoEditor = await this.initMonaco();
+
         GlobalLoadIndicator.hide("ScriptEditor - init");
     }
 
@@ -462,8 +493,10 @@ class ScriptArea {
     }
 
     public async init() {
+        GlobalLoadIndicator.show("ScriptArea - init");
         let result = await this.getFileContent();
         await this.initScriptArea(result);
+        GlobalLoadIndicator.hide("ScriptArea - init");
     }
 
     private getDirContent = async (): Promise<APIModule.Response.IContent | null> => {
@@ -636,7 +669,7 @@ class ScriptArea {
         this.tempDirID = tempDirID;
         let language = this.data.scriptLanguage as TMonacoLanguage
 
-        this.scriptExtension = LanguageStore.getExtensionFromLanguage(language ?? "javascript");
+        this.scriptExtension = LanguageStore.getExtensionFromLanguage(language ?? "groovy");
         this.scriptFinalName = `Main${this.scriptExtension}`;
         this.scriptLanguage = LanguageStore.getLenguageFromFileName(this.scriptFinalName);
     }
@@ -731,8 +764,13 @@ class ScriptFileManager {
                     resolve("");
                 }
                 return response.json();
-            }).then((body) => {
-                resolve(body.strResult);
+            }).then((body: APIModule.Response.IContent) => {
+                if (body.success == false) {
+                    GlobalAlert.showAlert(body.errorText, "error");
+                    resolve("");
+                }
+
+                resolve(body.strResult as string);
             });;
         });
     }
@@ -789,10 +827,18 @@ class ScriptFileManager {
     private async btnEditarVisualizarClick() {
         let selectedItem: Array<StorageModule.IStorageItem> = this.fileManagerinstance.getSelectedItems();
         if (selectedItem[0].isDirectory) {
+            GlobalAlert.showAlert("Não é possível editar um diretório.", "error");
             return;
         }
 
         let dataItem: StorageModule.IStorageItemData = selectedItem[0].dataItem;
+        let language;
+        try {
+            language = LanguageStore.getLenguageFromFileName(dataItem.name);
+        } catch {
+            GlobalAlert.showAlert("Não é possível editar esse arquivo. Linguagem não cadastrada.", "error");
+            return;
+        }
 
         let pathInfo: Array<StorageModule.IStorageItemPathInfo> = JSON.parse(JSON.stringify(selectedItem[0].pathInfo));
         pathInfo.push({
@@ -803,8 +849,6 @@ class ScriptFileManager {
         GlobalLoadIndicator.show("ScriptFileManager - btnEditarVisualizarClick");
         let strFile: string = await this.getFileContent(pathInfo, selectedItem[0].name);
         GlobalLoadIndicator.hide("ScriptFileManager - btnEditarVisualizarClick");
-
-        let language = LanguageStore.getLenguageFromFileName(dataItem.name);
 
         const scriptPopUp = new ScriptEditor(this.readonly, language, "POPUP", "MonacoArea", strFile);
         await scriptPopUp.init();

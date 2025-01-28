@@ -8,7 +8,6 @@ export class Utils {
         return $(document.createElementNS('http://www.w3.org/2000/svg', type));
     }
 
-
     static getGuid = (): string => {
         var d = new Date().getTime();
         var d2 = ((typeof performance !== 'undefined') && performance.now && (performance.now() * 1000)) || 0;
@@ -96,4 +95,29 @@ export class Utils {
             }, sec * 1000); // 2000 ms = 2 segundos
         });
     }
+
+
+    static getBaseAPI(api: "FILE-MANAGER"): string {
+        let value;
+        if (api == "FILE-MANAGER") {
+            value = localStorage.getItem("FILE_MANAGEMENT_BASE_API");
+        }
+
+        if (!value) {
+            throw new Error(`[ERRO]- [Utils] - Não foi possível obter o base da API ${api}`);
+        }
+
+        return value;
+    }
+
+    static getCDNBase(): string {
+        let value = localStorage.getItem("CDN_BASE_API");
+
+        if (!value) {
+            throw new Error(`[ERRO]- [Utils] - Não foi possível obter a url do cdn`);
+        }
+
+        return value;
+    }
+
 }
