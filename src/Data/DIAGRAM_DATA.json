@@ -24,9 +24,9 @@
         "shapeType": "script",
         "processID": "5818aaa6-32c6-4f9d-97de-78d855b129f2",
         "processVersionID": "e10b672b-1121-4459-a4e0-27bb93d10ffe",
-        "scriptType": "Module",
-        "packageVersionID": "",
-        "scriptLanguage": null,
+        "scriptType": "Script",
+        "packageVersionID": "13ad1a26-d412-40d7-a6ae-1862286246a6",
+        "scriptLanguage": "javascript",
         "containerKey": "cdc4371d-631d-4f1f-9de0-ef4bff9dbe83",
         "packageID": "1ce9cbab-f5f3-44a8-99b5-58d3e0c0edaf"
     },
