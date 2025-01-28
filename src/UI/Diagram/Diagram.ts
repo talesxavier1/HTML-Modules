@@ -585,6 +585,7 @@ export class Diagram {
         let diagramProps = this.componentInstanceModel.getInstanceProps("diagrama");
         let diagramInstance = diagramProps.getInstance() as DevExpress.ui.dxDiagram;
         diagramInstance.import(strDiagramProps, false);
+        let a = this._nodeStore.getAll().filter(VALUE => VALUE.type == "processContainer");
 
         diagramData.forEach((VAL: any) => {
             this._nodeStore.store.update(VAL.ID, VAL);

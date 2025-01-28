@@ -1,5 +1,6 @@
 import { TShapeType } from "../Types/TShapeType";
 import { Utils } from "../Utils/Utils";
+import { ProcessContext } from "./ProcessContext";
 
 
 export interface IShapeModel {
@@ -12,15 +13,19 @@ export class ShapeModel implements IShapeModel {
     type: TShapeType;
     text: string;
     shapeType: TShapeType;
-    containerKey?: string
-    processID: string = "";
-    processVersionID: string = "";
+    containerKey?: string;
+    processContext: ProcessContext;
 
-    constructor(shapeType: TShapeType, ID?: string) {
+    constructor(shapeType: TShapeType, processContext?: ProcessContext, ID?: string,) {
         this.ID = ID ? ID : Utils.getGuid();
         this.shapeType = shapeType;
         this.type = shapeType;
         this.text = "";
+        if (processContext) {
+            this.processContext = processContext;
+        } else {
+            this.processContext = new ProcessContext();
+        }
     }
 
 

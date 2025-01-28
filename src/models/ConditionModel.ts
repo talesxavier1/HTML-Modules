@@ -1,4 +1,5 @@
 
+import { ProcessContext } from "./ProcessContext";
 import { ShapeModel } from "./ShapeModel"
 
 export interface IConditionModel {
@@ -7,8 +8,8 @@ export interface IConditionModel {
 
 export class ConditionModel extends ShapeModel implements IConditionModel {
 
-    constructor(ID?: string) {
-        super("condition", ID);
+    constructor(processContext?: ProcessContext, ID?: string) {
+        super("condition", processContext, ID);
 
     }
 }

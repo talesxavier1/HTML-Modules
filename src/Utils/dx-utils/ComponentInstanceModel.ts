@@ -103,6 +103,10 @@ export class ComponentInstanceModel<T> {
     public getBuiltObject = (): T => {
         let data: any = this.dataObject;
         for (let KEY of Object.keys(data)) {
+            /* Quando é um objeto filho, ele vai possuir seu proprio ComponentInstanceModel, então é ignorado */
+            if (typeof data[KEY] == "object" && !Array.isArray(data[KEY])) {
+                continue;
+            }
             data[KEY] = this.getInstanceValue(KEY);
         }
         return data;

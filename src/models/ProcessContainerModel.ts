@@ -1,3 +1,4 @@
+import { ProcessContext } from "./ProcessContext";
 import { ShapeModel } from "./ShapeModel"
 
 export interface IProcessConatinerModel {
@@ -7,8 +8,8 @@ export interface IProcessConatinerModel {
 export class ProcessContainerModel extends ShapeModel implements IProcessConatinerModel {
     name: string;
 
-    constructor(ID?: string) {
-        super("processContainer", ID);
+    constructor(processContext?: ProcessContext, ID?: string) {
+        super("processContainer", processContext, ID);
         this.name = "";
     }
 }

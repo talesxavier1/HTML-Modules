@@ -1,4 +1,5 @@
 import { TMonacoLanguage } from "../Types/TMonacoLanguage";
+import { ProcessContext } from "./ProcessContext";
 import { ShapeModel } from "./ShapeModel"
 
 export interface IScriptModel {
@@ -12,8 +13,8 @@ export class ScriptModel extends ShapeModel implements IScriptModel {
     packageVersionID: string = "";
     scriptLanguage: TMonacoLanguage | "" = "";
 
-    constructor(ID?: string) {
-        super("script", ID);
+    constructor(processContext?: ProcessContext, ID?: string) {
+        super("script", processContext, ID);
     }
 
 }
