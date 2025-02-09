@@ -8,13 +8,15 @@ import { EdgesStore } from "../../Data/EdgesStore";
 import { TDiagramShapeClicked } from "../../Types/TDiagramShapeClicked";
 import { TDataSource } from "../../Types/TDataSource";
 import { GlobalLoadIndicator } from "../../UI/GlobalLoadIndicator/GlobalLoadIndicator";
+import { ProcessContext } from "../../models/ProcessContext";
 declare const Swal: any;
 
 export class Diagram {
-    private componentInstanceModel = new ComponentInstanceModel<Object>(new Object);
+    private _processContext: ProcessContext;
+    private _componentInstanceModel = new ComponentInstanceModel<Object>(new Object);
+    private _nodeStore;
+    private _edgesStore;
 
-    private _nodeStore = new NodeStore("ID");
-    private _edgesStore = new EdgesStore("ID");
 
     public getNodeStore = (): NodeStore => {
         return this._nodeStore
@@ -79,7 +81,9 @@ export class Diagram {
         if (event.args.connector && !event.args.connectorPosition) { return }
 
         /* Remoção de shape */
-        if (event.operation == "deleteConnector") { return }
+        if (event.operation == "deleteConnector") {
+            return;
+        }
 
         /* Exibição dos pontos de conexão quando clica no shape. */
         if (event.operation == "changeConnection" && !event.args.connector) {
@@ -578,14 +582,13 @@ export class Diagram {
     }
 
     public repaint = () => {
-        this.componentInstanceModel.repaint("diagrama");
+        this._componentInstanceModel.repaint("diagrama");
     }
 
     public setDiagramOptions = (strDiagramProps: string, diagramData: Array<any>) => {
-        let diagramProps = this.componentInstanceModel.getInstanceProps("diagrama");
+        let diagramProps = this._componentInstanceModel.getInstanceProps("diagrama");
         let diagramInstance = diagramProps.getInstance() as DevExpress.ui.dxDiagram;
         diagramInstance.import(strDiagramProps, false);
-        let a = this._nodeStore.getAll().filter(VALUE => VALUE.type == "processContainer");
 
         diagramData.forEach((VAL: any) => {
             this._nodeStore.store.update(VAL.ID, VAL);
@@ -595,7 +598,7 @@ export class Diagram {
     public getDiagramOptions = (): { data: TDataSource[], diagramPropsValue: string } => {
         let data: TDataSource[] = this._nodeStore.getAll();
 
-        let diagramProps = this.componentInstanceModel.getInstanceProps("diagrama");
+        let diagramProps = this._componentInstanceModel.getInstanceProps("diagrama");
         let diagramInstance = diagramProps.getInstance() as DevExpress.ui.dxDiagram;
         let diagramPropsValue = diagramInstance.export();
 
@@ -609,8 +612,11 @@ export class Diagram {
         this._nodeStore.store.update(key, data);
     }
 
-    constructor() {
-        this.componentInstanceModel.addInstance(new InstanceProps({
+    constructor(processContext: ProcessContext) {
+        this._processContext = processContext;
+        this._nodeStore = new NodeStore("ID", this._processContext);
+        this._edgesStore = new EdgesStore("ID");
+        this._componentInstanceModel.addInstance(new InstanceProps({
             tagName: "diagrama",
             componentName: "dxDiagram",
             instance: $('#diagrama').dxDiagram({
@@ -623,6 +629,7 @@ export class Diagram {
                     await this._shapeClicked(e);
                     GlobalLoadIndicator.hide("Diagram - constructor - addInstance - InstanceProps - onItemClick ");
                 },
+
                 customShapes: this.customShapes.customShapes,
                 nodes: {
                     dataSource: this._nodeStore.store,

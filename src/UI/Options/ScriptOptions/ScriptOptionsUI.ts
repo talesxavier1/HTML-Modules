@@ -15,7 +15,7 @@ import { GlobalAlert } from "../../../UI/GlobalAlert/GlobalAlert";
 import { ProcessContext } from "../../../models/ProcessContext";
 
 export class ScriptOptionsUI implements IOptionUI {
-    private componentInstanceModel = new ComponentInstanceModel<ScriptModel>(new ScriptModel());
+    private componentInstanceModel = new ComponentInstanceModel<ScriptModel>(new ScriptModel(new ProcessContext()));
     private processContextInstanceModel = new ComponentInstanceModel<ProcessContext>(new ProcessContext());
 
     private data: ScriptModel;
@@ -215,7 +215,7 @@ export class ScriptOptionsUI implements IOptionUI {
             }).dxTextBox("instance")
         }));
 
-        /* text */
+        /* containerKey */
         this.componentInstanceModel.addInstance(new InstanceProps({
             componentName: "dxTextBox",
             tagName: "containerKey",
@@ -240,11 +240,11 @@ export class ScriptOptionsUI implements IOptionUI {
                 disabled: readonly,
                 value: this.data.scriptType ? this.data.scriptType : null,
                 async onValueChanged(e) {
-                    await self.mountScriptManager(e.value);
                     if (e.value == "Script") {
                         self.componentInstanceModel.setVisibleInstance("scriptLanguage");
                         self.componentInstanceModel.setInstanceValue("scriptLanguage", "groovy");
                     } else {
+                        await self.mountScriptManager("Module");
                         self.componentInstanceModel.setInstanceValue("scriptLanguage", null);
                         self.componentInstanceModel.setInvisibleInstance("scriptLanguage");
                     }
@@ -254,12 +254,14 @@ export class ScriptOptionsUI implements IOptionUI {
         }));
 
         /* scriptLanguage */
+        let scriptLanguageVisible = this.data.scriptType == "Script";
         this.componentInstanceModel.addInstance(new InstanceProps({
             "componentName": "dxSelectBox",
             "instance": $("#scriptOptions_scriptLanguage").dxSelectBox({
                 dataSource: [
                     { "ID": "javascript", "VALUE": "Javascript" },
                     { "ID": "groovy", "VALUE": "Groovy" },
+                    { "ID": " ", "VALUE": " " },
                 ] as Array<{
                     ID: TMonacoLanguage | "",
                     VALUE: string
@@ -268,11 +270,14 @@ export class ScriptOptionsUI implements IOptionUI {
                 valueExpr: "ID",
                 displayExpr: "VALUE",
                 disabled: readonly,
-                visible: this.data.scriptType == "Script",
-                value: this.data.scriptLanguage ? this.data.scriptLanguage : "groovy",
+                visible: scriptLanguageVisible,
+                value: this.data.scriptLanguage ? this.data.scriptLanguage : " ",
                 async onValueChanged(e) {
                     self.data.scriptLanguage = e.value;
-                    await self.mountScriptManager("Script");
+                    let scriptType = self.componentInstanceModel.getInstanceValue("scriptType");
+                    if (scriptType == "Script") {
+                        await self.mountScriptManager("Script");
+                    }
                 }
             }).dxSelectBox("instance"),
             "tagName": "scriptLanguage"
