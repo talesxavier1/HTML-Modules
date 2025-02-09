@@ -211,7 +211,7 @@ export class ScriptOptionsUI implements IOptionUI {
             instance: $('#scriptOptions_text').dxTextBox({
                 value: this.data.text ? this.data.text : "",
                 label: "Text",
-                readOnly: true
+                readOnly: this.readonly
             }).dxTextBox("instance")
         }));
 
@@ -237,7 +237,7 @@ export class ScriptOptionsUI implements IOptionUI {
                 label: "Script type",
                 valueExpr: "ID",
                 displayExpr: "VALUE",
-                disabled: readonly,
+                readOnly: readonly,
                 value: this.data.scriptType ? this.data.scriptType : null,
                 async onValueChanged(e) {
                     if (e.value == "Script") {
@@ -269,7 +269,7 @@ export class ScriptOptionsUI implements IOptionUI {
                 label: "Script Language",
                 valueExpr: "ID",
                 displayExpr: "VALUE",
-                disabled: readonly,
+                readOnly: readonly,
                 visible: scriptLanguageVisible,
                 value: this.data.scriptLanguage ? this.data.scriptLanguage : " ",
                 async onValueChanged(e) {
@@ -370,7 +370,7 @@ class ScriptEditor {
                     language: self.monacoLanguage,
                     theme: "vs-dark",
                     value: self.monacoContent,
-
+                    readOnly: self.readonly
                 });
                 resolve(monacoInstance);
             });
@@ -389,7 +389,7 @@ class ScriptEditor {
                         <div id="MonacoArea"></div>
                     `
                 },
-                onHidden: this._onPopUpHidden,
+                onHidden: () => this._onPopUpHidden(),
                 onResize: this.repaint,
                 onContentReady(e: any) {
                     if (!e.component["_$wrapper"]) { return }

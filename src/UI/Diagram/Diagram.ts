@@ -16,7 +16,7 @@ export class Diagram {
     private _componentInstanceModel = new ComponentInstanceModel<Object>(new Object);
     private _nodeStore;
     private _edgesStore;
-
+    private _readOnly: boolean = true;
 
     public getNodeStore = (): NodeStore => {
         return this._nodeStore
@@ -574,7 +574,14 @@ export class Diagram {
     public shapeClicked: ((args: TDiagramShapeClicked) => Promise<void>) | undefined;
     private _shapeClicked = async (evt: DevExpress.ui.dxDiagram.ItemClickEvent) => {
         if (!this.shapeClicked) { return; }
-        let shapeData = this._nodeStore.getByKey(evt.item.dataItem.ID) as TDataSource;
+        let key = (() => {
+            let value1 = evt.item.dataItem?.ID; /* Quando não é readOnly */
+            if (value1) { return value1 }
+            let value2 = evt.item.key; /* Quando é readOnly */
+            if (value2) { return value2; }
+            return "";
+        })()
+        let shapeData = this._nodeStore.getByKey(key) as TDataSource;
         await this.shapeClicked({
             event: evt,
             shapeData: shapeData
@@ -588,11 +595,18 @@ export class Diagram {
     public setDiagramOptions = (strDiagramProps: string, diagramData: Array<any>) => {
         let diagramProps = this._componentInstanceModel.getInstanceProps("diagrama");
         let diagramInstance = diagramProps.getInstance() as DevExpress.ui.dxDiagram;
-        diagramInstance.import(strDiagramProps, false);
 
-        diagramData.forEach((VAL: any) => {
-            this._nodeStore.store.update(VAL.ID, VAL);
-        });
+        diagramInstance.import(strDiagramProps, false);
+        if (this._readOnly) {
+            this._nodeStore.store.push(diagramData.map(VALUE => {
+                return { type: "insert", data: VALUE, key: VALUE.ID }
+            }));
+        } else {
+            diagramData.forEach((VALUE) => {
+                this.updateNode(VALUE.ID, VALUE)
+            })
+        }
+
     }
 
     public getDiagramOptions = (): { data: TDataSource[], diagramPropsValue: string } => {
@@ -610,9 +624,20 @@ export class Diagram {
 
     public updateNode = (key: string, data: TDataSource) => {
         this._nodeStore.store.update(key, data);
+
+        if (data.hasOwnProperty("text")) {
+            let diagramInstance = this._componentInstanceModel.getInstanceProps("diagrama").getInstance() as any;
+            let items = diagramInstance._diagramInstance?.model?.items ?? [];
+            let index = items.findIndex((VALUE: any) => VALUE.dataKey == key);
+            if (index > -1) {
+                items[index].text = data.text ? data.text : "";
+            }
+            diagramInstance.repaint()
+        }
     }
 
-    constructor(processContext: ProcessContext) {
+    constructor(processContext: ProcessContext, readonly: boolean) {
+        this._readOnly = readonly;
         this._processContext = processContext;
         this._nodeStore = new NodeStore("ID", this._processContext);
         this._edgesStore = new EdgesStore("ID");
@@ -631,18 +656,24 @@ export class Diagram {
                 },
 
                 customShapes: this.customShapes.customShapes,
-                nodes: {
-                    dataSource: this._nodeStore.store,
-                    keyExpr: "ID"
-                },
-                edges: {
-                    dataSource: this._edgesStore.store,
-                    keyExpr: "ID"
-                },
+                nodes: (() => {
+                    if (this._readOnly == true) { return undefined }
+                    return {
+                        dataSource: this._nodeStore.store,
+                        keyExpr: "ID"
+                    }
+                })(),
+                edges: (() => {
+                    if (this._readOnly == true) { return undefined }
+                    return {
+                        dataSource: this._edgesStore.store,
+                        keyExpr: "ID"
+                    }
+                })(),
                 showGrid: false,
                 snapToGrid: false,
                 simpleView: true,
-                readOnly: false,
+                readOnly: this._readOnly,
                 contextToolbox: {
                     enabled: false
                 },

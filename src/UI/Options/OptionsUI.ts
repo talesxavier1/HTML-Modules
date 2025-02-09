@@ -13,6 +13,7 @@ export class OptionsUI {
     private componentInstanceModel = new ComponentInstanceModel<Object>(new Object);
     private instanceUI?: TInstanceUI;
     private nodeStore: NodeStore;
+    private readonly: boolean
 
     private setInstanceUI = async (data: TDataSource) => {
 
@@ -28,17 +29,17 @@ export class OptionsUI {
             case "logger":
                 break;
             case "multicastIn":
-                this.instanceUI = new MulticastInOptionsUI(data, false, "multicastIn_options");
+                this.instanceUI = new MulticastInOptionsUI(data, this.readonly, "multicastIn_options");
                 break;
             case "multicastOut":
-                this.instanceUI = new MulticastOutOptions(data, false, "multicastOut_options", this.nodeStore);
+                this.instanceUI = new MulticastOutOptions(data, this.readonly, "multicastOut_options", this.nodeStore);
                 break;
             case "processContainer":
                 break;
             case "reciver":
                 break;
             case "script":
-                this.instanceUI = new ScriptOptionsUI(data, false, "script_options");
+                this.instanceUI = new ScriptOptionsUI(data, this.readonly, "script_options");
                 await this.instanceUI.init();
                 break;
             case "sender":
@@ -70,15 +71,17 @@ export class OptionsUI {
     }
 
     private mountButtonsConfirmDecline = () => {
-        this.componentInstanceModel.addInstance(new InstanceProps({
-            componentName: "dxButton",
-            tagName: "splitter_options_confirm_btn",
-            instance: $("#splitter_options_confirm_btn").dxButton({
-                icon: "check",
-                type: "success",
-                onClick: () => this._btnConfirmDeclineCliked("CONFIRM")
-            }).dxButton("instance")
-        }));
+        if (!this.readonly) {
+            this.componentInstanceModel.addInstance(new InstanceProps({
+                componentName: "dxButton",
+                tagName: "splitter_options_confirm_btn",
+                instance: $("#splitter_options_confirm_btn").dxButton({
+                    icon: "check",
+                    type: "success",
+                    onClick: () => this._btnConfirmDeclineCliked("CONFIRM")
+                }).dxButton("instance")
+            }));
+        }
 
         this.componentInstanceModel.addInstance(new InstanceProps({
             componentName: "dxButton",
@@ -105,7 +108,8 @@ export class OptionsUI {
     }
 
 
-    constructor(nodeStore: NodeStore) {
+    constructor(nodeStore: NodeStore, readonly: boolean) {
         this.nodeStore = nodeStore;
+        this.readonly = readonly;
     }
 }
