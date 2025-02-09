@@ -9,11 +9,11 @@ export interface IScriptModel {
 }
 
 export class ScriptModel extends ShapeModel implements IScriptModel {
-    scriptType: "Script" | "Module" | "" = "";
+    scriptType: "Script" | "Module" | "" = "Script";
     packageVersionID: string = "";
-    scriptLanguage: TMonacoLanguage | "" = "";
+    scriptLanguage: TMonacoLanguage | "" = "groovy";
 
-    constructor(processContext?: ProcessContext, ID?: string) {
+    constructor(processContext: ProcessContext, ID?: string) {
         super("script", processContext, ID);
     }
 

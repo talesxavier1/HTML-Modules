@@ -80,4 +80,5 @@ export type TMonacoLanguage =
     "vb" |
     "wgsl" |
     "xml" |
-    "yaml" 
+    "yaml" |
+    "groovy"

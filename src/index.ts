@@ -9,15 +9,23 @@ import optionsHTML from "./html/Splitter/Options.html";
 import DIAGRAM_DATA from "./Data/DIAGRAM_DATA.json";
 import DIAGRAM_PROPS from "./Data/DIAGRAM_PROPS.json"
 import { Utils } from "./Utils/Utils";
+import { ProcessContext } from "./models/ProcessContext";
 
 let splitter: Splitter;
 let diagram: Diagram;
 let optionsUI: OptionsUI;
 const main = async (): Promise<void> => {
+    let mockProcessContext: ProcessContext = {
+        "processID": "5818aaa6-32c6-4f9d-97de-78d855b129f2",
+        "processVersionID": "e10b672b-1121-4459-a4e0-27bb93d10ffe",
+        "assID": "b882275f-0e39-498d-b8d3-ece83fca1899"
+    }
 
     splitter = new Splitter(diagramHTML, optionsHTML);
-    diagram = new Diagram();
+    diagram = new Diagram(mockProcessContext);
     optionsUI = new OptionsUI(diagram.getNodeStore());
+
+
 
     diagram.setDiagramOptions(JSON.stringify(DIAGRAM_PROPS), DIAGRAM_DATA);
 
