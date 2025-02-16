@@ -2019,15 +2019,15 @@ class PopUpVersoes {
      * Função fornecida para a busca de conteúdo que deve ser renderizado no popup.
      * @param {integer} page 
      * @param {integer} take 
-     * @returns {Array<object>}
+     * @returns {Promise<Array<object>>}
      */
-    popUpVersoesGetContent = async (page, take) => { return [] };
+    popUpVersoesGetContent = async (skip, take) => { return [] };
 
     /**
      * Função executada quando o popup busca o conteúdo que deve ser apresentado.
      * @param {integer} page 
      * @param {integer} take 
-     * @returns {Array<object>}
+     * @returns {Promise<Array<object>>}
      * @private
      */
     _popUpVersoesGetContent = async (page, take) => {
@@ -2042,15 +2042,15 @@ class PopUpVersoes {
      * Função fornecida para ser executada quando a versão do popup é clacada.
      * @param {string} id 
      */
-    onVersionClick = (id) => { }
+    onVersionClick = (version) => { }
 
     /**
      * Função executada quando uma versão do popup é clicada.
      * @param {string} id 
      * @private
      */
-    _onVersionClick = (id) => {
-        this.onVersionClick(id);
+    _onVersionClick = (version) => {
+        this.onVersionClick(version);
         this.showHidePopUp(false);
     }
 
@@ -2097,7 +2097,7 @@ class PopUpVersoes {
 
                 let idValid = ["string", "number"].includes(typeof ITEM.id);
 
-                let numeroVersao = typeof ITEM.numeroVersao == "number";
+                let numeroVersao = ["string", "number"].includes(typeof ITEM.numeroVersao);
 
                 valid = dataCriacaoValid && idValid && numeroVersao;
             }
@@ -2141,7 +2141,7 @@ class PopUpVersoes {
                     <div class="card-subject">Data: ${new Date(VALUE.dataCriacao).toLocaleDateString("pt-BR")}</div>
                     <div class="card-assignee">ID: ${VALUE.id}</div>
                 </div> 
-                `).on("click", () => this._onVersionClick(VALUE.id));
+                `).on("click", () => this._onVersionClick(VALUE.numeroVersao));
 
                 return component;
             }));

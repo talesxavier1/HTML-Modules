@@ -10,7 +10,7 @@ module.exports = (a, args) => {
 
     const config = {
         entry: {
-            "main": ["./src/jsonSchemaLib/js/JS_Main.js", "./src/index.css"],
+            "main": ["./src/jsonSchemaLib/js/main.js", "./src/index.css"],
         },
         output: {
             filename: "index.js",
