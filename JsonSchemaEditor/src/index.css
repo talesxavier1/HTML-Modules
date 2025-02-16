@@ -1,0 +1,24 @@
+@import url("https://talesxavier1.github.io/GH-CDN/Json_Schema/DevExtreme/Lib/css/dx.material.blue.light.css");
+@import url("./jsonSchemaLib/css/JsonSchema.css");
+@import url("./jsonSchemaLib/css/Components.css");
+
+* {
+    padding: 0;
+    border: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+html {
+    width: 100%;
+    height: 100%;
+
+}
+
+body {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

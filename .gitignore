@@ -1,4 +1,7 @@
 node_modules
 dist
 public
-.vscode/*
+.vscode
+CodeDiagram/src/lib
+CodeDiagram/src/dist
+JsonSchemaEditor/dist

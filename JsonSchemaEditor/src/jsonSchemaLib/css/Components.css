@@ -1,0 +1,184 @@
+.component {
+    /* margin-top: 1rem; */
+    margin: .5rem .5rem .5rem .5rem;
+    border-radius: 5px;
+    height: 2.5rem;
+}
+
+.boxshadow {
+    margin: .5rem .5rem .5rem .5rem;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    border-radius: .5rem;
+}
+
+#text_header_version,
+#text_header_id {
+    margin: 0 0 0 2rem;
+}
+
+#text_header_version {
+    width: 10rem;
+}
+
+#text_header_id {
+    width: 20rem;
+}
+
+#button_header_save_new_version,
+#button_header_select_version {
+    margin-right: 1.5rem;
+    width: auto;
+}
+
+.dx-checkbox-container {
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: flex-start;
+}
+
+.dx-checkbox-text {
+    padding: 0;
+    white-space: nowrap;
+}
+
+.js-config-buttons-decline-confirm {
+    display: flex;
+    justify-content: center;
+}
+
+.btn_decline_acept>img {
+    margin: .5rem;
+}
+
+.js-config-main-props,
+.js-config-object-props,
+.js-config-array-props,
+.js-config-enum-props,
+.js-config-array-props-min-max {
+    display: flex;
+    flex-direction: column;
+}
+
+.js-config-array-props-min-max,
+.js-config-numeric-props-multiples,
+.js-config-numeric-props-greater,
+.js-config-numeric-props-less,
+.js-config-enum-props-add,
+.js-config-string-props-regular-expression,
+.js-config-string-props-format,
+.js-config-string-props-length-greater,
+.js-config-string-props-length-less {
+    display: flex;
+}
+
+#text_string_regular_expression,
+#number_string_length_less,
+#number_string_length_greater,
+#number_numeric_multiple,
+#popup_select_version_scrollContent {
+    width: 100%;
+}
+
+#button_enum_add_value {
+    margin: .5rem .5rem .5rem .5rem;
+    background-color: #8bc34a;
+}
+
+#list_enum_values {
+    height: 10rem;
+}
+
+#tabTreeViewJsonSchema {
+    height: 2.5rem;
+    margin-bottom: .5rem;
+}
+
+#jsonRendererContainer,
+#treeView {
+    height: 35rem;
+}
+
+#btnHide,
+#btnShow {
+    background-color: rgba(0, 0, 0, 0);
+
+}
+
+#btnHide>div>i,
+#btnShow>div>i {
+    font-size: 30px;
+}
+
+#checkbox_string_format {
+    width: 115px;
+}
+
+#checkbox_additional_properties,
+#number_array_min,
+#number_array_max {
+    width: 100%;
+}
+
+.object-pattern-keys,
+.js-config-array-props-min,
+.js-config-array-props-max {
+    display: flex;
+    flex-direction: row;
+}
+
+.popup-select-version-content {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.dx-popup-wrapper>.dx-overlay-content {
+    background-color: #EEEEEE;
+}
+
+.popup-card-container {
+    width: 100%;
+}
+
+.card:hover {
+    background-color: rgba(0, 0, 0, .04);
+    border-radius: 0;
+    color: rgba(0, 0, 0, .87);
+}
+
+
+.card {
+    position: relative;
+    background-color: white;
+    box-sizing: border-box;
+    width: 96%;
+    padding: 10px 20px;
+    margin: 10px;
+    cursor: pointer;
+    border-radius: .5rem;
+}
+
+.card-subject {
+    padding-bottom: 10px;
+}
+
+.card-assignee {
+    opacity: 0.6;
+}
+
+.card-priority {
+    position: absolute;
+    top: 10px;
+    bottom: 10px;
+    left: 5px;
+    width: 5px;
+    border-radius: 2px;
+    background: #86c285;
+}
+
+.priority-1 {
+    background: #adadad;
+}

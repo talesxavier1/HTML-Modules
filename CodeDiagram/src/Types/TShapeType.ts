@@ -1,0 +1,1 @@
+export type TShapeType = "sender" | "processContainer" | "reciver" | "condition" | "exceptionSubprocess" | "endException" | "script" | "logger" | "startException" | "multicastOut" | "multicastIn" | "endProcess" | "startProcess";

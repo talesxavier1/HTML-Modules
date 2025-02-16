@@ -1,0 +1,3139 @@
+{
+    "version": [
+        {
+            "dataCriacao": "2002-05-18T23:03:28.052Z",
+            "numeroVersao": 82,
+            "id": "ca108a00-cdb4-4d9e-968c-274fad9265a6"
+        },
+        {
+            "dataCriacao": "2066-12-29T19:37:38.214Z",
+            "numeroVersao": 34,
+            "id": "deee0c7c-3e40-40d5-a1af-c74051e68a07"
+        },
+        {
+            "dataCriacao": "2070-12-16T12:36:01.050Z",
+            "numeroVersao": 78,
+            "id": "3"
+        },
+        {
+            "dataCriacao": "2053-04-20T11:45:14.885Z",
+            "numeroVersao": 52,
+            "id": "4"
+        },
+        {
+            "dataCriacao": "2042-06-21T03:20:21.836Z",
+            "numeroVersao": 52,
+            "id": "5"
+        },
+        {
+            "dataCriacao": "2088-09-26T02:14:04.932Z",
+            "numeroVersao": 29,
+            "id": "6"
+        },
+        {
+            "dataCriacao": "2017-03-27T12:21:52.363Z",
+            "numeroVersao": 77,
+            "id": "7"
+        },
+        {
+            "dataCriacao": "2060-04-05T08:30:31.880Z",
+            "numeroVersao": 10,
+            "id": "8"
+        },
+        {
+            "dataCriacao": "1993-02-10T21:41:40.616Z",
+            "numeroVersao": 43,
+            "id": "9"
+        },
+        {
+            "dataCriacao": "1993-08-15T19:22:47.882Z",
+            "numeroVersao": 54,
+            "id": "10"
+        },
+        {
+            "dataCriacao": "2025-07-01T04:27:10.484Z",
+            "numeroVersao": 31,
+            "id": "11"
+        },
+        {
+            "dataCriacao": "2014-10-23T04:59:41.884Z",
+            "numeroVersao": 30,
+            "id": "12"
+        },
+        {
+            "dataCriacao": "2091-08-02T08:44:10.573Z",
+            "numeroVersao": 52,
+            "id": "13"
+        },
+        {
+            "dataCriacao": "2031-02-17T02:26:53.111Z",
+            "numeroVersao": 2,
+            "id": "14"
+        },
+        {
+            "dataCriacao": "2027-06-11T21:10:16.587Z",
+            "numeroVersao": 53,
+            "id": "15"
+        },
+        {
+            "dataCriacao": "2004-11-16T22:27:37.989Z",
+            "numeroVersao": 84,
+            "id": "16"
+        },
+        {
+            "dataCriacao": "2089-09-03T07:15:59.211Z",
+            "numeroVersao": 18,
+            "id": "17"
+        },
+        {
+            "dataCriacao": "2002-06-14T00:52:12.220Z",
+            "numeroVersao": 0,
+            "id": "18"
+        },
+        {
+            "dataCriacao": "1999-11-21T02:38:28.750Z",
+            "numeroVersao": 17,
+            "id": "19"
+        },
+        {
+            "dataCriacao": "2003-08-25T11:03:11.378Z",
+            "numeroVersao": 90,
+            "id": "20"
+        },
+        {
+            "dataCriacao": "2047-09-18T00:37:01.840Z",
+            "numeroVersao": 87,
+            "id": "21"
+        },
+        {
+            "dataCriacao": "2015-01-03T09:44:18.489Z",
+            "numeroVersao": 99,
+            "id": "22"
+        },
+        {
+            "dataCriacao": "2072-06-07T08:32:44.484Z",
+            "numeroVersao": 74,
+            "id": "23"
+        },
+        {
+            "dataCriacao": "2035-04-05T04:36:40.820Z",
+            "numeroVersao": 41,
+            "id": "24"
+        },
+        {
+            "dataCriacao": "2021-03-26T22:25:42.220Z",
+            "numeroVersao": 64,
+            "id": "25"
+        },
+        {
+            "dataCriacao": "1990-05-02T03:59:07.156Z",
+            "numeroVersao": 88,
+            "id": "26"
+        },
+        {
+            "dataCriacao": "2069-06-22T04:23:53.015Z",
+            "numeroVersao": 93,
+            "id": "27"
+        },
+        {
+            "dataCriacao": "2031-06-09T21:37:30.561Z",
+            "numeroVersao": 77,
+            "id": "28"
+        },
+        {
+            "dataCriacao": "2004-03-06T06:03:45.302Z",
+            "numeroVersao": 91,
+            "id": "29"
+        },
+        {
+            "dataCriacao": "2083-04-04T01:22:16.471Z",
+            "numeroVersao": 71,
+            "id": "30"
+        },
+        {
+            "dataCriacao": "2046-10-17T03:47:24.997Z",
+            "numeroVersao": 14,
+            "id": "31"
+        },
+        {
+            "dataCriacao": "2028-08-10T14:52:08.384Z",
+            "numeroVersao": 6,
+            "id": "32"
+        },
+        {
+            "dataCriacao": "2045-08-27T00:47:58.857Z",
+            "numeroVersao": 22,
+            "id": "33"
+        },
+        {
+            "dataCriacao": "2022-11-25T01:04:08.495Z",
+            "numeroVersao": 2,
+            "id": "34"
+        },
+        {
+            "dataCriacao": "2056-12-15T03:10:25.920Z",
+            "numeroVersao": 93,
+            "id": "35"
+        },
+        {
+            "dataCriacao": "2062-10-21T09:17:25.669Z",
+            "numeroVersao": 96,
+            "id": "36"
+        },
+        {
+            "dataCriacao": "2060-10-23T14:55:39.704Z",
+            "numeroVersao": 20,
+            "id": "37"
+        },
+        {
+            "dataCriacao": "2081-06-10T06:35:43.040Z",
+            "numeroVersao": 81,
+            "id": "38"
+        },
+        {
+            "dataCriacao": "2048-12-27T06:59:34.984Z",
+            "numeroVersao": 71,
+            "id": "39"
+        },
+        {
+            "dataCriacao": "2012-11-17T00:26:04.531Z",
+            "numeroVersao": 71,
+            "id": "40"
+        },
+        {
+            "dataCriacao": "2007-10-23T15:45:50.209Z",
+            "numeroVersao": 20,
+            "id": "41"
+        },
+        {
+            "dataCriacao": "2001-05-16T03:59:20.111Z",
+            "numeroVersao": 68,
+            "id": "42"
+        },
+        {
+            "dataCriacao": "2000-09-22T00:56:05.187Z",
+            "numeroVersao": 34,
+            "id": "43"
+        },
+        {
+            "dataCriacao": "1997-12-30T15:29:31.519Z",
+            "numeroVersao": 15,
+            "id": "44"
+        },
+        {
+            "dataCriacao": "2001-03-21T13:32:56.775Z",
+            "numeroVersao": 43,
+            "id": "45"
+        },
+        {
+            "dataCriacao": "2091-08-25T02:43:14.769Z",
+            "numeroVersao": 93,
+            "id": "46"
+        },
+        {
+            "dataCriacao": "2024-09-05T09:23:48.617Z",
+            "numeroVersao": 32,
+            "id": "47"
+        },
+        {
+            "dataCriacao": "1990-12-27T10:43:31.948Z",
+            "numeroVersao": 72,
+            "id": "48"
+        },
+        {
+            "dataCriacao": "2007-07-08T22:40:47.930Z",
+            "numeroVersao": 28,
+            "id": "49"
+        },
+        {
+            "dataCriacao": "2039-11-01T20:49:05.640Z",
+            "numeroVersao": 89,
+            "id": "50"
+        },
+        {
+            "dataCriacao": "1997-05-14T00:50:18.226Z",
+            "numeroVersao": 46,
+            "id": "51"
+        },
+        {
+            "dataCriacao": "2055-03-06T17:17:14.186Z",
+            "numeroVersao": 60,
+            "id": "52"
+        },
+        {
+            "dataCriacao": "2067-06-18T03:46:03.082Z",
+            "numeroVersao": 67,
+            "id": "53"
+        },
+        {
+            "dataCriacao": "2080-08-20T23:19:19.381Z",
+            "numeroVersao": 4,
+            "id": "54"
+        },
+        {
+            "dataCriacao": "2091-04-28T01:48:49.737Z",
+            "numeroVersao": 89,
+            "id": "55"
+        },
+        {
+            "dataCriacao": "2036-09-03T09:33:10.722Z",
+            "numeroVersao": 59,
+            "id": "56"
+        },
+        {
+            "dataCriacao": "2071-06-03T12:09:34.931Z",
+            "numeroVersao": 84,
+            "id": "57"
+        },
+        {
+            "dataCriacao": "2074-06-14T15:55:54.431Z",
+            "numeroVersao": 57,
+            "id": "58"
+        },
+        {
+            "dataCriacao": "2082-11-27T05:27:07.174Z",
+            "numeroVersao": 47,
+            "id": "59"
+        },
+        {
+            "dataCriacao": "2039-01-26T16:44:48.032Z",
+            "numeroVersao": 35,
+            "id": "60"
+        },
+        {
+            "dataCriacao": "2015-01-21T19:49:54.912Z",
+            "numeroVersao": 78,
+            "id": "61"
+        },
+        {
+            "dataCriacao": "2097-02-26T22:46:37.073Z",
+            "numeroVersao": 21,
+            "id": "62"
+        },
+        {
+            "dataCriacao": "2035-11-03T07:51:24.735Z",
+            "numeroVersao": 71,
+            "id": "63"
+        },
+        {
+            "dataCriacao": "2053-10-01T07:08:56.807Z",
+            "numeroVersao": 39,
+            "id": "64"
+        },
+        {
+            "dataCriacao": "2017-05-20T00:44:33.210Z",
+            "numeroVersao": 34,
+            "id": "65"
+        },
+        {
+            "dataCriacao": "2018-12-25T17:38:13.969Z",
+            "numeroVersao": 80,
+            "id": "66"
+        },
+        {
+            "dataCriacao": "2076-05-24T00:23:09.950Z",
+            "numeroVersao": 35,
+            "id": "67"
+        },
+        {
+            "dataCriacao": "1994-05-13T15:01:11.983Z",
+            "numeroVersao": 47,
+            "id": "68"
+        },
+        {
+            "dataCriacao": "2078-09-27T07:48:29.832Z",
+            "numeroVersao": 93,
+            "id": "69"
+        },
+        {
+            "dataCriacao": "2063-02-26T23:58:52.136Z",
+            "numeroVersao": 33,
+            "id": "70"
+        },
+        {
+            "dataCriacao": "2017-07-15T03:49:04.164Z",
+            "numeroVersao": 71,
+            "id": "71"
+        },
+        {
+            "dataCriacao": "2082-05-16T05:39:50.333Z",
+            "numeroVersao": 32,
+            "id": "72"
+        },
+        {
+            "dataCriacao": "2043-04-02T07:25:41.784Z",
+            "numeroVersao": 73,
+            "id": "73"
+        },
+        {
+            "dataCriacao": "2006-12-29T12:41:25.761Z",
+            "numeroVersao": 21,
+            "id": "74"
+        },
+        {
+            "dataCriacao": "2020-06-15T11:04:41.789Z",
+            "numeroVersao": 39,
+            "id": "75"
+        },
+        {
+            "dataCriacao": "2029-02-09T08:24:46.706Z",
+            "numeroVersao": 34,
+            "id": "76"
+        },
+        {
+            "dataCriacao": "2030-09-22T18:32:34.186Z",
+            "numeroVersao": 95,
+            "id": "77"
+        },
+        {
+            "dataCriacao": "2088-05-14T08:46:27.308Z",
+            "numeroVersao": 46,
+            "id": "78"
+        },
+        {
+            "dataCriacao": "2018-02-26T09:02:34.970Z",
+            "numeroVersao": 81,
+            "id": "79"
+        },
+        {
+            "dataCriacao": "2026-12-13T14:32:19.301Z",
+            "numeroVersao": 1,
+            "id": "80"
+        },
+        {
+            "dataCriacao": "2032-09-26T08:59:50.588Z",
+            "numeroVersao": 21,
+            "id": "81"
+        },
+        {
+            "dataCriacao": "2011-04-10T04:16:13.849Z",
+            "numeroVersao": 1,
+            "id": "82"
+        },
+        {
+            "dataCriacao": "2079-05-18T07:08:24.764Z",
+            "numeroVersao": 82,
+            "id": "83"
+        },
+        {
+            "dataCriacao": "2017-11-11T10:51:43.597Z",
+            "numeroVersao": 7,
+            "id": "84"
+        },
+        {
+            "dataCriacao": "2028-07-21T22:43:28.035Z",
+            "numeroVersao": 16,
+            "id": "85"
+        },
+        {
+            "dataCriacao": "2080-04-24T18:56:43.141Z",
+            "numeroVersao": 25,
+            "id": "86"
+        },
+        {
+            "dataCriacao": "2046-09-21T05:13:26.122Z",
+            "numeroVersao": 22,
+            "id": "87"
+        },
+        {
+            "dataCriacao": "2080-09-30T06:04:34.948Z",
+            "numeroVersao": 55,
+            "id": "88"
+        },
+        {
+            "dataCriacao": "2083-01-14T21:11:46.299Z",
+            "numeroVersao": 35,
+            "id": "89"
+        },
+        {
+            "dataCriacao": "2098-08-22T18:46:05.033Z",
+            "numeroVersao": 62,
+            "id": "90"
+        },
+        {
+            "dataCriacao": "2082-11-24T21:33:29.467Z",
+            "numeroVersao": 22,
+            "id": "91"
+        },
+        {
+            "dataCriacao": "1995-11-26T12:58:37.638Z",
+            "numeroVersao": 51,
+            "id": "92"
+        },
+        {
+            "dataCriacao": "2049-05-17T16:59:03.007Z",
+            "numeroVersao": 35,
+            "id": "93"
+        },
+        {
+            "dataCriacao": "2029-10-30T06:44:11.629Z",
+            "numeroVersao": 72,
+            "id": "94"
+        },
+        {
+            "dataCriacao": "2085-02-25T20:36:02.926Z",
+            "numeroVersao": 28,
+            "id": "95"
+        },
+        {
+            "dataCriacao": "2020-03-25T16:00:42.397Z",
+            "numeroVersao": 39,
+            "id": "96"
+        },
+        {
+            "dataCriacao": "2088-07-14T16:01:31.439Z",
+            "numeroVersao": 35,
+            "id": "97"
+        },
+        {
+            "dataCriacao": "2024-06-10T03:25:40.868Z",
+            "numeroVersao": 58,
+            "id": "98"
+        },
+        {
+            "dataCriacao": "2090-06-19T03:12:50.087Z",
+            "numeroVersao": 5,
+            "id": "99"
+        },
+        {
+            "dataCriacao": "2049-08-17T15:37:05.514Z",
+            "numeroVersao": 57,
+            "id": "100"
+        }
+    ],
+    "content": [
+        {
+            "id": "ca108a00-cdb4-4d9e-968c-274fad9265a6",
+            "dataCriacao": "2002-05-18T23:03:28.052Z",
+            "numeroVersao": 82,
+            "treeContent": [
+                {
+                    "id": "deee0c7c-3e40-40d5-a1af-c74051e68a07",
+                    "id_ref": null,
+                    "text": "root",
+                    "expanded": true,
+                    "contextAddBtn": true,
+                    "contextRemoveBtn": true,
+                    "node_value": {
+                        "text_name": "root",
+                        "text_description": "root",
+                        "select_type": "object",
+                        "checkbox_required": true,
+                        "checkbox_nullable": false,
+                        "checkbox_additional_properties": false,
+                        "select_array_type": null,
+                        "number_array_min": 0,
+                        "number_array_max": 0,
+                        "checkbox_array_unique_items": false,
+                        "checkbox_string_regular_expression": false,
+                        "checkbox_string_format": false,
+                        "select_string_format": null,
+                        "checkbox_string_length_greater": false,
+                        "number_string_length_greater": 0,
+                        "checkbox_string_length_less": false,
+                        "number_string_length_less": 0,
+                        "text_string_regular_expression": "",
+                        "select_numeric_greater": null,
+                        "number_numeric_greater": 0,
+                        "select_numeric_less": null,
+                        "number_numeric_less": 0,
+                        "checkbox_numeric_multiple": false,
+                        "number_numeric_multiple": 0,
+                        "list_enum_values": [],
+                        "checkbox_object_pattern_keys": false,
+                        "text_object_pattern_keys": ""
+                    }
+                },
+                {
+                    "id": "e95c871a-f1c2-4fd0-94c9-2d304aeb8dae",
+                    "id_ref": "deee0c7c-3e40-40d5-a1af-c74051e68a07",
+                    "text": "teste",
+                    "expanded": false,
+                    "contextAddBtn": false,
+                    "contextRemoveBtn": true,
+                    "node_value": {
+                        "text_name": "teste",
+                        "text_description": "teste",
+                        "select_type": "string",
+                        "checkbox_required": true,
+                        "checkbox_nullable": false,
+                        "checkbox_additional_properties": false,
+                        "select_array_type": null,
+                        "number_array_min": 0,
+                        "number_array_max": 0,
+                        "checkbox_array_unique_items": false,
+                        "checkbox_string_regular_expression": true,
+                        "checkbox_string_format": true,
+                        "select_string_format": "ipv4",
+                        "checkbox_string_length_greater": true,
+                        "number_string_length_greater": 22,
+                        "checkbox_string_length_less": true,
+                        "number_string_length_less": 1,
+                        "text_string_regular_expression": "aa",
+                        "select_numeric_greater": null,
+                        "number_numeric_greater": 0,
+                        "select_numeric_less": null,
+                        "number_numeric_less": 0,
+                        "checkbox_numeric_multiple": false,
+                        "number_numeric_multiple": 0,
+                        "list_enum_values": [],
+                        "checkbox_object_pattern_keys": false,
+                        "text_object_pattern_keys": ""
+                    }
+                },
+                {
+                    "id": "4f35fe96-9137-4309-a5e6-ace571ddb83e",
+                    "id_ref": "deee0c7c-3e40-40d5-a1af-c74051e68a07",
+                    "text": "ss",
+                    "expanded": true,
+                    "contextAddBtn": true,
+                    "contextRemoveBtn": true,
+                    "node_value": {
+                        "text_name": "ss",
+                        "text_description": "ss",
+                        "select_type": "object",
+                        "checkbox_required": true,
+                        "checkbox_nullable": false,
+                        "checkbox_additional_properties": true,
+                        "select_array_type": null,
+                        "number_array_min": 0,
+                        "number_array_max": 0,
+                        "checkbox_array_unique_items": false,
+                        "checkbox_string_regular_expression": false,
+                        "checkbox_string_format": false,
+                        "select_string_format": null,
+                        "checkbox_string_length_greater": false,
+                        "number_string_length_greater": 0,
+                        "checkbox_string_length_less": false,
+                        "number_string_length_less": 0,
+                        "text_string_regular_expression": "",
+                        "select_numeric_greater": null,
+                        "number_numeric_greater": 0,
+                        "select_numeric_less": null,
+                        "number_numeric_less": 0,
+                        "checkbox_numeric_multiple": false,
+                        "number_numeric_multiple": 0,
+                        "list_enum_values": [],
+                        "checkbox_object_pattern_keys": true,
+                        "text_object_pattern_keys": "a"
+                    }
+                },
+                {
+                    "id": "73b7c4ea-42c7-4b4f-9a20-55d2dac61e3d",
+                    "id_ref": "4f35fe96-9137-4309-a5e6-ace571ddb83e",
+                    "text": "a",
+                    "expanded": false,
+                    "contextAddBtn": false,
+                    "contextRemoveBtn": true,
+                    "node_value": {
+                        "text_name": "a",
+                        "text_description": "a",
+                        "select_type": "string",
+                        "checkbox_required": false,
+                        "checkbox_nullable": false,
+                        "checkbox_additional_properties": false,
+                        "select_array_type": null,
+                        "number_array_min": 0,
+                        "number_array_max": 0,
+                        "checkbox_array_unique_items": false,
+                        "checkbox_string_regular_expression": false,
+                        "checkbox_string_format": false,
+                        "select_string_format": null,
+                        "checkbox_string_length_greater": false,
+                        "number_string_length_greater": 0,
+                        "checkbox_string_length_less": false,
+                        "number_string_length_less": 0,
+                        "text_string_regular_expression": "",
+                        "select_numeric_greater": null,
+                        "number_numeric_greater": 0,
+                        "select_numeric_less": null,
+                        "number_numeric_less": 0,
+                        "checkbox_numeric_multiple": false,
+                        "number_numeric_multiple": 0,
+                        "list_enum_values": [],
+                        "checkbox_object_pattern_keys": false,
+                        "text_object_pattern_keys": ""
+                    }
+                }
+            ],
+            "jsonSchemaContent": {
+                "$schema": "https://json-schema.org/draft/2020-12/schema",
+                "$id": "ca108a00-cdb4-4d9e-968c-274fad9265a6",
+                "title": "root",
+                "description": "root",
+                "type": [
+                    "object"
+                ],
+                "properties": {
+                    "teste": {
+                        "type": [
+                            "string"
+                        ],
+                        "description": "teste",
+                        "pattern": "aa",
+                        "format": "ipv4",
+                        "maxLength": 22,
+                        "minLength": 1
+                    },
+                    "ss": {
+                        "type": [
+                            "object"
+                        ],
+                        "description": "ss",
+                        "properties": {
+                            "a": {
+                                "type": [
+                                    "string"
+                                ],
+                                "description": "a"
+                            }
+                        },
+                        "additionalProperties": true,
+                        "required": [],
+                        "propertyNames": {
+                            "pattern": "a"
+                        }
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "teste",
+                    "ss"
+                ]
+            }
+        },
+        {
+            "id": "deee0c7c-3e40-40d5-a1af-c74051e68a07",
+            "dataCriacao": "2066-12-29T19:37:38.214Z",
+            "numeroVersao": 34,
+            "treeContent": [
+                {
+                    "id": "cf1b8243-1545-4869-a580-3de8997ca14a",
+                    "id_ref": null,
+                    "text": "CTe",
+                    "expanded": true,
+                    "contextAddBtn": true,
+                    "contextRemoveBtn": true,
+                    "node_value": {
+                        "text_name": "cte",
+                        "text_description": "CTe",
+                        "select_type": "object",
+                        "checkbox_required": true,
+                        "checkbox_nullable": false,
+                        "checkbox_additional_properties": false,
+                        "select_array_type": null,
+                        "number_array_min": 0,
+                        "number_array_max": 0,
+                        "checkbox_array_unique_items": false,
+                        "checkbox_string_regular_expression": false,
+                        "text_string_regular_expression": "",
+                        "select_numeric_greater": null,
+                        "number_numeric_greater": 0,
+                        "select_numeric_less": null,
+                        "number_numeric_less": 0,
+                        "text_enum_add_value": "",
+                        "list_enum_values": []
+                    }
+                },
+                {
+                    "id": "c88ae678-8a9b-4435-9362-9fa04af06965",
+                    "id_ref": "cf1b8243-1545-4869-a580-3de8997ca14a",
+                    "text": "InfCte",
+                    "expanded": true,
+                    "contextAddBtn": true,
+                    "contextRemoveBtn": true,
+                    "node_value": {
+                        "text_name": "InfCte",
+                        "text_description": "InfCte",
+                        "select_type": "object",
+                        "checkbox_required": true,
+                        "checkbox_nullable": false,
+                        "checkbox_additional_properties": false,
+                        "select_array_type": null,
+                        "number_array_min": 0,
+                        "number_array_max": 0,
+                        "checkbox_array_unique_items": false,
+                        "checkbox_string_regular_expression": false,
+                        "text_string_regular_expression": "",
+                        "select_numeric_greater": null,
+                        "number_numeric_greater": 0,
+                        "select_numeric_less": null,
+                        "number_numeric_less": 0,
+                        "text_enum_add_value": "",
+                        "list_enum_values": []
+                    }
+                },
+                {
+                    "id": "cda876de-24be-4871-af6f-fa846ed6a134",
+                    "id_ref": "cf1b8243-1545-4869-a580-3de8997ca14a",
+                    "text": "Signature",
+                    "expanded": true,
+                    "contextAddBtn": true,
+                    "contextRemoveBtn": true,
+                    "node_value": {
+                        "text_name": "Signature",
+                        "text_description": "Signature",
+                        "select_type": "object",
+                        "checkbox_required": false,
+                        "checkbox_nullable": false,
+                        "checkbox_additional_properties": false,
+                        "select_array_type": null,
+                        "number_array_min": 0,
+                        "number_array_max": 0,
+                        "checkbox_array_unique_items": false,
+                        "checkbox_string_regular_expression": false,
+                        "text_string_regular_expression": "",
+                        "select_numeric_greater": null,
+                        "number_numeric_greater": 0,
+                        "select_numeric_less": null,
+                        "number_numeric_less": 0,
+                        "text_enum_add_value": "",
+                        "list_enum_values": []
+                    }
+                },
+                {
+                    "id": "783917f2-783a-43eb-97d9-8acd74b6337f",
+                    "id_ref": "cf1b8243-1545-4869-a580-3de8997ca14a",
+                    "text": "Xmlns",
+                    "expanded": false,
+                    "contextAddBtn": false,
+                    "contextRemoveBtn": true,
+                    "node_value": {
+                        "text_name": "Xmlns",
+                        "text_description": "Xmlns",
+                        "select_type": "string",
+                        "checkbox_required": false,
+                        "checkbox_nullable": false,
+                        "checkbox_additional_properties": false,
+                        "select_array_type": null,
+                        "number_array_min": 0,
+                        "number_array_max": 0,
+                        "checkbox_array_unique_items": false,
+                        "checkbox_string_regular_expression": false,
+                        "text_string_regular_expression": "",
+                        "select_numeric_greater": null,
+                        "number_numeric_greater": 0,
+                        "select_numeric_less": null,
+                        "number_numeric_less": 0,
+                        "text_enum_add_value": "",
+                        "list_enum_values": []
+                    }
+                },
+                {
+                    "id": "95d56574-deb1-45f3-a81e-1d19677ce847",
+                    "id_ref": "cf1b8243-1545-4869-a580-3de8997ca14a",
+                    "text": "InfCTeSupl",
+                    "expanded": true,
+                    "contextAddBtn": true,
+                    "contextRemoveBtn": true,
+                    "node_value": {
+                        "text_name": "InfCTeSupl",
+                        "text_description": "InfCTeSupl",
+                        "select_type": "object",
+                        "checkbox_required": true,
+                        "checkbox_nullable": false,
+                        "checkbox_additional_properties": false,
+                        "select_array_type": null,
+                        "number_array_min": 0,
+                        "number_array_max": 0,
+                        "checkbox_array_unique_items": false,
+                        "checkbox_string_regular_expression": false,
+                        "text_string_regular_expression": "",
+                        "select_numeric_greater": null,
+                        "number_numeric_greater": 0,
+                        "select_numeric_less": null,
+                        "number_numeric_less": 0,
+                        "text_enum_add_value": "",
+                        "list_enum_values": []
+                    }
+                },
+                {
+                    "id": "ad4fb67e-74cc-4584-a7e2-b7995a6b4c16",
+                    "id_ref": "cf1b8243-1545-4869-a580-3de8997ca14a",
+                    "text": "Text",
+                    "expanded": false,
+                    "contextAddBtn": false,
+                    "contextRemoveBtn": true,
+                    "node_value": {
+                        "text_name": "Text",
+                        "text_description": "Text",
+                        "select_type": "string",
+                        "checkbox_required": false,
+                        "checkbox_nullable": false,
+                        "checkbox_additional_properties": false,
+                        "select_array_type": null,
+                        "number_array_min": 0,
+                        "number_array_max": 0,
+                        "checkbox_array_unique_items": false,
+                        "checkbox_string_regular_expression": false,
+                        "text_string_regular_expression": "",
+                        "select_numeric_greater": null,
+                        "number_numeric_greater": 0,
+                        "select_numeric_less": null,
+                        "number_numeric_less": 0,
+                        "text_enum_add_value": "",
+                        "list_enum_values": []
+                    }
+                },
+                {
+                    "id": "83c3a893-832a-4daf-915d-a1d4a1d25bd9",
+                    "id_ref": "c88ae678-8a9b-4435-9362-9fa04af06965",
+                    "text": "Ide",
+                    "expanded": true,
+                    "contextAddBtn": true,
+                    "contextRemoveBtn": true,
+                    "node_value": {
+                        "text_name": "Ide",
+                        "text_description": "Ide",
+                        "select_type": "object",
+                        "checkbox_required": true,
+                        "checkbox_nullable": false,
+                        "checkbox_additional_properties": false,
+                        "select_array_type": null,
+                        "number_array_min": 0,
+                        "number_array_max": 0,
+                        "checkbox_array_unique_items": false,
+                        "checkbox_string_regular_expression": false,
+                        "text_string_regular_expression": "",
+                        "select_numeric_greater": null,
+                        "number_numeric_greater": 0,
+                        "select_numeric_less": null,
+                        "number_numeric_less": 0,
+                        "text_enum_add_value": "",
+                        "list_enum_values": []
+                    }
+                },
+                {
+                    "id": "e38dc34c-43fc-47f8-a9e0-b99effa1f111",
+                    "id_ref": "c88ae678-8a9b-4435-9362-9fa04af06965",
+                    "text": "Compl",
+                    "expanded": true,
+                    "contextAddBtn": true,
+                    "contextRemoveBtn": true,
+                    "node_value": {
+                        "text_name": "Compl",
+                        "text_description": "Compl",
+                        "select_type": "object",
+                        "checkbox_required": true,
+                        "checkbox_nullable": false,
+                        "checkbox_additional_properties": false,
+                        "select_array_type": null,
+                        "number_array_min": 0,
+                        "number_array_max": 0,
+                        "checkbox_array_unique_items": false,
+                        "checkbox_string_regular_expression": false,
+                        "text_string_regular_expression": "",
+                        "select_numeric_greater": null,
+                        "number_numeric_greater": 0,
+                        "select_numeric_less": null,
+                        "number_numeric_less": 0,
+                        "text_enum_add_value": "",
+                        "list_enum_values": []
+                    }
+                },
+                {
+                    "id": "ecef0ab9-bbf6-4d20-afc0-1915fb8a62ff",
+                    "id_ref": "c88ae678-8a9b-4435-9362-9fa04af06965",
+                    "text": "Emit",
+                    "expanded": true,
+                    "contextAddBtn": true,
+                    "contextRemoveBtn": true,
+                    "node_value": {
+                        "text_name": "Emit",
+                        "text_description": "Emit",
+                        "select_type": "object",
+                        "checkbox_required": true,
+                        "checkbox_nullable": false,
+                        "checkbox_additional_properties": false,
+                        "select_array_type": null,
+                        "number_array_min": 0,
+                        "number_array_max": 0,
+                        "checkbox_array_unique_items": false,
+                        "checkbox_string_regular_expression": false,
+                        "text_string_regular_expression": "",
+                        "select_numeric_greater": null,
+                        "number_numeric_greater": 0,
+                        "select_numeric_less": null,
+                        "number_numeric_less": 0,
+                        "text_enum_add_value": "",
+                        "list_enum_values": []
+                    }
+                },
+                {
+                    "id": "301421ce-a4c6-475e-9a86-52215d5724f0",
+                    "id_ref": "c88ae678-8a9b-4435-9362-9fa04af06965",
+                    "text": "Exped",
+                    "expanded": true,
+                    "contextAddBtn": true,
+                    "contextRemoveBtn": true,
+                    "node_value": {
+                        "text_name": "Exped",
+                        "text_description": "Exped",
+                        "select_type": "object",
+                        "checkbox_required": false,
+                        "checkbox_nullable": false,
+                        "checkbox_additional_properties": false,
+                        "select_array_type": null,
+                        "number_array_min": 0,
+                        "number_array_max": 0,
+                        "checkbox_array_unique_items": false,
+                        "checkbox_string_regular_expression": false,
+                        "text_string_regular_expression": "",
+                        "select_numeric_greater": null,
+                        "number_numeric_greater": 0,
+                        "select_numeric_less": null,
+                        "number_numeric_less": 0,
+                        "text_enum_add_value": "",
+                        "list_enum_values": []
+                    }
+                },
+                {
+                    "id": "a22a9830-19c0-4d0a-856d-d4328737e563",
+                    "id_ref": "c88ae678-8a9b-4435-9362-9fa04af06965",
+                    "text": "Rem",
+                    "expanded": true,
+                    "contextAddBtn": true,
+                    "contextRemoveBtn": true,
+                    "node_value": {
+                        "text_name": "Rem",
+                        "text_description": "Rem",
+                        "select_type": "object",
+                        "checkbox_required": true,
+                        "checkbox_nullable": false,
+                        "checkbox_additional_properties": false,
+                        "select_array_type": null,
+                        "number_array_min": 0,
+                        "number_array_max": 0,
+                        "checkbox_array_unique_items": false,
+                        "checkbox_string_regular_expression": false,
+                        "text_string_regular_expression": "",
+                        "select_numeric_greater": null,
+                        "number_numeric_greater": 0,
+                        "select_numeric_less": null,
+                        "number_numeric_less": 0,
+                        "text_enum_add_value": "",
+                        "list_enum_values": []
+                    }
+                },
+                {
+                    "id": "55fcec05-f388-40a6-99df-6a40ac6e34f5",
+                    "id_ref": "c88ae678-8a9b-4435-9362-9fa04af06965",
+                    "text": "Receb",
+                    "expanded": true,
+                    "contextAddBtn": true,
+                    "contextRemoveBtn": true,
+                    "node_value": {
+                        "text_name": "Receb",
+                        "text_description": "Receb",
+                        "select_type": "object",
+                        "checkbox_required": false,
+                        "checkbox_nullable": false,
+                        "checkbox_additional_properties": false,
+                        "select_array_type": null,
+                        "number_array_min": 0,
+                        "number_array_max": 0,
+                        "checkbox_array_unique_items": false,
+                        "checkbox_string_regular_expression": false,
+                        "text_string_regular_expression": "",
+                        "select_numeric_greater": null,
+                        "number_numeric_greater": 0,
+                        "select_numeric_less": null,
+                        "number_numeric_less": 0,
+                        "text_enum_add_value": "",
+                        "list_enum_values": []
+                    }
+                },
+                {
+                    "id": "93753222-18f1-4dbd-98fa-5bc185428963",
+                    "id_ref": "c88ae678-8a9b-4435-9362-9fa04af06965",
+                    "text": "Dest",
+                    "expanded": true,
+                    "contextAddBtn": true,
+                    "contextRemoveBtn": true,
+                    "node_value": {
+                        "text_name": "Dest",
+                        "text_description": "Dest",
+                        "select_type": "object",
+                        "checkbox_required": true,
+                        "checkbox_nullable": false,
+                        "checkbox_additional_properties": false,
+                        "select_array_type": null,
+                        "number_array_min": 0,
+                        "number_array_max": 0,
+                        "checkbox_array_unique_items": false,
+                        "checkbox_string_regular_expression": false,
+                        "text_string_regular_expression": "",
+                        "select_numeric_greater": null,
+                        "number_numeric_greater": 0,
+                        "select_numeric_less": null,
+                        "number_numeric_less": 0,
+                        "text_enum_add_value": "",
+                        "list_enum_values": []
+                    }
+                },
+                {
+                    "id": "7aa35991-7010-4f02-9016-0338291c4e97",
+                    "id_ref": "c88ae678-8a9b-4435-9362-9fa04af06965",
+                    "text": "VPrest",
+                    "expanded": true,
+                    "contextAddBtn": true,
+                    "contextRemoveBtn": true,
+                    "node_value": {
+                        "text_name": "VPrest",
+                        "text_description": "VPrest",
+                        "select_type": "object",
+                        "checkbox_required": true,
+                        "checkbox_nullable": false,
+                        "checkbox_additional_properties": false,
+                        "select_array_type": null,
+                        "number_array_min": 0,
+                        "number_array_max": 0,
+                        "checkbox_array_unique_items": false,
+                        "checkbox_string_regular_expression": false,
+                        "text_string_regular_expression": "",
+                        "select_numeric_greater": null,
+                        "number_numeric_greater": 0,
+                        "select_numeric_less": null,
+                        "number_numeric_less": 0,
+                        "text_enum_add_value": "",
+                        "list_enum_values": []
+                    }
+                },
+                {
+                    "id": "6c5a29d2-f1f6-4a0b-9dbf-9f9900097908",
+                    "id_ref": "c88ae678-8a9b-4435-9362-9fa04af06965",
+                    "text": "Imp",
+                    "expanded": true,
+                    "contextAddBtn": true,
+                    "contextRemoveBtn": true,
+                    "node_value": {
+                        "text_name": "Imp",
+                        "text_description": "Imp",
+                        "select_type": "object",
+                        "checkbox_required": true,
+                        "checkbox_nullable": false,
+                        "checkbox_additional_properties": false,
+                        "select_array_type": null,
+                        "number_array_min": 0,
+                        "number_array_max": 0,
+                        "checkbox_array_unique_items": false,
+                        "checkbox_string_regular_expression": false,
+                        "text_string_regular_expression": "",
+                        "select_numeric_greater": null,
+                        "number_numeric_greater": 0,
+                        "select_numeric_less": null,
+                        "number_numeric_less": 0,
+                        "text_enum_add_value": "",
+                        "list_enum_values": []
+                    }
+                },
+                {
+                    "id": "756dcd77-4491-48f2-a191-368e6c42b851",
+                    "id_ref": "c88ae678-8a9b-4435-9362-9fa04af06965",
+                    "text": "InfCTeNorm",
+                    "expanded": true,
+                    "contextAddBtn": true,
+                    "contextRemoveBtn": true,
+                    "node_value": {
+                        "text_name": "InfCTeNorm",
+                        "text_description": "InfCTeNorm",
+                        "select_type": "object",
+                        "checkbox_required": false,
+                        "checkbox_nullable": false,
+                        "checkbox_additional_properties": false,
+                        "select_array_type": null,
+                        "number_array_min": 0,
+                        "number_array_max": 0,
+                        "checkbox_array_unique_items": false,
+                        "checkbox_string_regular_expression": false,
+                        "text_string_regular_expression": "",
+                        "select_numeric_greater": null,
+                        "number_numeric_greater": 0,
+                        "select_numeric_less": null,
+                        "number_numeric_less": 0,
+                        "text_enum_add_value": "",
+                        "list_enum_values": []
+                    }
+                },
+                {
+                    "id": "8630e184-54ce-4828-bf64-a0908a7aec43",
+                    "id_ref": "c88ae678-8a9b-4435-9362-9fa04af06965",
+                    "text": "AutXML",
+                    "expanded": true,
+                    "contextAddBtn": true,
+                    "contextRemoveBtn": true,
+                    "node_value": {
+                        "text_name": "AutXML",
+                        "text_description": "AutXML",
+                        "select_type": "object",
+                        "checkbox_required": true,
+                        "checkbox_nullable": false,
+                        "checkbox_additional_properties": false,
+                        "select_array_type": null,
+                        "number_array_min": 0,
+                        "number_array_max": 0,
+                        "checkbox_array_unique_items": false,
+                        "checkbox_string_regular_expression": false,
+                        "text_string_regular_expression": "",
+                        "select_numeric_greater": null,
+                        "number_numeric_greater": 0,
+                        "select_numeric_less": null,
+                        "number_numeric_less": 0,
+                        "text_enum_add_value": "",
+                        "list_enum_values": []
+                    }
+                },
+                {
+                    "id": "7ae75ac8-45b8-4e0e-8186-13185e27b197",
+                    "id_ref": "c88ae678-8a9b-4435-9362-9fa04af06965",
+                    "text": "Versao",
+                    "expanded": false,
+                    "contextAddBtn": false,
+                    "contextRemoveBtn": true,
+                    "node_value": {
+                        "text_name": "Versao",
+                        "text_description": "Versao",
+                        "select_type": "string",
+                        "checkbox_required": true,
+                        "checkbox_nullable": false,
+                        "checkbox_additional_properties": false,
+                        "select_array_type": null,
+                        "number_array_min": 0,
+                        "number_array_max": 0,
+                        "checkbox_array_unique_items": false,
+                        "checkbox_string_regular_expression": false,
+                        "text_string_regular_expression": "",
+                        "select_numeric_greater": null,
+                        "number_numeric_greater": 0,
+                        "select_numeric_less": null,
+                        "number_numeric_less": 0,
+                        "text_enum_add_value": "",
+                        "list_enum_values": []
+                    }
+                },
+                {
+                    "id": "5e58eec9-949e-4cdc-a847-15bb8b70ddb6",
+                    "id_ref": "c88ae678-8a9b-4435-9362-9fa04af06965",
+                    "text": "Id",
+                    "expanded": false,
+                    "contextAddBtn": false,
+                    "contextRemoveBtn": true,
+                    "node_value": {
+                        "text_name": "Id",
+                        "text_description": "Id",
+                        "select_type": "string",
+                        "checkbox_required": true,
+                        "checkbox_nullable": false,
+                        "checkbox_additional_properties": false,
+                        "select_array_type": null,
+                        "number_array_min": 0,
+                        "number_array_max": 0,
+                        "checkbox_array_unique_items": false,
+                        "checkbox_string_regular_expression": false,
+                        "text_string_regular_expression": "",
+                        "select_numeric_greater": null,
+                        "number_numeric_greater": 0,
+                        "select_numeric_less": null,
+                        "number_numeric_less": 0,
+                        "text_enum_add_value": "",
+                        "list_enum_values": []
+                    }
+                },
+                {
+                    "id": "0a412262-cf13-48ed-bdc6-104da18c4d7b",
+                    "id_ref": "c88ae678-8a9b-4435-9362-9fa04af06965",
+                    "text": "InfCteComp",
+                    "expanded": false,
+                    "contextAddBtn": false,
+                    "contextRemoveBtn": true,
+                    "node_value": {
+                        "text_name": "InfCteComp",
+                        "text_description": "InfCteComp",
+                        "select_type": "string",
+                        "checkbox_required": true,
+                        "checkbox_nullable": false,
+                        "checkbox_additional_properties": false,
+                        "select_array_type": null,
+                        "number_array_min": 0,
+                        "number_array_max": 0,
+                        "checkbox_array_unique_items": false,
+                        "checkbox_string_regular_expression": false,
+                        "text_string_regular_expression": "",
+                        "select_numeric_greater": null,
+                        "number_numeric_greater": 0,
+                        "select_numeric_less": null,
+                        "number_numeric_less": 0,
+                        "text_enum_add_value": "",
+                        "list_enum_values": []
+                    }
+                },
+                {
+                    "id": "4b020464-2a98-4faa-933e-3fba1a51f3fc",
+                    "id_ref": "83c3a893-832a-4daf-915d-a1d4a1d25bd9",
+                    "text": "CUF",
+                    "expanded": false,
+                    "contextAddBtn": false,
+                    "contextRemoveBtn": true,
+                    "node_value": {
+                        "text_name": "CUF",
+                        "text_description": "CUF",
+                        "select_type": "string",
+                        "checkbox_required": false,
+                        "checkbox_nullable": false,
+                        "checkbox_additional_properties": false,
+                        "select_array_type": null,
+                        "number_array_min": 0,
+                        "number_array_max": 0,
+                        "checkbox_array_unique_items": false,
+                        "checkbox_string_regular_expression": false,
+                        "text_string_regular_expression": "",
+                        "select_numeric_greater": null,
+                        "number_numeric_greater": 0,
+                        "select_numeric_less": null,
+                        "number_numeric_less": 0,
+                        "text_enum_add_value": "",
+                        "list_enum_values": []
+                    }
+                },
+                {
+                    "id": "5a63f861-b392-4caf-8721-718e418c0131",
+                    "id_ref": "83c3a893-832a-4daf-915d-a1d4a1d25bd9",
+                    "text": "CCT",
+                    "expanded": false,
+                    "contextAddBtn": false,
+                    "contextRemoveBtn": true,
+                    "node_value": {
+                        "text_name": "CCT",
+                        "text_description": "CCT",
+                        "select_type": "string",
+                        "checkbox_required": false,
+                        "checkbox_nullable": false,
+                        "checkbox_additional_properties": false,
+                        "select_array_type": null,
+                        "number_array_min": 0,
+                        "number_array_max": 0,
+                        "checkbox_array_unique_items": false,
+                        "checkbox_string_regular_expression": false,
+                        "text_string_regular_expression": "",
+                        "select_numeric_greater": null,
+                        "number_numeric_greater": 0,
+                        "select_numeric_less": null,
+                        "number_numeric_less": 0,
+                        "text_enum_add_value": "",
+                        "list_enum_values": []
+                    }
+                },
+                {
+                    "id": "2f09d25e-c900-4b0f-bc84-80d74e164806",
+                    "id_ref": "83c3a893-832a-4daf-915d-a1d4a1d25bd9",
+                    "text": "CFOP",
+                    "expanded": false,
+                    "contextAddBtn": false,
+                    "contextRemoveBtn": true,
+                    "node_value": {
+                        "text_name": "CFOP",
+                        "text_description": "CFOP",
+                        "select_type": "string",
+                        "checkbox_required": false,
+                        "checkbox_nullable": false,
+                        "checkbox_additional_properties": false,
+                        "select_array_type": null,
+                        "number_array_min": 0,
+                        "number_array_max": 0,
+                        "checkbox_array_unique_items": false,
+                        "checkbox_string_regular_expression": false,
+                        "text_string_regular_expression": "",
+                        "select_numeric_greater": null,
+                        "number_numeric_greater": 0,
+                        "select_numeric_less": null,
+                        "number_numeric_less": 0,
+                        "text_enum_add_value": "",
+                        "list_enum_values": []
+                    }
+                },
+                {
+                    "id": "f8258a41-d995-4ce5-b834-4e1c885f133e",
+                    "id_ref": "83c3a893-832a-4daf-915d-a1d4a1d25bd9",
+                    "text": "NatOp",
+                    "expanded": false,
+                    "contextAddBtn": false,
+                    "contextRemoveBtn": true,
+                    "node_value": {
+                        "text_name": "NatOp",
+                        "text_description": "NatOp",
+                        "select_type": "string",
+                        "checkbox_required": false,
+                        "checkbox_nullable": false,
+                        "checkbox_additional_properties": false,
+                        "select_array_type": null,
+                        "number_array_min": 0,
+                        "number_array_max": 0,
+                        "checkbox_array_unique_items": false,
+                        "checkbox_string_regular_expression": false,
+                        "text_string_regular_expression": "",
+                        "select_numeric_greater": null,
+                        "number_numeric_greater": 0,
+                        "select_numeric_less": null,
+                        "number_numeric_less": 0,
+                        "text_enum_add_value": "",
+                        "list_enum_values": []
+                    }
+                },
+                {
+                    "id": "2e15669b-ce5a-4920-a7c2-0c0b12704308",
+                    "id_ref": "83c3a893-832a-4daf-915d-a1d4a1d25bd9",
+                    "text": "Mod",
+                    "expanded": false,
+                    "contextAddBtn": false,
+                    "contextRemoveBtn": true,
+                    "node_value": {
+                        "text_name": "Mod",
+                        "text_description": "Mod",
+                        "select_type": "string",
+                        "checkbox_required": false,
+                        "checkbox_nullable": false,
+                        "checkbox_additional_properties": false,
+                        "select_array_type": null,
+                        "number_array_min": 0,
+                        "number_array_max": 0,
+                        "checkbox_array_unique_items": false,
+                        "checkbox_string_regular_expression": false,
+                        "text_string_regular_expression": "",
+                        "select_numeric_greater": null,
+                        "number_numeric_greater": 0,
+                        "select_numeric_less": null,
+                        "number_numeric_less": 0,
+                        "text_enum_add_value": "",
+                        "list_enum_values": []
+                    }
+                },
+                {
+                    "id": "79dae56b-0f60-4c91-aabe-fa93b4687e21",
+                    "id_ref": "83c3a893-832a-4daf-915d-a1d4a1d25bd9",
+                    "text": "Serie",
+                    "expanded": false,
+                    "contextAddBtn": false,
+                    "contextRemoveBtn": true,
+                    "node_value": {
+                        "text_name": "Serie",
+                        "text_description": "Serie",
+                        "select_type": "string",
+                        "checkbox_required": false,
+                        "checkbox_nullable": false,
+                        "checkbox_additional_properties": false,
+                        "select_array_type": null,
+                        "number_array_min": 0,
+                        "number_array_max": 0,
+                        "checkbox_array_unique_items": false,
+                        "checkbox_string_regular_expression": false,
+                        "text_string_regular_expression": "",
+                        "select_numeric_greater": null,
+                        "number_numeric_greater": 0,
+                        "select_numeric_less": null,
+                        "number_numeric_less": 0,
+                        "text_enum_add_value": "",
+                        "list_enum_values": []
+                    }
+                },
+                {
+                    "id": "acfbbd63-fe48-4f67-b84b-64303112bf35",
+                    "id_ref": "83c3a893-832a-4daf-915d-a1d4a1d25bd9",
+                    "text": "NCT",
+                    "expanded": false,
+                    "contextAddBtn": false,
+                    "contextRemoveBtn": true,
+                    "node_value": {
+                        "text_name": "NCT",
+                        "text_description": "NCT",
+                        "select_type": "string",
+                        "checkbox_required": false,
+                        "checkbox_nullable": false,
+                        "checkbox_additional_properties": false,
+                        "select_array_type": null,
+                        "number_array_min": 0,
+                        "number_array_max": 0,
+                        "checkbox_array_unique_items": false,
+                        "checkbox_string_regular_expression": false,
+                        "text_string_regular_expression": "",
+                        "select_numeric_greater": null,
+                        "number_numeric_greater": 0,
+                        "select_numeric_less": null,
+                        "number_numeric_less": 0,
+                        "text_enum_add_value": "",
+                        "list_enum_values": []
+                    }
+                },
+                {
+                    "id": "b47a0375-1bdf-4220-ac33-c49a02d7ab22",
+                    "id_ref": "83c3a893-832a-4daf-915d-a1d4a1d25bd9",
+                    "text": "DhEmi",
+                    "expanded": false,
+                    "contextAddBtn": false,
+                    "contextRemoveBtn": true,
+                    "node_value": {
+                        "text_name": "DhEmi",
+                        "text_description": "DhEmi",
+                        "select_type": "string",
+                        "checkbox_required": false,
+                        "checkbox_nullable": false,
+                        "checkbox_additional_properties": false,
+                        "select_array_type": null,
+                        "number_array_min": 0,
+                        "number_array_max": 0,
+                        "checkbox_array_unique_items": false,
+                        "checkbox_string_regular_expression": false,
+                        "text_string_regular_expression": "",
+                        "select_numeric_greater": null,
+                        "number_numeric_greater": 0,
+                        "select_numeric_less": null,
+                        "number_numeric_less": 0,
+                        "text_enum_add_value": "",
+                        "list_enum_values": []
+                    }
+                },
+                {
+                    "id": "8d282d8a-dc7d-47be-a767-edf2e68b68f7",
+                    "id_ref": "83c3a893-832a-4daf-915d-a1d4a1d25bd9",
+                    "text": "TpImp",
+                    "expanded": false,
+                    "contextAddBtn": false,
+                    "contextRemoveBtn": true,
+                    "node_value": {
+                        "text_name": "TpImp",
+                        "text_description": "TpImp",
+                        "select_type": "string",
+                        "checkbox_required": false,
+                        "checkbox_nullable": false,
+                        "checkbox_additional_properties": false,
+                        "select_array_type": null,
+                        "number_array_min": 0,
+                        "number_array_max": 0,
+                        "checkbox_array_unique_items": false,
+                        "checkbox_string_regular_expression": false,
+                        "text_string_regular_expression": "",
+                        "select_numeric_greater": null,
+                        "number_numeric_greater": 0,
+                        "select_numeric_less": null,
+                        "number_numeric_less": 0,
+                        "text_enum_add_value": "",
+                        "list_enum_values": []
+                    }
+                },
+                {
+                    "id": "a16f62df-b569-4f77-8ab5-ec4326c213ed",
+                    "id_ref": "83c3a893-832a-4daf-915d-a1d4a1d25bd9",
+                    "text": "TpEmis",
+                    "expanded": false,
+                    "contextAddBtn": false,
+                    "contextRemoveBtn": true,
+                    "node_value": {
+                        "text_name": "TpEmis",
+                        "text_description": "TpEmis",
+                        "select_type": "string",
+                        "checkbox_required": false,
+                        "checkbox_nullable": false,
+                        "checkbox_additional_properties": false,
+                        "select_array_type": null,
+                        "number_array_min": 0,
+                        "number_array_max": 0,
+                        "checkbox_array_unique_items": false,
+                        "checkbox_string_regular_expression": false,
+                        "text_string_regular_expression": "",
+                        "select_numeric_greater": null,
+                        "number_numeric_greater": 0,
+                        "select_numeric_less": null,
+                        "number_numeric_less": 0,
+                        "text_enum_add_value": "",
+                        "list_enum_values": []
+                    }
+                },
+                {
+                    "id": "50623ec4-c088-4921-94c6-0e2967d785bc",
+                    "id_ref": "83c3a893-832a-4daf-915d-a1d4a1d25bd9",
+                    "text": "CDV",
+                    "expanded": false,
+                    "contextAddBtn": false,
+                    "contextRemoveBtn": true,
+                    "node_value": {
+                        "text_name": "CDV",
+                        "text_description": "CDV",
+                        "select_type": "string",
+                        "checkbox_required": false,
+                        "checkbox_nullable": false,
+                        "checkbox_additional_properties": false,
+                        "select_array_type": null,
+                        "number_array_min": 0,
+                        "number_array_max": 0,
+                        "checkbox_array_unique_items": false,
+                        "checkbox_string_regular_expression": false,
+                        "text_string_regular_expression": "",
+                        "select_numeric_greater": null,
+                        "number_numeric_greater": 0,
+                        "select_numeric_less": null,
+                        "number_numeric_less": 0,
+                        "text_enum_add_value": "",
+                        "list_enum_values": []
+                    }
+                },
+                {
+                    "id": "dc19881a-eae2-418b-a124-9049b51f5777",
+                    "id_ref": "83c3a893-832a-4daf-915d-a1d4a1d25bd9",
+                    "text": "TpAmb",
+                    "expanded": false,
+                    "contextAddBtn": false,
+                    "contextRemoveBtn": true,
+                    "node_value": {
+                        "text_name": "TpAmb",
+                        "text_description": "TpAmb",
+                        "select_type": "string",
+                        "checkbox_required": false,
+                        "checkbox_nullable": false,
+                        "checkbox_additional_properties": false,
+                        "select_array_type": null,
+                        "number_array_min": 0,
+                        "number_array_max": 0,
+                        "checkbox_array_unique_items": false,
+                        "checkbox_string_regular_expression": false,
+                        "text_string_regular_expression": "",
+                        "select_numeric_greater": null,
+                        "number_numeric_greater": 0,
+                        "select_numeric_less": null,
+                        "number_numeric_less": 0,
+                        "text_enum_add_value": "",
+                        "list_enum_values": []
+                    }
+                },
+                {
+                    "id": "ef0702c3-4079-4236-9fcb-c1ed242b81ee",
+                    "id_ref": "83c3a893-832a-4daf-915d-a1d4a1d25bd9",
+                    "text": "TpCTe",
+                    "expanded": false,
+                    "contextAddBtn": false,
+                    "contextRemoveBtn": true,
+                    "node_value": {
+                        "text_name": "TpCTe",
+                        "text_description": "TpCTe",
+                        "select_type": "string",
+                        "checkbox_required": false,
+                        "checkbox_nullable": false,
+                        "checkbox_additional_properties": false,
+                        "select_array_type": null,
+                        "number_array_min": 0,
+                        "number_array_max": 0,
+                        "checkbox_array_unique_items": false,
+                        "checkbox_string_regular_expression": false,
+                        "text_string_regular_expression": "",
+                        "select_numeric_greater": null,
+                        "number_numeric_greater": 0,
+                        "select_numeric_less": null,
+                        "number_numeric_less": 0,
+                        "text_enum_add_value": "",
+                        "list_enum_values": []
+                    }
+                },
+                {
+                    "id": "6c671d16-039c-4880-b974-2e06c66f7a0c",
+                    "id_ref": "83c3a893-832a-4daf-915d-a1d4a1d25bd9",
+                    "text": "ProcEmi",
+                    "expanded": false,
+                    "contextAddBtn": false,
+                    "contextRemoveBtn": true,
+                    "node_value": {
+                        "text_name": "ProcEmi",
+                        "text_description": "ProcEmi",
+                        "select_type": "string",
+                        "checkbox_required": false,
+                        "checkbox_nullable": false,
+                        "checkbox_additional_properties": false,
+                        "select_array_type": null,
+                        "number_array_min": 0,
+                        "number_array_max": 0,
+                        "checkbox_array_unique_items": false,
+                        "checkbox_string_regular_expression": false,
+                        "text_string_regular_expression": "",
+                        "select_numeric_greater": null,
+                        "number_numeric_greater": 0,
+                        "select_numeric_less": null,
+                        "number_numeric_less": 0,
+                        "text_enum_add_value": "",
+                        "list_enum_values": []
+                    }
+                },
+                {
+                    "id": "1b21b7e7-c582-43a7-8050-7931cfa3ac4b",
+                    "id_ref": "83c3a893-832a-4daf-915d-a1d4a1d25bd9",
+                    "text": "VerProc",
+                    "expanded": false,
+                    "contextAddBtn": false,
+                    "contextRemoveBtn": true,
+                    "node_value": {
+                        "text_name": "VerProc",
+                        "text_description": "VerProc",
+                        "select_type": "string",
+                        "checkbox_required": false,
+                        "checkbox_nullable": false,
+                        "checkbox_additional_properties": false,
+                        "select_array_type": null,
+                        "number_array_min": 0,
+                        "number_array_max": 0,
+                        "checkbox_array_unique_items": false,
+                        "checkbox_string_regular_expression": false,
+                        "text_string_regular_expression": "",
+                        "select_numeric_greater": null,
+                        "number_numeric_greater": 0,
+                        "select_numeric_less": null,
+                        "number_numeric_less": 0,
+                        "text_enum_add_value": "",
+                        "list_enum_values": []
+                    }
+                },
+                {
+                    "id": "967c053b-1cf2-4267-becd-99ad3d6b78e6",
+                    "id_ref": "83c3a893-832a-4daf-915d-a1d4a1d25bd9",
+                    "text": "CMunEnv",
+                    "expanded": false,
+                    "contextAddBtn": false,
+                    "contextRemoveBtn": true,
+                    "node_value": {
+                        "text_name": "CMunEnv",
+                        "text_description": "CMunEnv",
+                        "select_type": "string",
+                        "checkbox_required": false,
+                        "checkbox_nullable": false,
+                        "checkbox_additional_properties": false,
+                        "select_array_type": null,
+                        "number_array_min": 0,
+                        "number_array_max": 0,
+                        "checkbox_array_unique_items": false,
+                        "checkbox_string_regular_expression": false,
+                        "text_string_regular_expression": "",
+                        "select_numeric_greater": null,
+                        "number_numeric_greater": 0,
+                        "select_numeric_less": null,
+                        "number_numeric_less": 0,
+                        "text_enum_add_value": "",
+                        "list_enum_values": []
+                    }
+                },
+                {
+                    "id": "eaa72190-b3a9-473a-a1af-b5ac0cc0bafd",
+                    "id_ref": "83c3a893-832a-4daf-915d-a1d4a1d25bd9",
+                    "text": "XMunEnv",
+                    "expanded": false,
+                    "contextAddBtn": false,
+                    "contextRemoveBtn": true,
+                    "node_value": {
+                        "text_name": "XMunEnv",
+                        "text_description": "XMunEnv",
+                        "select_type": "string",
+                        "checkbox_required": false,
+                        "checkbox_nullable": false,
+                        "checkbox_additional_properties": false,
+                        "select_array_type": null,
+                        "number_array_min": 0,
+                        "number_array_max": 0,
+                        "checkbox_array_unique_items": false,
+                        "checkbox_string_regular_expression": false,
+                        "text_string_regular_expression": "",
+                        "select_numeric_greater": null,
+                        "number_numeric_greater": 0,
+                        "select_numeric_less": null,
+                        "number_numeric_less": 0,
+                        "text_enum_add_value": "",
+                        "list_enum_values": []
+                    }
+                },
+                {
+                    "id": "7e86c858-96b0-497a-91bf-ba081255d0d0",
+                    "id_ref": "83c3a893-832a-4daf-915d-a1d4a1d25bd9",
+                    "text": "UFEnv",
+                    "expanded": false,
+                    "contextAddBtn": false,
+                    "contextRemoveBtn": true,
+                    "node_value": {
+                        "text_name": "UFEnv",
+                        "text_description": "UFEnv",
+                        "select_type": "string",
+                        "checkbox_required": false,
+                        "checkbox_nullable": false,
+                        "checkbox_additional_properties": false,
+                        "select_array_type": null,
+                        "number_array_min": 0,
+                        "number_array_max": 0,
+                        "checkbox_array_unique_items": false,
+                        "checkbox_string_regular_expression": false,
+                        "text_string_regular_expression": "",
+                        "select_numeric_greater": null,
+                        "number_numeric_greater": 0,
+                        "select_numeric_less": null,
+                        "number_numeric_less": 0,
+                        "text_enum_add_value": "",
+                        "list_enum_values": []
+                    }
+                },
+                {
+                    "id": "23b26cd2-6a69-4bd9-b8af-6c02ab081c85",
+                    "id_ref": "83c3a893-832a-4daf-915d-a1d4a1d25bd9",
+                    "text": "Modal",
+                    "expanded": false,
+                    "contextAddBtn": false,
+                    "contextRemoveBtn": true,
+                    "node_value": {
+                        "text_name": "Modal",
+                        "text_description": "Modal",
+                        "select_type": "string",
+                        "checkbox_required": false,
+                        "checkbox_nullable": false,
+                        "checkbox_additional_properties": false,
+                        "select_array_type": null,
+                        "number_array_min": 0,
+                        "number_array_max": 0,
+                        "checkbox_array_unique_items": false,
+                        "checkbox_string_regular_expression": false,
+                        "text_string_regular_expression": "",
+                        "select_numeric_greater": null,
+                        "number_numeric_greater": 0,
+                        "select_numeric_less": null,
+                        "number_numeric_less": 0,
+                        "text_enum_add_value": "",
+                        "list_enum_values": []
+                    }
+                },
+                {
+                    "id": "0d1a8cb2-1e98-494e-b5a6-de9f47712ff9",
+                    "id_ref": "83c3a893-832a-4daf-915d-a1d4a1d25bd9",
+                    "text": "TpServ",
+                    "expanded": false,
+                    "contextAddBtn": false,
+                    "contextRemoveBtn": true,
+                    "node_value": {
+                        "text_name": "TpServ",
+                        "text_description": "TpServ",
+                        "select_type": "string",
+                        "checkbox_required": false,
+                        "checkbox_nullable": false,
+                        "checkbox_additional_properties": false,
+                        "select_array_type": null,
+                        "number_array_min": 0,
+                        "number_array_max": 0,
+                        "checkbox_array_unique_items": false,
+                        "checkbox_string_regular_expression": false,
+                        "text_string_regular_expression": "",
+                        "select_numeric_greater": null,
+                        "number_numeric_greater": 0,
+                        "select_numeric_less": null,
+                        "number_numeric_less": 0,
+                        "text_enum_add_value": "",
+                        "list_enum_values": []
+                    }
+                },
+                {
+                    "id": "d8f1ede8-0a17-45d6-bd44-af9fc835db5f",
+                    "id_ref": "83c3a893-832a-4daf-915d-a1d4a1d25bd9",
+                    "text": "CMunIni",
+                    "expanded": false,
+                    "contextAddBtn": false,
+                    "contextRemoveBtn": true,
+                    "node_value": {
+                        "text_name": "CMunIni",
+                        "text_description": "CMunIni",
+                        "select_type": "string",
+                        "checkbox_required": false,
+                        "checkbox_nullable": false,
+                        "checkbox_additional_properties": false,
+                        "select_array_type": null,
+                        "number_array_min": 0,
+                        "number_array_max": 0,
+                        "checkbox_array_unique_items": false,
+                        "checkbox_string_regular_expression": false,
+                        "text_string_regular_expression": "",
+                        "select_numeric_greater": null,
+                        "number_numeric_greater": 0,
+                        "select_numeric_less": null,
+                        "number_numeric_less": 0,
+                        "text_enum_add_value": "",
+                        "list_enum_values": []
+                    }
+                },
+                {
+                    "id": "7276cdbb-d8b4-4104-95df-39c77331e41d",
+                    "id_ref": "83c3a893-832a-4daf-915d-a1d4a1d25bd9",
+                    "text": "XMunIni",
+                    "expanded": false,
+                    "contextAddBtn": false,
+                    "contextRemoveBtn": true,
+                    "node_value": {
+                        "text_name": "XMunIni",
+                        "text_description": "XMunIni",
+                        "select_type": "string",
+                        "checkbox_required": false,
+                        "checkbox_nullable": false,
+                        "checkbox_additional_properties": false,
+                        "select_array_type": null,
+                        "number_array_min": 0,
+                        "number_array_max": 0,
+                        "checkbox_array_unique_items": false,
+                        "checkbox_string_regular_expression": false,
+                        "text_string_regular_expression": "",
+                        "select_numeric_greater": null,
+                        "number_numeric_greater": 0,
+                        "select_numeric_less": null,
+                        "number_numeric_less": 0,
+                        "text_enum_add_value": "",
+                        "list_enum_values": []
+                    }
+                },
+                {
+                    "id": "48e25ecb-e541-4cd0-865b-2e619cf72398",
+                    "id_ref": "83c3a893-832a-4daf-915d-a1d4a1d25bd9",
+                    "text": "UFIni",
+                    "expanded": false,
+                    "contextAddBtn": false,
+                    "contextRemoveBtn": true,
+                    "node_value": {
+                        "text_name": "UFIni",
+                        "text_description": "UFIni",
+                        "select_type": "string",
+                        "checkbox_required": false,
+                        "checkbox_nullable": false,
+                        "checkbox_additional_properties": false,
+                        "select_array_type": null,
+                        "number_array_min": 0,
+                        "number_array_max": 0,
+                        "checkbox_array_unique_items": false,
+                        "checkbox_string_regular_expression": false,
+                        "text_string_regular_expression": "",
+                        "select_numeric_greater": null,
+                        "number_numeric_greater": 0,
+                        "select_numeric_less": null,
+                        "number_numeric_less": 0,
+                        "text_enum_add_value": "",
+                        "list_enum_values": []
+                    }
+                },
+                {
+                    "id": "854f5361-b6c2-480b-afc9-f5fc6f7a434e",
+                    "id_ref": "83c3a893-832a-4daf-915d-a1d4a1d25bd9",
+                    "text": "CMunFim",
+                    "expanded": false,
+                    "contextAddBtn": false,
+                    "contextRemoveBtn": true,
+                    "node_value": {
+                        "text_name": "CMunFim",
+                        "text_description": "CMunFim",
+                        "select_type": "string",
+                        "checkbox_required": false,
+                        "checkbox_nullable": false,
+                        "checkbox_additional_properties": false,
+                        "select_array_type": null,
+                        "number_array_min": 0,
+                        "number_array_max": 0,
+                        "checkbox_array_unique_items": false,
+                        "checkbox_string_regular_expression": false,
+                        "text_string_regular_expression": "",
+                        "select_numeric_greater": null,
+                        "number_numeric_greater": 0,
+                        "select_numeric_less": null,
+                        "number_numeric_less": 0,
+                        "text_enum_add_value": "",
+                        "list_enum_values": []
+                    }
+                },
+                {
+                    "id": "2dd8db6b-8b34-4d4f-a3b5-3ce9a21905f5",
+                    "id_ref": "83c3a893-832a-4daf-915d-a1d4a1d25bd9",
+                    "text": "XMunFim",
+                    "expanded": false,
+                    "contextAddBtn": false,
+                    "contextRemoveBtn": true,
+                    "node_value": {
+                        "text_name": "XMunFim",
+                        "text_description": "XMunFim",
+                        "select_type": "string",
+                        "checkbox_required": false,
+                        "checkbox_nullable": false,
+                        "checkbox_additional_properties": false,
+                        "select_array_type": null,
+                        "number_array_min": 0,
+                        "number_array_max": 0,
+                        "checkbox_array_unique_items": false,
+                        "checkbox_string_regular_expression": false,
+                        "text_string_regular_expression": "",
+                        "select_numeric_greater": null,
+                        "number_numeric_greater": 0,
+                        "select_numeric_less": null,
+                        "number_numeric_less": 0,
+                        "text_enum_add_value": "",
+                        "list_enum_values": []
+                    }
+                },
+                {
+                    "id": "c7d25a36-41cc-45a7-9838-fe6ab0f0f647",
+                    "id_ref": "83c3a893-832a-4daf-915d-a1d4a1d25bd9",
+                    "text": "UFFim",
+                    "expanded": false,
+                    "contextAddBtn": false,
+                    "contextRemoveBtn": true,
+                    "node_value": {
+                        "text_name": "UFFim",
+                        "text_description": "UFFim",
+                        "select_type": "string",
+                        "checkbox_required": false,
+                        "checkbox_nullable": false,
+                        "checkbox_additional_properties": false,
+                        "select_array_type": null,
+                        "number_array_min": 0,
+                        "number_array_max": 0,
+                        "checkbox_array_unique_items": false,
+                        "checkbox_string_regular_expression": false,
+                        "text_string_regular_expression": "",
+                        "select_numeric_greater": null,
+                        "number_numeric_greater": 0,
+                        "select_numeric_less": null,
+                        "number_numeric_less": 0,
+                        "text_enum_add_value": "",
+                        "list_enum_values": []
+                    }
+                },
+                {
+                    "id": "86a4f3cf-39a0-4995-b15c-7d5556b7ec99",
+                    "id_ref": "83c3a893-832a-4daf-915d-a1d4a1d25bd9",
+                    "text": "Retira",
+                    "expanded": false,
+                    "contextAddBtn": false,
+                    "contextRemoveBtn": true,
+                    "node_value": {
+                        "text_name": "Retira",
+                        "text_description": "Retira",
+                        "select_type": "string",
+                        "checkbox_required": false,
+                        "checkbox_nullable": false,
+                        "checkbox_additional_properties": false,
+                        "select_array_type": null,
+                        "number_array_min": 0,
+                        "number_array_max": 0,
+                        "checkbox_array_unique_items": false,
+                        "checkbox_string_regular_expression": false,
+                        "text_string_regular_expression": "",
+                        "select_numeric_greater": null,
+                        "number_numeric_greater": 0,
+                        "select_numeric_less": null,
+                        "number_numeric_less": 0,
+                        "text_enum_add_value": "",
+                        "list_enum_values": []
+                    }
+                },
+                {
+                    "id": "25c458dd-e2f1-4217-a59a-af6a53972faa",
+                    "id_ref": "83c3a893-832a-4daf-915d-a1d4a1d25bd9",
+                    "text": "IndIEToma",
+                    "expanded": false,
+                    "contextAddBtn": false,
+                    "contextRemoveBtn": true,
+                    "node_value": {
+                        "text_name": "IndIEToma",
+                        "text_description": "IndIEToma",
+                        "select_type": "string",
+                        "checkbox_required": false,
+                        "checkbox_nullable": false,
+                        "checkbox_additional_properties": false,
+                        "select_array_type": null,
+                        "number_array_min": 0,
+                        "number_array_max": 0,
+                        "checkbox_array_unique_items": false,
+                        "checkbox_string_regular_expression": false,
+                        "text_string_regular_expression": "",
+                        "select_numeric_greater": null,
+                        "number_numeric_greater": 0,
+                        "select_numeric_less": null,
+                        "number_numeric_less": 0,
+                        "text_enum_add_value": "",
+                        "list_enum_values": []
+                    }
+                },
+                {
+                    "id": "9697372f-80b1-44c7-aae4-d785bf2d47f5",
+                    "id_ref": "83c3a893-832a-4daf-915d-a1d4a1d25bd9",
+                    "text": "Toma3",
+                    "expanded": true,
+                    "contextAddBtn": true,
+                    "contextRemoveBtn": true,
+                    "node_value": {
+                        "text_name": "Toma3",
+                        "text_description": "Toma3",
+                        "select_type": "object",
+                        "checkbox_required": false,
+                        "checkbox_nullable": false,
+                        "checkbox_additional_properties": false,
+                        "select_array_type": null,
+                        "number_array_min": 0,
+                        "number_array_max": 0,
+                        "checkbox_array_unique_items": false,
+                        "checkbox_string_regular_expression": false,
+                        "text_string_regular_expression": "",
+                        "select_numeric_greater": null,
+                        "number_numeric_greater": 0,
+                        "select_numeric_less": null,
+                        "number_numeric_less": 0,
+                        "text_enum_add_value": "",
+                        "list_enum_values": []
+                    }
+                },
+                {
+                    "id": "a97b43d9-e519-42d8-9db6-7b842fab2d13",
+                    "id_ref": "83c3a893-832a-4daf-915d-a1d4a1d25bd9",
+                    "text": "Toma03",
+                    "expanded": true,
+                    "contextAddBtn": true,
+                    "contextRemoveBtn": true,
+                    "node_value": {
+                        "text_name": "Toma03",
+                        "text_description": "Toma03",
+                        "select_type": "object",
+                        "checkbox_required": false,
+                        "checkbox_nullable": false,
+                        "checkbox_additional_properties": false,
+                        "select_array_type": null,
+                        "number_array_min": 0,
+                        "number_array_max": 0,
+                        "checkbox_array_unique_items": false,
+                        "checkbox_string_regular_expression": false,
+                        "text_string_regular_expression": "",
+                        "select_numeric_greater": null,
+                        "number_numeric_greater": 0,
+                        "select_numeric_less": null,
+                        "number_numeric_less": 0,
+                        "text_enum_add_value": "",
+                        "list_enum_values": []
+                    }
+                },
+                {
+                    "id": "6c912040-f5e2-430c-8485-08c4ae0bbb5b",
+                    "id_ref": "83c3a893-832a-4daf-915d-a1d4a1d25bd9",
+                    "text": "Toma4",
+                    "expanded": true,
+                    "contextAddBtn": true,
+                    "contextRemoveBtn": true,
+                    "node_value": {
+                        "text_name": "Toma4",
+                        "text_description": "Toma4",
+                        "select_type": "object",
+                        "checkbox_required": false,
+                        "checkbox_nullable": false,
+                        "checkbox_additional_properties": false,
+                        "select_array_type": null,
+                        "number_array_min": 0,
+                        "number_array_max": 0,
+                        "checkbox_array_unique_items": false,
+                        "checkbox_string_regular_expression": false,
+                        "text_string_regular_expression": "",
+                        "select_numeric_greater": null,
+                        "number_numeric_greater": 0,
+                        "select_numeric_less": null,
+                        "number_numeric_less": 0,
+                        "text_enum_add_value": "",
+                        "list_enum_values": []
+                    }
+                },
+                {
+                    "id": "e76f4143-3b9c-4584-bdde-4f52aabec32e",
+                    "id_ref": "6c912040-f5e2-430c-8485-08c4ae0bbb5b",
+                    "text": "Toma",
+                    "expanded": false,
+                    "contextAddBtn": false,
+                    "contextRemoveBtn": true,
+                    "node_value": {
+                        "text_name": "Toma",
+                        "text_description": "Toma",
+                        "select_type": "string",
+                        "checkbox_required": false,
+                        "checkbox_nullable": false,
+                        "checkbox_additional_properties": false,
+                        "select_array_type": null,
+                        "number_array_min": 0,
+                        "number_array_max": 0,
+                        "checkbox_array_unique_items": false,
+                        "checkbox_string_regular_expression": false,
+                        "text_string_regular_expression": "",
+                        "select_numeric_greater": null,
+                        "number_numeric_greater": 0,
+                        "select_numeric_less": null,
+                        "number_numeric_less": 0,
+                        "text_enum_add_value": "",
+                        "list_enum_values": []
+                    }
+                },
+                {
+                    "id": "8e903c86-0f70-4b36-b4db-0c186ab0f2b1",
+                    "id_ref": "6c912040-f5e2-430c-8485-08c4ae0bbb5b",
+                    "text": "CNPJ",
+                    "expanded": false,
+                    "contextAddBtn": false,
+                    "contextRemoveBtn": true,
+                    "node_value": {
+                        "text_name": "CNPJ",
+                        "text_description": "CNPJ",
+                        "select_type": "string",
+                        "checkbox_required": false,
+                        "checkbox_nullable": false,
+                        "checkbox_additional_properties": false,
+                        "select_array_type": null,
+                        "number_array_min": 0,
+                        "number_array_max": 0,
+                        "checkbox_array_unique_items": false,
+                        "checkbox_string_regular_expression": false,
+                        "text_string_regular_expression": "",
+                        "select_numeric_greater": null,
+                        "number_numeric_greater": 0,
+                        "select_numeric_less": null,
+                        "number_numeric_less": 0,
+                        "text_enum_add_value": "",
+                        "list_enum_values": []
+                    }
+                },
+                {
+                    "id": "77e4d0c0-f405-4155-9335-d060c4501ce9",
+                    "id_ref": "6c912040-f5e2-430c-8485-08c4ae0bbb5b",
+                    "text": "IE",
+                    "expanded": false,
+                    "contextAddBtn": false,
+                    "contextRemoveBtn": true,
+                    "node_value": {
+                        "text_name": "IE",
+                        "text_description": "IE",
+                        "select_type": "string",
+                        "checkbox_required": false,
+                        "checkbox_nullable": false,
+                        "checkbox_additional_properties": false,
+                        "select_array_type": null,
+                        "number_array_min": 0,
+                        "number_array_max": 0,
+                        "checkbox_array_unique_items": false,
+                        "checkbox_string_regular_expression": false,
+                        "text_string_regular_expression": "",
+                        "select_numeric_greater": null,
+                        "number_numeric_greater": 0,
+                        "select_numeric_less": null,
+                        "number_numeric_less": 0,
+                        "text_enum_add_value": "",
+                        "list_enum_values": []
+                    }
+                },
+                {
+                    "id": "d2617410-9dc4-4206-aaae-942204c115f8",
+                    "id_ref": "6c912040-f5e2-430c-8485-08c4ae0bbb5b",
+                    "text": "XNome",
+                    "expanded": false,
+                    "contextAddBtn": false,
+                    "contextRemoveBtn": true,
+                    "node_value": {
+                        "text_name": "XNome",
+                        "text_description": "XNome",
+                        "select_type": "string",
+                        "checkbox_required": false,
+                        "checkbox_nullable": false,
+                        "checkbox_additional_properties": false,
+                        "select_array_type": null,
+                        "number_array_min": 0,
+                        "number_array_max": 0,
+                        "checkbox_array_unique_items": false,
+                        "checkbox_string_regular_expression": false,
+                        "text_string_regular_expression": "",
+                        "select_numeric_greater": null,
+                        "number_numeric_greater": 0,
+                        "select_numeric_less": null,
+                        "number_numeric_less": 0,
+                        "text_enum_add_value": "",
+                        "list_enum_values": []
+                    }
+                },
+                {
+                    "id": "d2cd81f9-ea94-4e6a-ac41-3c43638933dc",
+                    "id_ref": "6c912040-f5e2-430c-8485-08c4ae0bbb5b",
+                    "text": "XFant",
+                    "expanded": false,
+                    "contextAddBtn": false,
+                    "contextRemoveBtn": true,
+                    "node_value": {
+                        "text_name": "XFant",
+                        "text_description": "XFant",
+                        "select_type": "string",
+                        "checkbox_required": false,
+                        "checkbox_nullable": false,
+                        "checkbox_additional_properties": false,
+                        "select_array_type": null,
+                        "number_array_min": 0,
+                        "number_array_max": 0,
+                        "checkbox_array_unique_items": false,
+                        "checkbox_string_regular_expression": false,
+                        "text_string_regular_expression": "",
+                        "select_numeric_greater": null,
+                        "number_numeric_greater": 0,
+                        "select_numeric_less": null,
+                        "number_numeric_less": 0,
+                        "text_enum_add_value": "",
+                        "list_enum_values": []
+                    }
+                },
+                {
+                    "id": "ac8db992-2790-4be2-8170-d8ab7f0e27cb",
+                    "id_ref": "6c912040-f5e2-430c-8485-08c4ae0bbb5b",
+                    "text": "fone",
+                    "expanded": false,
+                    "contextAddBtn": false,
+                    "contextRemoveBtn": true,
+                    "node_value": {
+                        "text_name": "fone",
+                        "text_description": "fone",
+                        "select_type": "string",
+                        "checkbox_required": false,
+                        "checkbox_nullable": false,
+                        "checkbox_additional_properties": false,
+                        "select_array_type": null,
+                        "number_array_min": 0,
+                        "number_array_max": 0,
+                        "checkbox_array_unique_items": false,
+                        "checkbox_string_regular_expression": false,
+                        "text_string_regular_expression": "",
+                        "select_numeric_greater": null,
+                        "number_numeric_greater": 0,
+                        "select_numeric_less": null,
+                        "number_numeric_less": 0,
+                        "text_enum_add_value": "",
+                        "list_enum_values": []
+                    }
+                },
+                {
+                    "id": "9dcae784-49a5-40ef-b534-129d81056f5c",
+                    "id_ref": "6c912040-f5e2-430c-8485-08c4ae0bbb5b",
+                    "text": "EnderToma",
+                    "expanded": true,
+                    "contextAddBtn": true,
+                    "contextRemoveBtn": true,
+                    "node_value": {
+                        "text_name": "EnderToma",
+                        "text_description": "EnderToma",
+                        "select_type": "object",
+                        "checkbox_required": false,
+                        "checkbox_nullable": false,
+                        "checkbox_additional_properties": false,
+                        "select_array_type": null,
+                        "number_array_min": 0,
+                        "number_array_max": 0,
+                        "checkbox_array_unique_items": false,
+                        "checkbox_string_regular_expression": false,
+                        "text_string_regular_expression": "",
+                        "select_numeric_greater": null,
+                        "number_numeric_greater": 0,
+                        "select_numeric_less": null,
+                        "number_numeric_less": 0,
+                        "text_enum_add_value": "",
+                        "list_enum_values": []
+                    }
+                },
+                {
+                    "id": "620ce778-755a-4128-8a6f-81fdb9d14550",
+                    "id_ref": "6c912040-f5e2-430c-8485-08c4ae0bbb5b",
+                    "text": "email",
+                    "expanded": false,
+                    "contextAddBtn": false,
+                    "contextRemoveBtn": true,
+                    "node_value": {
+                        "text_name": "email",
+                        "text_description": "email",
+                        "select_type": "string",
+                        "checkbox_required": false,
+                        "checkbox_nullable": false,
+                        "checkbox_additional_properties": false,
+                        "select_array_type": null,
+                        "number_array_min": 0,
+                        "number_array_max": 0,
+                        "checkbox_array_unique_items": false,
+                        "checkbox_string_regular_expression": false,
+                        "text_string_regular_expression": "",
+                        "select_numeric_greater": null,
+                        "number_numeric_greater": 0,
+                        "select_numeric_less": null,
+                        "number_numeric_less": 0,
+                        "text_enum_add_value": "",
+                        "list_enum_values": []
+                    }
+                },
+                {
+                    "id": "b9d48c44-fa72-4899-95ea-3f3c052140c8",
+                    "id_ref": "9dcae784-49a5-40ef-b534-129d81056f5c",
+                    "text": "XLgr",
+                    "expanded": false,
+                    "contextAddBtn": false,
+                    "contextRemoveBtn": true,
+                    "node_value": {
+                        "text_name": "XLgr",
+                        "text_description": "XLgr",
+                        "select_type": "string",
+                        "checkbox_required": false,
+                        "checkbox_nullable": false,
+                        "checkbox_additional_properties": false,
+                        "select_array_type": null,
+                        "number_array_min": 0,
+                        "number_array_max": 0,
+                        "checkbox_array_unique_items": false,
+                        "checkbox_string_regular_expression": false,
+                        "text_string_regular_expression": "",
+                        "select_numeric_greater": null,
+                        "number_numeric_greater": 0,
+                        "select_numeric_less": null,
+                        "number_numeric_less": 0,
+                        "text_enum_add_value": "",
+                        "list_enum_values": []
+                    }
+                },
+                {
+                    "id": "b7af0950-fec2-4225-9ddd-9f519b6883b8",
+                    "id_ref": "9dcae784-49a5-40ef-b534-129d81056f5c",
+                    "text": "Nro",
+                    "expanded": false,
+                    "contextAddBtn": false,
+                    "contextRemoveBtn": true,
+                    "node_value": {
+                        "text_name": "Nro",
+                        "text_description": "Nro",
+                        "select_type": "string",
+                        "checkbox_required": false,
+                        "checkbox_nullable": false,
+                        "checkbox_additional_properties": false,
+                        "select_array_type": null,
+                        "number_array_min": 0,
+                        "number_array_max": 0,
+                        "checkbox_array_unique_items": false,
+                        "checkbox_string_regular_expression": false,
+                        "text_string_regular_expression": "",
+                        "select_numeric_greater": null,
+                        "number_numeric_greater": 0,
+                        "select_numeric_less": null,
+                        "number_numeric_less": 0,
+                        "text_enum_add_value": "",
+                        "list_enum_values": []
+                    }
+                },
+                {
+                    "id": "b1c5f191-efcc-4ee6-91cf-862262746f83",
+                    "id_ref": "9dcae784-49a5-40ef-b534-129d81056f5c",
+                    "text": "XCpl",
+                    "expanded": false,
+                    "contextAddBtn": false,
+                    "contextRemoveBtn": true,
+                    "node_value": {
+                        "text_name": "XCpl",
+                        "text_description": "XCpl",
+                        "select_type": "string",
+                        "checkbox_required": false,
+                        "checkbox_nullable": false,
+                        "checkbox_additional_properties": false,
+                        "select_array_type": null,
+                        "number_array_min": 0,
+                        "number_array_max": 0,
+                        "checkbox_array_unique_items": false,
+                        "checkbox_string_regular_expression": false,
+                        "text_string_regular_expression": "",
+                        "select_numeric_greater": null,
+                        "number_numeric_greater": 0,
+                        "select_numeric_less": null,
+                        "number_numeric_less": 0,
+                        "text_enum_add_value": "",
+                        "list_enum_values": []
+                    }
+                },
+                {
+                    "id": "b8e4b698-5a5b-4d07-863e-52f0a31f2695",
+                    "id_ref": "9dcae784-49a5-40ef-b534-129d81056f5c",
+                    "text": "XBairro",
+                    "expanded": false,
+                    "contextAddBtn": false,
+                    "contextRemoveBtn": true,
+                    "node_value": {
+                        "text_name": "XBairro",
+                        "text_description": "XBairro",
+                        "select_type": "string",
+                        "checkbox_required": false,
+                        "checkbox_nullable": false,
+                        "checkbox_additional_properties": false,
+                        "select_array_type": null,
+                        "number_array_min": 0,
+                        "number_array_max": 0,
+                        "checkbox_array_unique_items": false,
+                        "checkbox_string_regular_expression": false,
+                        "text_string_regular_expression": "",
+                        "select_numeric_greater": null,
+                        "number_numeric_greater": 0,
+                        "select_numeric_less": null,
+                        "number_numeric_less": 0,
+                        "text_enum_add_value": "",
+                        "list_enum_values": []
+                    }
+                },
+                {
+                    "id": "becb4208-4b2e-4309-a085-c7d53d7c9ee7",
+                    "id_ref": "9dcae784-49a5-40ef-b534-129d81056f5c",
+                    "text": "CMun",
+                    "expanded": false,
+                    "contextAddBtn": false,
+                    "contextRemoveBtn": true,
+                    "node_value": {
+                        "text_name": "CMun",
+                        "text_description": "CMun",
+                        "select_type": "string",
+                        "checkbox_required": false,
+                        "checkbox_nullable": false,
+                        "checkbox_additional_properties": false,
+                        "select_array_type": null,
+                        "number_array_min": 0,
+                        "number_array_max": 0,
+                        "checkbox_array_unique_items": false,
+                        "checkbox_string_regular_expression": false,
+                        "text_string_regular_expression": "",
+                        "select_numeric_greater": null,
+                        "number_numeric_greater": 0,
+                        "select_numeric_less": null,
+                        "number_numeric_less": 0,
+                        "text_enum_add_value": "",
+                        "list_enum_values": []
+                    }
+                },
+                {
+                    "id": "480e60f3-c635-4e6c-a895-00e09a0057db",
+                    "id_ref": "9dcae784-49a5-40ef-b534-129d81056f5c",
+                    "text": "XMun",
+                    "expanded": false,
+                    "contextAddBtn": false,
+                    "contextRemoveBtn": true,
+                    "node_value": {
+                        "text_name": "XMun",
+                        "text_description": "XMun",
+                        "select_type": "string",
+                        "checkbox_required": false,
+                        "checkbox_nullable": false,
+                        "checkbox_additional_properties": false,
+                        "select_array_type": null,
+                        "number_array_min": 0,
+                        "number_array_max": 0,
+                        "checkbox_array_unique_items": false,
+                        "checkbox_string_regular_expression": false,
+                        "text_string_regular_expression": "",
+                        "select_numeric_greater": null,
+                        "number_numeric_greater": 0,
+                        "select_numeric_less": null,
+                        "number_numeric_less": 0,
+                        "text_enum_add_value": "",
+                        "list_enum_values": []
+                    }
+                },
+                {
+                    "id": "dbfd3eee-8aa5-4966-bade-60c5cefa53fe",
+                    "id_ref": "9dcae784-49a5-40ef-b534-129d81056f5c",
+                    "text": "CEP",
+                    "expanded": false,
+                    "contextAddBtn": false,
+                    "contextRemoveBtn": true,
+                    "node_value": {
+                        "text_name": "CEP",
+                        "text_description": "CEP",
+                        "select_type": "string",
+                        "checkbox_required": false,
+                        "checkbox_nullable": false,
+                        "checkbox_additional_properties": false,
+                        "select_array_type": null,
+                        "number_array_min": 0,
+                        "number_array_max": 0,
+                        "checkbox_array_unique_items": false,
+                        "checkbox_string_regular_expression": false,
+                        "text_string_regular_expression": "",
+                        "select_numeric_greater": null,
+                        "number_numeric_greater": 0,
+                        "select_numeric_less": null,
+                        "number_numeric_less": 0,
+                        "text_enum_add_value": "",
+                        "list_enum_values": []
+                    }
+                },
+                {
+                    "id": "ed522400-cf31-4ca2-b728-ee5df96f494a",
+                    "id_ref": "9dcae784-49a5-40ef-b534-129d81056f5c",
+                    "text": "UF",
+                    "expanded": false,
+                    "contextAddBtn": false,
+                    "contextRemoveBtn": true,
+                    "node_value": {
+                        "text_name": "UF",
+                        "text_description": "UF",
+                        "select_type": "string",
+                        "checkbox_required": false,
+                        "checkbox_nullable": false,
+                        "checkbox_additional_properties": false,
+                        "select_array_type": null,
+                        "number_array_min": 0,
+                        "number_array_max": 0,
+                        "checkbox_array_unique_items": false,
+                        "checkbox_string_regular_expression": false,
+                        "text_string_regular_expression": "",
+                        "select_numeric_greater": null,
+                        "number_numeric_greater": 0,
+                        "select_numeric_less": null,
+                        "number_numeric_less": 0,
+                        "text_enum_add_value": "",
+                        "list_enum_values": []
+                    }
+                },
+                {
+                    "id": "79e801be-af20-4095-bddf-d06123acb2b5",
+                    "id_ref": "9dcae784-49a5-40ef-b534-129d81056f5c",
+                    "text": "CPais",
+                    "expanded": false,
+                    "contextAddBtn": false,
+                    "contextRemoveBtn": true,
+                    "node_value": {
+                        "text_name": "CPais",
+                        "text_description": "CPais",
+                        "select_type": "string",
+                        "checkbox_required": false,
+                        "checkbox_nullable": false,
+                        "checkbox_additional_properties": false,
+                        "select_array_type": null,
+                        "number_array_min": 0,
+                        "number_array_max": 0,
+                        "checkbox_array_unique_items": false,
+                        "checkbox_string_regular_expression": false,
+                        "text_string_regular_expression": "",
+                        "select_numeric_greater": null,
+                        "number_numeric_greater": 0,
+                        "select_numeric_less": null,
+                        "number_numeric_less": 0,
+                        "text_enum_add_value": "",
+                        "list_enum_values": []
+                    }
+                },
+                {
+                    "id": "cdf5ed79-90ac-4a4d-8f36-4b205c4a3591",
+                    "id_ref": "9dcae784-49a5-40ef-b534-129d81056f5c",
+                    "text": "XPais",
+                    "expanded": false,
+                    "contextAddBtn": false,
+                    "contextRemoveBtn": true,
+                    "node_value": {
+                        "text_name": "XPais",
+                        "text_description": "XPais",
+                        "select_type": "string",
+                        "checkbox_required": false,
+                        "checkbox_nullable": false,
+                        "checkbox_additional_properties": false,
+                        "select_array_type": null,
+                        "number_array_min": 0,
+                        "number_array_max": 0,
+                        "checkbox_array_unique_items": false,
+                        "checkbox_string_regular_expression": false,
+                        "text_string_regular_expression": "",
+                        "select_numeric_greater": null,
+                        "number_numeric_greater": 0,
+                        "select_numeric_less": null,
+                        "number_numeric_less": 0,
+                        "text_enum_add_value": "",
+                        "list_enum_values": []
+                    }
+                }
+            ],
+            "jsonSchemaContent": {
+                "$schema": "https://json-schema.org/draft/2020-12/schema",
+                "$id": "d80947c6-c60d-4d9b-8ec5-2d1b53d3286c",
+                "title": "CTe",
+                "description": "CTe",
+                "type": [
+                    "object"
+                ],
+                "properties": {
+                    "InfCte": {
+                        "type": [
+                            "object"
+                        ],
+                        "description": "InfCte",
+                        "properties": {
+                            "Ide": {
+                                "type": [
+                                    "object"
+                                ],
+                                "description": "Ide",
+                                "properties": {
+                                    "CUF": {
+                                        "type": [
+                                            "string"
+                                        ],
+                                        "description": "CUF"
+                                    },
+                                    "CCT": {
+                                        "type": [
+                                            "string"
+                                        ],
+                                        "description": "CCT"
+                                    },
+                                    "CFOP": {
+                                        "type": [
+                                            "string"
+                                        ],
+                                        "description": "CFOP"
+                                    },
+                                    "NatOp": {
+                                        "type": [
+                                            "string"
+                                        ],
+                                        "description": "NatOp"
+                                    },
+                                    "Mod": {
+                                        "type": [
+                                            "string"
+                                        ],
+                                        "description": "Mod"
+                                    },
+                                    "Serie": {
+                                        "type": [
+                                            "string"
+                                        ],
+                                        "description": "Serie"
+                                    },
+                                    "NCT": {
+                                        "type": [
+                                            "string"
+                                        ],
+                                        "description": "NCT"
+                                    },
+                                    "DhEmi": {
+                                        "type": [
+                                            "string"
+                                        ],
+                                        "description": "DhEmi"
+                                    },
+                                    "TpImp": {
+                                        "type": [
+                                            "string"
+                                        ],
+                                        "description": "TpImp"
+                                    },
+                                    "TpEmis": {
+                                        "type": [
+                                            "string"
+                                        ],
+                                        "description": "TpEmis"
+                                    },
+                                    "CDV": {
+                                        "type": [
+                                            "string"
+                                        ],
+                                        "description": "CDV"
+                                    },
+                                    "TpAmb": {
+                                        "type": [
+                                            "string"
+                                        ],
+                                        "description": "TpAmb"
+                                    },
+                                    "TpCTe": {
+                                        "type": [
+                                            "string"
+                                        ],
+                                        "description": "TpCTe"
+                                    },
+                                    "ProcEmi": {
+                                        "type": [
+                                            "string"
+                                        ],
+                                        "description": "ProcEmi"
+                                    },
+                                    "VerProc": {
+                                        "type": [
+                                            "string"
+                                        ],
+                                        "description": "VerProc"
+                                    },
+                                    "CMunEnv": {
+                                        "type": [
+                                            "string"
+                                        ],
+                                        "description": "CMunEnv"
+                                    },
+                                    "XMunEnv": {
+                                        "type": [
+                                            "string"
+                                        ],
+                                        "description": "XMunEnv"
+                                    },
+                                    "UFEnv": {
+                                        "type": [
+                                            "string"
+                                        ],
+                                        "description": "UFEnv"
+                                    },
+                                    "Modal": {
+                                        "type": [
+                                            "string"
+                                        ],
+                                        "description": "Modal"
+                                    },
+                                    "TpServ": {
+                                        "type": [
+                                            "string"
+                                        ],
+                                        "description": "TpServ"
+                                    },
+                                    "CMunIni": {
+                                        "type": [
+                                            "string"
+                                        ],
+                                        "description": "CMunIni"
+                                    },
+                                    "XMunIni": {
+                                        "type": [
+                                            "string"
+                                        ],
+                                        "description": "XMunIni"
+                                    },
+                                    "UFIni": {
+                                        "type": [
+                                            "string"
+                                        ],
+                                        "description": "UFIni"
+                                    },
+                                    "CMunFim": {
+                                        "type": [
+                                            "string"
+                                        ],
+                                        "description": "CMunFim"
+                                    },
+                                    "XMunFim": {
+                                        "type": [
+                                            "string"
+                                        ],
+                                        "description": "XMunFim"
+                                    },
+                                    "UFFim": {
+                                        "type": [
+                                            "string"
+                                        ],
+                                        "description": "UFFim"
+                                    },
+                                    "Retira": {
+                                        "type": [
+                                            "string"
+                                        ],
+                                        "description": "Retira"
+                                    },
+                                    "IndIEToma": {
+                                        "type": [
+                                            "string"
+                                        ],
+                                        "description": "IndIEToma"
+                                    },
+                                    "Toma3": {
+                                        "type": [
+                                            "object"
+                                        ],
+                                        "description": "Toma3",
+                                        "properties": {},
+                                        "additionalProperties": false,
+                                        "required": []
+                                    },
+                                    "Toma03": {
+                                        "type": [
+                                            "object"
+                                        ],
+                                        "description": "Toma03",
+                                        "properties": {},
+                                        "additionalProperties": false,
+                                        "required": []
+                                    },
+                                    "Toma4": {
+                                        "type": [
+                                            "object"
+                                        ],
+                                        "description": "Toma4",
+                                        "properties": {
+                                            "Toma": {
+                                                "type": [
+                                                    "string"
+                                                ],
+                                                "description": "Toma"
+                                            },
+                                            "CNPJ": {
+                                                "type": [
+                                                    "string"
+                                                ],
+                                                "description": "CNPJ"
+                                            },
+                                            "IE": {
+                                                "type": [
+                                                    "string"
+                                                ],
+                                                "description": "IE"
+                                            },
+                                            "XNome": {
+                                                "type": [
+                                                    "string"
+                                                ],
+                                                "description": "XNome"
+                                            },
+                                            "XFant": {
+                                                "type": [
+                                                    "string"
+                                                ],
+                                                "description": "XFant"
+                                            },
+                                            "fone": {
+                                                "type": [
+                                                    "string"
+                                                ],
+                                                "description": "fone"
+                                            },
+                                            "EnderToma": {
+                                                "type": [
+                                                    "object"
+                                                ],
+                                                "description": "EnderToma",
+                                                "properties": {
+                                                    "XLgr": {
+                                                        "type": [
+                                                            "string"
+                                                        ],
+                                                        "description": "XLgr"
+                                                    },
+                                                    "Nro": {
+                                                        "type": [
+                                                            "string"
+                                                        ],
+                                                        "description": "Nro"
+                                                    },
+                                                    "XCpl": {
+                                                        "type": [
+                                                            "string"
+                                                        ],
+                                                        "description": "XCpl"
+                                                    },
+                                                    "XBairro": {
+                                                        "type": [
+                                                            "string"
+                                                        ],
+                                                        "description": "XBairro"
+                                                    },
+                                                    "CMun": {
+                                                        "type": [
+                                                            "string"
+                                                        ],
+                                                        "description": "CMun"
+                                                    },
+                                                    "XMun": {
+                                                        "type": [
+                                                            "string"
+                                                        ],
+                                                        "description": "XMun"
+                                                    },
+                                                    "CEP": {
+                                                        "type": [
+                                                            "string"
+                                                        ],
+                                                        "description": "CEP"
+                                                    },
+                                                    "UF": {
+                                                        "type": [
+                                                            "string"
+                                                        ],
+                                                        "description": "UF"
+                                                    },
+                                                    "CPais": {
+                                                        "type": [
+                                                            "string"
+                                                        ],
+                                                        "description": "CPais"
+                                                    },
+                                                    "XPais": {
+                                                        "type": [
+                                                            "string"
+                                                        ],
+                                                        "description": "XPais"
+                                                    }
+                                                },
+                                                "additionalProperties": false,
+                                                "required": []
+                                            },
+                                            "email": {
+                                                "type": [
+                                                    "string"
+                                                ],
+                                                "description": "email"
+                                            }
+                                        },
+                                        "additionalProperties": false,
+                                        "required": []
+                                    }
+                                },
+                                "additionalProperties": false,
+                                "required": []
+                            },
+                            "Compl": {
+                                "type": [
+                                    "object"
+                                ],
+                                "description": "Compl",
+                                "properties": {},
+                                "additionalProperties": false,
+                                "required": []
+                            },
+                            "Emit": {
+                                "type": [
+                                    "object"
+                                ],
+                                "description": "Emit",
+                                "properties": {},
+                                "additionalProperties": false,
+                                "required": []
+                            },
+                            "Exped": {
+                                "type": [
+                                    "object"
+                                ],
+                                "description": "Exped",
+                                "properties": {},
+                                "additionalProperties": false,
+                                "required": []
+                            },
+                            "Rem": {
+                                "type": [
+                                    "object"
+                                ],
+                                "description": "Rem",
+                                "properties": {},
+                                "additionalProperties": false,
+                                "required": []
+                            },
+                            "Receb": {
+                                "type": [
+                                    "object"
+                                ],
+                                "description": "Receb",
+                                "properties": {},
+                                "additionalProperties": false,
+                                "required": []
+                            },
+                            "Dest": {
+                                "type": [
+                                    "object"
+                                ],
+                                "description": "Dest",
+                                "properties": {},
+                                "additionalProperties": false,
+                                "required": []
+                            },
+                            "VPrest": {
+                                "type": [
+                                    "object"
+                                ],
+                                "description": "VPrest",
+                                "properties": {},
+                                "additionalProperties": false,
+                                "required": []
+                            },
+                            "Imp": {
+                                "type": [
+                                    "object"
+                                ],
+                                "description": "Imp",
+                                "properties": {},
+                                "additionalProperties": false,
+                                "required": []
+                            },
+                            "InfCTeNorm": {
+                                "type": [
+                                    "object"
+                                ],
+                                "description": "InfCTeNorm",
+                                "properties": {},
+                                "additionalProperties": false,
+                                "required": []
+                            },
+                            "AutXML": {
+                                "type": [
+                                    "object"
+                                ],
+                                "description": "AutXML",
+                                "properties": {},
+                                "additionalProperties": false,
+                                "required": []
+                            },
+                            "Versao": {
+                                "type": [
+                                    "string"
+                                ],
+                                "description": "Versao"
+                            },
+                            "Id": {
+                                "type": [
+                                    "string"
+                                ],
+                                "description": "Id"
+                            },
+                            "InfCteComp": {
+                                "type": [
+                                    "string"
+                                ],
+                                "description": "InfCteComp"
+                            }
+                        },
+                        "additionalProperties": false,
+                        "required": [
+                            "Ide",
+                            "Compl",
+                            "Emit",
+                            "Rem",
+                            "Dest",
+                            "VPrest",
+                            "Imp",
+                            "AutXML",
+                            "Versao",
+                            "Id",
+                            "InfCteComp"
+                        ]
+                    },
+                    "Signature": {
+                        "type": [
+                            "object"
+                        ],
+                        "description": "Signature",
+                        "properties": {},
+                        "additionalProperties": false,
+                        "required": []
+                    },
+                    "Xmlns": {
+                        "type": [
+                            "string"
+                        ],
+                        "description": "Xmlns"
+                    },
+                    "InfCTeSupl": {
+                        "type": [
+                            "object"
+                        ],
+                        "description": "InfCTeSupl",
+                        "properties": {},
+                        "additionalProperties": false,
+                        "required": []
+                    },
+                    "Text": {
+                        "type": [
+                            "string"
+                        ],
+                        "description": "Text"
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "InfCte",
+                    "InfCTeSupl"
+                ]
+            }
+        }
+    ]
+}
