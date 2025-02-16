@@ -356,15 +356,20 @@ class ScriptEditor {
             requirejs(['vs/editor/editor.main', 'tokenizer/monaco-tokenizer'], async function (_: any, MonacoAceTokenizer: any) {
                 let comp = document.getElementById(self.containerID);
                 if (!comp) { return }
-                let languages = MonacoAceTokenizer.AVAILABLE_LANGUAGES.filter((VALUE: string) => VALUE != "octave")
-                for (const language of languages) {
-                    let LangDefinition: any = await self.getTokenizerLangDefinition(language);
-                    monaco.languages.register({
-                        id: language,
-                    });
+                let LangDefinition: any = await self.getTokenizerLangDefinition("groovy");
+                monaco.languages.register({
+                    id: "groovy",
+                });
+                MonacoAceTokenizer.registerRulesForLanguage("groovy", new LangDefinition.default);
+                // let languages = MonacoAceTokenizer.AVAILABLE_LANGUAGES.filter((VALUE: string) => VALUE != "octave")
+                // for (const language of languages) {
+                //     let LangDefinition: any = await self.getTokenizerLangDefinition(language);
+                //     monaco.languages.register({
+                //         id: language,
+                //     });
 
-                    MonacoAceTokenizer.registerRulesForLanguage(language, new LangDefinition.default);
-                }
+                //     MonacoAceTokenizer.registerRulesForLanguage(language, new LangDefinition.default);
+                // }
 
                 let monacoInstance = monaco.editor.create(comp, {
                     language: self.monacoLanguage,
