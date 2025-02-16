@@ -1,0 +1,27 @@
+{
+  "name": "json-schema",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "dev": "webpack-dev-server --mode=development --progress -c ./webpack.config.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "css-loader": "^6.10.0",
+    "mini-css-extract-plugin": "^2.8.1",
+    "webpack": "^5.90.3",
+    "webpack-cli": "^5.1.4"
+  },
+  "dependencies": {
+    "copy-webpack-plugin": "^12.0.2",
+    "jquery": "^3.7.1",
+    "json-server": "^1.0.0-alpha.23",
+    "webpack-dev-server": "^5.2.0",
+    "webpack-obfuscator": "^3.5.1"
+  }
+}

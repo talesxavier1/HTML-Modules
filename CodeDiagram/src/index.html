@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <link rel="stylesheet" href="./index.css">
+
+    <script src="https://talesxavier1.github.io/GH-CDN/TypeScriptEditor/lib/jquery/jquery.min.js"></script>
+    <script src="https://talesxavier1.github.io/GH-CDN/TypeScriptEditor/lib/DevExtreme/js/dx-diagram.min.js"></script>
+    <script src="https://talesxavier1.github.io/GH-CDN/TypeScriptEditor/lib/DevExtreme/js/dx.all.js"></script>
+    <script
+        src="https://talesxavier1.github.io/GH-CDN/TypeScriptEditor/lib/sweetalert2/sweetalert2.all.min.js"> </script>
+    <script src="https://talesxavier1.github.io/GH-CDN/TypeScriptEditor/lib/requirejs/2.3.6/require.min.js"></script>
+</head>
+
+<body class="dx-viewport">
+    <div class="btns_teste" style="position: absolute; margin-left: 150px; z-index: 99999999;">
+        <div id="botao01"></div>
+        <div id="botao02"></div>
+        <div id="botao03"></div>
+        <div id="botao04"></div>
+        <div id="botao05"></div>
+    </div>
+    <div id="txtPass"></div>
+    <div id="btnConfirm"></div>
+
+    <div id="globalLoadIndicator"></div>
+    <div id="splitter"></div>
+    <script>
+        localStorage.setItem("CDN_BASE_API", "https://talesxavier1.github.io/GH-CDN/TypeScriptEditor/lib");
+        // localStorage.setItem("FILE_MANAGEMENT_BASE_API", "https://lw001tallesandrade.ddns.net/storageInterface/dev");
+        localStorage.setItem("FILE_MANAGEMENT_BASE_API", "http://localhost:9090");
+    </script>
+    <!-- <script data-env="prod" type="module" src="./index.js"></script> -->
+    <script data-env="dev" type="module" src="./dist/index.js"></script>
+</body>
+
+</html>

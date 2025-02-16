@@ -1,0 +1,68 @@
+.js-content {
+    display: flex;
+    flex-direction: column;
+    width: 70rem;
+    height: 45rem;
+    background-color: #F8F9FA;
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+}
+
+.js-header {
+    background-color: aqua;
+    height: 4.5rem;
+    margin: .5rem;
+    display: flex;
+    align-items: center;
+}
+
+.js-header-texts {
+    display: flex;
+}
+
+.js-header-buttons {
+    display: flex;
+    justify-content: end;
+    width: 100%;
+}
+
+.js-View-Config {
+    display: flex;
+    flex-direction: row;
+    flex: 1;
+}
+
+.js-View {
+    background-color: rgb(190, 127, 127);
+    width: 100%;
+    margin: 0 .5rem .5rem .5rem;
+    max-height: 39rem;
+    padding: .5rem;
+}
+
+
+.js-Config {
+    margin: 0 .5rem .5rem 0;
+}
+
+.js-Config-show {
+    width: 40rem;
+    max-width: 40rem;
+    max-height: 39rem;
+}
+
+.js-Config-hide {
+    height: fit-content;
+}
+
+.js-header,
+.js-View,
+.dx-tabs-wrapper,
+.js-Config {
+    border-radius: .3rem;
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 2px, rgb(209, 213, 219) 0px 0px 0px 1px inset;
+    background-color: #EEEEEE;
+}
+
+.dx-tab {
+    background-color: rgba(0, 0, 0, 0)
+}

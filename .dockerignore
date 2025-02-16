@@ -1,3 +1,4 @@
-node_modules
+CodeDiagram/node_modules
+JsonSchemaEditor/node_modules
 .vscode
 .github
