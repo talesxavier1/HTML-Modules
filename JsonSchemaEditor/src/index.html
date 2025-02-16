@@ -134,34 +134,43 @@
     </div>
 
     <script>
+        window.SCHEMA_ID = "8ad925b0-f993-4648-b39d-3455c15afd21";
+        window.JSON_SCHEMA_ASSID = "2ca3bbb1-955f-4831-a9a5-79a3e4913ea7";
+        // window.FILE_MANAGEMENT_BASE_API = "https://lw001tallesandrade.ddns.net/storageInterface/dev"
+        window.FILE_MANAGEMENT_BASE_API = "http://localhost:9090"
+
+        // localStorage.setItem("FILE_MANAGEMENT_BASE_API", "https://lw001tallesandrade.ddns.net/storageInterface/dev");
+        localStorage.setItem("FILE_MANAGEMENT_BASE_API", "");
         window.popUpVersoesGetContent = async (page, take) => {
-            const url = new URL('http://localhost:3500/version');
+            let URL = new URL("https://lw001tallesandrade.ddns.net/storageInterface/dev");
 
-            url.searchParams.append('_page', page);
-            url.searchParams.append('_per_page', take);
+            // const url = new URL('http://localhost:3500/version');
 
-            // await new Promise((resolve) => {
-            //     setTimeout(function () {
-            //         resolve();
-            //     }, 1000);
-            // })
+            // url.searchParams.append('_page', page);
+            // url.searchParams.append('_per_page', take);
 
-            let result;
-            await $.ajax({
-                url: url,
-                method: "GET",
-                success: function (response) {
-                    result = response;
-                },
-                error: function (xhr, status, error) {
-                    debugger
-                }
-            });
+            // // await new Promise((resolve) => {
+            // //     setTimeout(function () {
+            // //         resolve();
+            // //     }, 1000);
+            // // })
 
-            return {
-                "count": result.items,
-                "data": result.data
-            };
+            // let result;
+            // await $.ajax({
+            //     url: url,
+            //     method: "GET",
+            //     success: function (response) {
+            //         result = response;
+            //     },
+            //     error: function (xhr, status, error) {
+            //         debugger
+            //     }
+            // });
+
+            // return {
+            //     "count": result.items,
+            //     "data": result.data
+            // };
         }
 
         window.popUpGetJsonContent = async (id) => {
@@ -192,9 +201,53 @@
             };
         }
 
-        window.onBtnSaveClick = async (params) => {
+        // window.onBtnSaveClick = async (params) => {
+        //     let url = new URL("https://lw001tallesandrade.ddns.net/storageInterface/dev/file-manager/");
 
-        }
+        //     let argumentsPost = {
+        //         isDirectory: false,
+        //         name: `JSON_SCHEMA-${params.id}.json`,
+        //         sourceIsDirectory: false,
+        //         pathInfo: [],
+        //         chunkMetadata: JSON.stringify({
+        //             FileName: `JSON_SCHEMA-${params.id}.json`,
+        //             Index: 0,
+        //             FileSize: 0,
+        //             TotalCount: 1,
+        //             UploadId: Utils.getGuid()
+        //         })
+        //     };
+
+        //     let boundary = `----${Utils.getGuid().split("-").join("")}`
+        //     let content = JSON.stringify(params);
+        //     const body = [
+        //         `--${boundary}`,
+        //         `Content-Disposition: form-data; name="chunk"; filename="JSON_SCHEMA-${params.id}.json"`,
+        //         `Content-Type: application/octet-stream`,
+        //         "",
+        //         content ? content : "empty",
+        //         `--${boundary}--`,
+        //         ""
+        //     ].join("\r\n");
+
+        //     let response = await fetch(url, {
+        //         headers: {
+        //             "assID": params.assID,
+        //             "processID": params.ID,
+        //             "processVersionID": params.versionID,
+        //             "packageID": params.ID,
+        //             "packageVersionID": params.versionID,
+        //             "tempDirID": params.versionID,
+        //             "arguments": JSON.stringify(argumentsPost),
+        //             "command": "SaveUniqueFileContent",
+        //             "Content-Type": `multipart/form-data; boundary=${boundary}`,
+        //         },
+        //         body: body,
+        //         method: "POST"
+        //     });
+
+        //     return response.ok
+        // }
     </script>
 </body>
 

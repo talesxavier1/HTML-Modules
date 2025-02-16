@@ -61,7 +61,6 @@ export class BaseNodeModel {
     }
 }
 
-
 export class BaseNodeValueModel {
     /**
     * ** A Ordem de declaração dos componentes do objeto inpacta nas regras de visualização dos componentes.
@@ -279,3 +278,92 @@ export class BaseTabModel {
         this.icon = icon;
     }
 }
+
+export class BaseAPIPayloadContext {
+
+    /**
+     * ID do JsonSchema.
+     * @type {String} 
+    */
+    ID = "";
+
+    /**
+     * ID da versão do schema.
+     * @type {String} 
+    */
+    versionID;
+
+    /**
+     * ID do doretório temporário. A API precisa desse ID para publicar o conteúdo depois de ser salvo
+     * @type {String} 
+    */
+    tempID = GUID.getGUID();
+
+    /**
+     * ID da assinatura.
+     * @type {String} 
+    */
+    assID = ""
+
+    /**
+     * 
+     * @param {String} ID  ID do JsonSchema.
+     * @param {String} assID  ID da assinatura.
+     */
+    constructor(ID, assID) {
+        this.ID = ID;
+        this.versionID = ID;
+        this.assID = assID;
+    }
+}
+
+export class BaseAPIPayload {
+
+    /**
+     * Json schema final.
+     * conforme https://json-schema.org/draft/2020-12/schema
+     * @type {Object} 
+     */
+    jsonSchema = null;
+
+    /**
+     * Json schema final.
+     * conforme https://json-schema.org/draft/2020-12/schema
+     * @type {Array<BaseNodeModel>} 
+     */
+    treeContent = [];
+
+    /**
+     * Context do jsonschema.
+     * Informa os ids de versão e assinatura.
+     * @type {Array<BaseAPIPayloadContext>} 
+     */
+    BaseAPIPayloadContext;
+
+    /**
+     * Context do JsonSchema.
+     * @param {BaseAPIPayloadContext} baseAPIPayloadContext 
+     */
+    constructor(baseAPIPayloadContext, jsonSchema, treeContent) {
+        this.BaseAPIPayloadContext = baseAPIPayloadContext
+        this.jsonSchema = jsonSchema;
+        this.treeContent = treeContent;
+    }
+}
+
+export class BaseAPIGetDirContent {
+
+    /**
+     * Data de criação.
+     * @type {string}
+     */
+    dateCreated = "";
+
+
+    /**
+       * Id da versão
+       * @type {string}
+       */
+    key = "";
+}
+
