@@ -200,7 +200,8 @@ const main = async () => {
      * Busca as versões dos schemas;
      * @returns {Promise<Array<BaseAPIGetDirContent>>}
      */
-    const _getDirContent = async () => {
+    //TODO documentat page take
+    const _getDirContent = async (page, take) => {
         return new Promise((resolve) => {
             let url = `${FILE_MANAGEMENT_BASE_API}/file-manager/?command={0}&arguments={1}`;
             url = url.replace("{0}", "GetDirContents");
@@ -213,7 +214,9 @@ const main = async () => {
                     //"packageVersionID": "",
                     "tempDirID": "",
                     "scriptModule": "UNIQUE_SCRIPT",
-                    "assID": JSON_SCHEMA_ASSID
+                    "assID": JSON_SCHEMA_ASSID,
+                    "page": page,
+                    "take": take
                 },
                 method: "GET"
             }).then((response) => {
@@ -247,21 +250,9 @@ const main = async () => {
      */
     headerComponents.setPopUpVersoesGetContent(
         async (page, take) => {
-            let content = await _getDirContent();
-            content.result = content.result.sort((a, b) => {
-                let timeDateA = new Date(a.dateCreated).getTime();
-                let timeDateB = new Date(b.dateCreated).getTime();
-
-                if (timeDateA < timeDateB) { return 1 }
-                return -1;
-            });
-            // content.result = content.result.sort((a, b) => (a.UrlJsonContext.final_tprlin < b.UrlJsonContext.final_tprlin) ? 1 : ((b.UrlJsonContext.final_tprlin < a.UrlJsonContext.final_tprlin) ? -1 : 0))
-
-            let splitResult = _splitArray(content.result, take);
-
+            let content = await _getDirContent(page, take);
             return {
-                count: content.result.length,
-                data: splitResult[page - 1].map(VALUE => {
+                data: content.result.map(VALUE => {
                     return {
                         "id": SCHEMA_ID,
                         "numeroVersao": VALUE.key,
@@ -275,7 +266,7 @@ const main = async () => {
     /**
      * Monta a request e busca o conteúdo da versão passada do schema.
      * @param {string} version id da versão.
-     * @returns {BaseAPIPayload}
+     * @returns {Promise<BaseAPIPayload>}
      */
     const _getFileContent = async (version) => {
 
@@ -311,10 +302,7 @@ const main = async () => {
      * @throws Lança um erro caso o resultado da consulta não for o esperado.
      */
     headerComponents.setOnPopUpVersionClick(async (version) => {
-        // let windowFunction = window.popUpGetJsonContent;
-        // if (!windowFunction) {
-        //     throw new Error("[Erro] - [main] - Função 'popUpGetJsonContent' não definido. modelo 'async (id) =>{ }'")
-        // }
+
         let result = await _getFileContent(version);
 
         if (

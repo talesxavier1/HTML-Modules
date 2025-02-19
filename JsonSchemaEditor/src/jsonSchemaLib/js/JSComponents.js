@@ -1982,7 +1982,7 @@ class PopUpVersoes {
      * @type {integer}
      * @private
      */
-    _popUpDefaultContentPage = 1;
+    _popUpDefaultContentPage = 0;
 
     /**
      * Take atual do popup.
@@ -2083,8 +2083,6 @@ class PopUpVersoes {
 
         if (typeof dataArray != 'object') {
             valid = false;
-        } else if (!dataArray.count || typeof dataArray.count != "number") {
-            valid = false;
         } else if (!dataArray.data || !Array.isArray(dataArray.data)) {
             valid = false;
         } else {
@@ -2137,8 +2135,8 @@ class PopUpVersoes {
                 let component = $(`
                 <div class="card" onClick="">
                     <div class="card-priority priority-1"></div>
-                    <div class="card-subject">Versão: V${VALUE.numeroVersao}</div>
-                    <div class="card-subject">Data: ${new Date(VALUE.dataCriacao).toLocaleDateString("pt-BR")}</div>
+                    <div class="card-subject">Versão: ${VALUE.numeroVersao}</div>
+                    <div class="card-subject">Data: ${new Date(VALUE.dataCriacao).toLocaleDateString("pt-BR", { hour: '2-digit', minute: '2-digit', second: '2-digit' })}</div>
                     <div class="card-assignee">ID: ${VALUE.id}</div>
                 </div> 
                 `).on("click", () => this._onVersionClick(VALUE.numeroVersao));
@@ -2183,13 +2181,19 @@ class PopUpVersoes {
             dataResult = await this._popUpVersoesGetContent(this._popUpCurrentContentPage, this._popUpCurrentTakeContentePage);
         } else if (pageAction == "NEXT") {
             dataResult = await this._popUpVersoesGetContent(this._popUpCurrentContentPage + 1, this._popUpCurrentTakeContentePage);
-            this._popUpCurrentContentPage = this._popUpCurrentContentPage + 1;
+            if (
+                (this._popUpCurrentCountContentePage > 0 && dataResult.data.length == 0) ||
+                (dataResult.data.length > 0)
+            ) {
+                this._popUpCurrentContentPage = this._popUpCurrentContentPage + 1;
+                this._popUpCurrentCountContentePage = dataResult.data.length;
+            }
         } else if (pageAction == "PREVIOUS") {
             dataResult = await this._popUpVersoesGetContent(this._popUpCurrentContentPage - 1, this._popUpCurrentTakeContentePage);
             this._popUpCurrentContentPage = this._popUpCurrentContentPage - 1;
+            this._popUpCurrentCountContentePage = dataResult.data.length;
         }
 
-        this._popUpCurrentCountContentePage = dataResult.count;
         this._cleanContent();
         this._setContent(dataResult.data);
     }
@@ -2233,7 +2237,7 @@ class PopUpVersoes {
                         icon: 'chevrondoubleleft',
                         stylingMode: 'contained',
                         async onClick() {
-                            if (self._popUpCurrentContentPage == 1) { return }
+                            if (self._popUpCurrentContentPage == 0) { return }
                             await self._initPopUpContent("PREVIOUS");
                         },
                     },
@@ -2245,8 +2249,6 @@ class PopUpVersoes {
                         icon: 'chevrondoubleright',
                         stylingMode: 'contained',
                         async onClick() {
-                            let maxPage = Number((self._popUpCurrentCountContentePage / self._popUpCurrentTakeContentePage).toFixed(0));
-                            if (maxPage == self._popUpCurrentContentPage || maxPage == 0) { return }
                             await self._initPopUpContent("NEXT");
                         },
                     },
