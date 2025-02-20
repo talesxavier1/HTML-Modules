@@ -4,6 +4,7 @@ import { FunctionProps } from "./FunctionProps.js";
 import { icons } from "./Consts.js";
 import { BaseNodeModel, BaseNodeValueModel, BaseTabModel } from "./BaseModels.js";
 import { GUID } from "./guid.js";
+import { GlobalLoading } from "./GlobalLoading.js";
 
 export class ConfigComponents {
     /**
@@ -1065,9 +1066,9 @@ export class HeaderComponents {
     /**
      * Evento de clique do botão Salvar em nova versão.
      * @param {object} event Evento de clique.
-     * @returns {void}
+     * @returns {Promise<void>}
      */
-    btnSaveNewVersionClicked = (event) => { };
+    btnSaveNewVersionClicked = async (event) => { };
 
     /**
      * Instância do PopUpVersoes.
@@ -1137,8 +1138,10 @@ export class HeaderComponents {
                 stylingMode: 'contained',
                 text: 'Salvar em nova versão',
                 type: 'success',
-                onClick: (event) => {
-                    this.btnSaveNewVersionClicked(event);
+                onClick: async (event) => {
+                    GlobalLoading.show("#js_content");
+                    await this.btnSaveNewVersionClicked(event);
+                    GlobalLoading.hide();
                 }
             }).dxButton("instance"),
             "tagName": "button_header_save_new_version"
@@ -2182,8 +2185,8 @@ class PopUpVersoes {
         } else if (pageAction == "NEXT") {
             dataResult = await this._popUpVersoesGetContent(this._popUpCurrentContentPage + 1, this._popUpCurrentTakeContentePage);
             if (
-                (this._popUpCurrentCountContentePage > 0 && dataResult.data.length == 0) ||
-                (dataResult.data.length > 0)
+                (this._popUpCurrentCountContentePage > 0 && dataResult.data.length == 0) || /* Quando a pagina anterior tinha dados e a atual não. */
+                (dataResult.data.length > 0) /* Quando tem dados. */
             ) {
                 this._popUpCurrentContentPage = this._popUpCurrentContentPage + 1;
                 this._popUpCurrentCountContentePage = dataResult.data.length;
