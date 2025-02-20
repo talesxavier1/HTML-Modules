@@ -1,4 +1,5 @@
 import { BaseAPIPayload, BaseAPIPayloadContext, BaseNodeModel, BaseNodeValueModel, BaseTabModel } from "./BaseModels.js";
+import { GlobalLoading } from "./GlobalLoading.js";
 import { GUID } from "./guid.js";
 import { ConfigComponents, HeaderComponents, ViewComponents } from "./JSComponents.js";
 
@@ -12,7 +13,11 @@ const main = async () => {
      */
     const JSON_SCHEMA_ASSID = window.JSON_SCHEMA_ASSID;
     if (!JSON_SCHEMA_ASSID) {
-        throw new Error("[Erro] - [main] - valor JSON_SCHEMA_ASSID não passado no window.");
+        throw new Error(`
+            /* ------------------------------------------------------------------ */
+                [Erro] - [main] - valor JSON_SCHEMA_ASSID não passado no window.
+            /* ------------------------------------------------------------------ */  
+            `);
     }
 
     /**
@@ -22,17 +27,22 @@ const main = async () => {
      */
     const FILE_MANAGEMENT_BASE_API = window.FILE_MANAGEMENT_BASE_API;
     if (!FILE_MANAGEMENT_BASE_API) {
-        throw new Error("[Erro] - [main] - valor FILE_MANAGEMENT_BASE_API não passado no window.");
+        throw new Error(`
+            /* ------------------------------------------------------------------ */
+                [Erro] - [main] - valor FILE_MANAGEMENT_BASE_API não passado no window.
+            /* ------------------------------------------------------------------ */  
+            `);
     }
 
-    /**
-     * ID do schema atual.
-     * @type {String}
-     * @throws Lança erro caso o valor não seja passado no window.
-     */
-    const SCHEMA_ID = window.SCHEMA_ID;
-    if (!SCHEMA_ID) {
-        throw new Error("[Erro] - [main] - valor SCHEMA_ID não passado no window.");
+    //TODO documentar
+    const CONTEXT = window.JSON_SCHEMA_CONTEXT;
+    if (!CONTEXT || !CONTEXT.ID) {
+        throw new Error(`
+            /* ------------------------------------------------------------------ */
+                [Erro] - [main] - valor JSON_SCHEMA_CONTEXT não passado no window.
+                json esperado:{ "ID":"XXXXX" }
+            /* ------------------------------------------------------------------ */  
+            `);
     }
 
     /**
@@ -53,34 +63,39 @@ const main = async () => {
      */
     const viewComponents = new ViewComponents();
 
-
-    /**
-     * Função desponibilizada no window para a definição dos itens do treeview.
-     * @param {Array<BaseNodeModel>} items 
-     * @param {String} numeroVersao 
-     * @param {String} id 
-     * @throws Lança erro se items não for um array ou não for passado.
-     * @throws Lança erro se numeroVersao não for string ou number.
-     * @throws Lança erro se id não for string ou number.
-     */
-    window.setItems = (items, numeroVersao, id) => {
-        if (!Array.isArray(items) || items.length == 0) {
-            throw new Error("[Erro] - [main] - parâmetro 'items' da função setItems inválido.")
+    //TODO documentar
+    const _getAndSetSchema = async (versionID) => {
+        GlobalLoading.show();
+        if (!versionID) {
+            let dirContent = await _getDirContent(0, 1);
+            versionID = dirContent.result[0].key;
         }
-        if (["number", "string"].includes(typeof numeroVersao)) {
-            throw new Error("[Erro] - [main] - parâmetro 'numeroVersao' da função setItems inválido. \n Esperado Number ou String");
-        }
-        if (["number", "string"].includes(typeof id)) {
-            throw new Error("[Erro] - [main] - parâmetro 'id' da função setItems inválido. \n Esperado Number ou String");
+        let result = await _getFileContent(versionID);
+        GlobalLoading.hide();
+        if (
+            (typeof result != "object") ||
+            (!result.treeContent || !Array.isArray(result.treeContent) || result.treeContent.length == 0)
+        ) {
+            throw new Error([
+                "[Erro] - [main] - valor inválido fornecido para 'popUpGetJsonContent'",
+                "Valor esperado:",
+                `{`,
+                `  "id": "",`,
+                `  "numeroVersao": "",`,
+                `  "treeContent": []`,
+                `}`
+            ].join("\n"));
         }
 
         headerComponents.setHeaderinfo({
-            "id": id,
-            "numeroVersao": numeroVersao.toString()
+            "id": CONTEXT.ID,
+            "numeroVersao": versionID
         });
-        viewComponents.treeView.setItems(items);
-    };
-
+        viewComponents.treeView.setItems(result.treeContent);
+        viewComponents.jsonViewer.setJson(viewComponents.treeView.buildJsonSchema());
+        configComponents.clearConfigs();
+        configComponents.enabledConfigs(false);
+    }
 
     /**
      * Função que monta e faz a request de save do conteúdo.
@@ -185,22 +200,26 @@ const main = async () => {
         let builtJsonSchema = viewComponents.treeView.buildJsonSchema();
         let treeContent = viewComponents.treeView.getItems();
 
-        let baseAPIPayloadContext = new BaseAPIPayloadContext(SCHEMA_ID, JSON_SCHEMA_ASSID);
+        let baseAPIPayloadContext = new BaseAPIPayloadContext(CONTEXT.ID, JSON_SCHEMA_ASSID);
         let baseAPIPayload = new BaseAPIPayload(baseAPIPayloadContext, builtJsonSchema, treeContent);
 
         await _callSaveContent(baseAPIPayload);
-        let newVersionID = await _callPubContent(baseAPIPayloadContext);
-        headerComponents.setHeaderinfo({
-            "id": SCHEMA_ID,
-            "numeroVersao": newVersionID
-        })
+        await _callPubContent(baseAPIPayloadContext);
+        let dirContent = await _getDirContent(0, 1);
+        if (dirContent.result.length > 0) {
+            headerComponents.setHeaderinfo({
+                "id": CONTEXT.ID,
+                "numeroVersao": dirContent.result[0].key
+            })
+        }
     };
 
     /**
      * Busca as versões dos schemas;
+     * @param {number} page
+     * @param {take} take
      * @returns {Promise<Array<BaseAPIGetDirContent>>}
      */
-    //TODO documentat page take
     const _getDirContent = async (page, take) => {
         return new Promise((resolve) => {
             let url = `${FILE_MANAGEMENT_BASE_API}/file-manager/?command={0}&arguments={1}`;
@@ -208,10 +227,9 @@ const main = async () => {
             url = url.replace("{1}", JSON.stringify({ "pathInfo": [], "name": "" }));
             fetch(encodeURI(url), {
                 headers: {
-                    "processID": SCHEMA_ID,
-                    "processVersionID": SCHEMA_ID,
-                    "packageID": SCHEMA_ID,
-                    //"packageVersionID": "",
+                    "processID": CONTEXT.ID,
+                    "processVersionID": CONTEXT.ID,
+                    "packageID": CONTEXT.ID,
                     "tempDirID": "",
                     "scriptModule": "UNIQUE_SCRIPT",
                     "assID": JSON_SCHEMA_ASSID,
@@ -231,20 +249,6 @@ const main = async () => {
     }
 
     /**
-     * Função para dividir um aray em subarrays.
-     * @param {Array<any>} arr 
-     * @param {number} size 
-     * @returns 
-     */
-    const _splitArray = (arr, size) => {
-        const result = [];
-        for (let i = 0; i < arr.length; i += size) {
-            result.push(arr.slice(i, i + size));
-        }
-        return result;
-    }
-
-    /**
      * Fornece ao botão 'Selecionar Versão' uma função para buscar as versões
      * @throws Lança um erro caso a função de busca não for fornecida no window.
      */
@@ -254,7 +258,7 @@ const main = async () => {
             return {
                 data: content.result.map(VALUE => {
                     return {
-                        "id": SCHEMA_ID,
+                        "id": CONTEXT.ID,
                         "numeroVersao": VALUE.key,
                         "dataCriacao": VALUE.dateCreated,
                     }
@@ -265,13 +269,13 @@ const main = async () => {
 
     /**
      * Monta a request e busca o conteúdo da versão passada do schema.
-     * @param {string} version id da versão.
+     * @param {string} versionID id da versão.
      * @returns {Promise<BaseAPIPayload>}
      */
-    const _getFileContent = async (version) => {
+    const _getFileContent = async (versionID) => {
 
         let pathInfo = [{
-            key: version,
+            key: versionID,
             name: ""
         }];
         let url = `${FILE_MANAGEMENT_BASE_API}/file-manager/?command={0}&arguments={1}`;
@@ -280,9 +284,9 @@ const main = async () => {
 
         let result = await fetch(encodeURI(url), {
             headers: {
-                "processID": SCHEMA_ID,
-                "processVersionID": SCHEMA_ID,
-                "packageID": SCHEMA_ID,
+                "processID": CONTEXT.ID,
+                "processVersionID": CONTEXT.ID,
+                "packageID": CONTEXT.ID,
                 "packageVersionID": "",
                 "tempDirID": "",
                 "assID": JSON_SCHEMA_ASSID
@@ -301,34 +305,8 @@ const main = async () => {
      * @throws Lança um erro caso a função não seja disponibilizada no window.
      * @throws Lança um erro caso o resultado da consulta não for o esperado.
      */
-    headerComponents.setOnPopUpVersionClick(async (version) => {
-
-        let result = await _getFileContent(version);
-
-        if (
-            (typeof result != "object") ||
-            // (!result.id || !["string", "number"].includes(typeof result.id)) ||
-            (!result.treeContent || !Array.isArray(result.treeContent) || result.treeContent.length == 0)
-        ) {
-            throw new Error([
-                "[Erro] - [main] - valor inválido fornecido para 'popUpGetJsonContent'",
-                "Valor esperado:",
-                `{`,
-                `  "id": "",`,
-                `  "numeroVersao": "",`,
-                `  "treeContent": []`,
-                `}`
-            ].join("\n"));
-        }
-
-        headerComponents.setHeaderinfo({
-            "id": SCHEMA_ID,
-            "numeroVersao": version
-        });
-        viewComponents.treeView.setItems(result.treeContent);
-        viewComponents.jsonViewer.setJson(viewComponents.treeView.buildJsonSchema());
-        configComponents.clearConfigs();
-        configComponents.enabledConfigs(false);
+    headerComponents.setOnPopUpVersionClick(async (versionID) => {
+        await _getAndSetSchema(versionID);
     });
 
     /**
@@ -376,6 +354,7 @@ const main = async () => {
     * Define a linguagem local para o devExtreme.
     */
     DevExpress.localization.locale(navigator.language);
+    await _getAndSetSchema();
 };
 
 $(() => {
