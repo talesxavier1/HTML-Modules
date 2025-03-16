@@ -89,13 +89,19 @@
 }
 
 #tabTreeViewJsonSchema {
-    height: 2.5rem;
-    margin-bottom: .5rem;
+    /* height: 2.5rem; */
+    /* margin-bottom: .5rem; */
+    margin: 5px;
+    /* height: calc(100%); */
+    /* height: 90%; */
+    /* width: 90%; */
 }
+
 
 #jsonRendererContainer,
 #treeView {
-    height: 35rem;
+    height: 100%;
+    /* padding-bottom: 50px; */
 }
 
 #btnHide,
@@ -106,7 +112,7 @@
 
 #btnHide>div>i,
 #btnShow>div>i {
-    font-size: 30px;
+    font-size: 20px;
 }
 
 #checkbox_string_format {
@@ -181,4 +187,12 @@
 
 .priority-1 {
     background: #adadad;
+}
+
+.dx-tab .dx-icon {
+    font-size: 20px;
+}
+
+.dx-button-content {
+    line-height: 1;
 }

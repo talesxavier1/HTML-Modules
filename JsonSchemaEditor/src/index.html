@@ -6,8 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://talesxavier1.github.io/GH-CDN/Json_Schema/jquery/dist/jquery.min.js"></script>
     <script src="https://talesxavier1.github.io/GH-CDN/Json_Schema/DevExtreme/Lib/js/dx.all.js"></script>
-    <script
-        src="https://talesxavier1.github.io/GH-CDN/Json_Schema/DevExtreme/Lib/js/localization/dx.messages.pt.js"></script>
+    <link rel="stylesheet" type="text/css"
+        href="https://cdn3.devexpress.com/jslib/24.2.5/css/dx.material.blue.light.css" />
 
     <link rel="stylesheet" href="./index.css">
     <script type="module" src="./index.js"></script>
@@ -18,115 +18,126 @@
 <body class="dx-viewport">
     <div class="js-content" id="js_content">
         <div class="js-header">
-            <div class="js-header-texts">
-                <div class="component" id="text_header_version"></div>
-                <div class="component" id="text_header_id"></div>
+            <div class="js-header-container">
+                <div class="js-header-texts">
+                    <div class="component" id="text_header_version"></div>
+                    <div class="component" id="text_header_id"></div>
+                </div>
+                <div class="js-header-buttons">
+                    <div class="component" id="button_header_save_new_version"></div>
+                    <div class="component" id="button_header_select_version"></div>
+                </div>
+                <div id="popup_select_version"></div>
             </div>
-            <div class="js-header-buttons">
-                <div class="component" id="button_header_save_new_version"></div>
-                <div class="component" id="button_header_select_version"></div>
-            </div>
-            <div id="popup_select_version"></div>
         </div>
         <div class="js-View-Config">
             <div class="js-View">
-                <div id="tabTreeViewJsonSchema"></div>
-                <div id="jsonRendererContainer" style="display: none;">
-                    <iframe id="JsonViewerIframe" src="./JsonViewer/JsonViewer.html" frameborder="0"
-                        style="width: 100%; height: 100%;"></iframe>
+                <div class="js-View-container">
+                    <div class="js-View-container-tab">
+                        <div id="tabTreeViewJsonSchema"></div>
+                    </div>
+                    <div class="js-View-container-treeView" id="js_View_container_treeView">
+                        <div id="treeView"></div>
+                    </div>
+                    <div id="jsonRendererContainer" style="display: none;">
+                        <iframe id="JsonViewerIframe" src="./JsonViewer/JsonViewer.html" frameborder="0"
+                            style="width: 100%; height: 100%;"></iframe>
+                    </div>
                 </div>
-                <div id="treeView"></div>
             </div>
             <div id="contextMenu"></div>
             <div class="js-Config js-Config-show" id="js_Config">
-                <div id="dxScroll_config">
-                    <div id="btnHide"></div>
-                    <div id="btnShow"></div>
-                    <div id="jsDxScrollContent" class="js-dxScroll-content">
-                        <div class="js-config-buttons-decline-confirm boxshadow" id="js_config_buttons_decline_confirm">
-                            <div class="component" id="button_confirm"></div>
-                            <div class="component" id="button_decline"></div>
-                        </div>
-                        <div class="js-config-main-props boxshadow" id="js_config_main_props">
-                            <div class="component" id="text_name"></div>
-                            <div class="component" id="text_description"></div>
-                            <div class="component" id="select_type"></div>
-                            <div class="js-config-main-props-checkboxes">
-                                <div class="component" id="checkbox_required"></div>
-                                <div class="component" id="checkbox_nullable"></div>
+                <div class="js-Config-container">
+                    <div id="dxScroll_config">
+                        <div id="btnHide"></div>
+                        <div id="btnShow"></div>
+                        <div id="jsDxScrollContent" class="js-dxScroll-content">
+                            <div class="js-config-buttons-decline-confirm boxshadow"
+                                id="js_config_buttons_decline_confirm">
+                                <div class="component" id="button_confirm"></div>
+                                <div class="component" id="button_decline"></div>
                             </div>
-                        </div>
-                        <!-- Propriedades para o tipo Object -->
-                        <div class="js-config-object-props boxshadow" id="js_dxBox_config_object_props"
-                            style="display: none;">
-                            <div class="component" id="checkbox_additional_properties"></div>
-                            <div class="object-pattern-keys">
-                                <div class="component" id="checkbox_object_pattern_keys"></div>
-                                <div class="component" id="text_object_pattern_keys"></div>
-                            </div>
-                        </div>
-                        <!-- Propriedades para o tipo Array -->
-                        <div class="js-config-array-props boxshadow" id="js_dxBox_config_array_props"
-                            style="display: none;">
-                            <div class="component" id="select_array_type"></div>
-                            <div class="js-config-array-props-min-max">
-                                <div class="js-config-array-props-min">
-                                    <div class="component" id="checkbox_array_min"></div>
-                                    <div class="component" id="number_array_min"></div>
-                                </div>
-                                <div class="js-config-array-props-max">
-                                    <div class="component" id="checkbox_array_max"></div>
-                                    <div class="component" id="number_array_max"></div>
+                            <div class="js-config-main-props boxshadow" id="js_config_main_props">
+                                <div class="component" id="text_name"></div>
+                                <div class="component" id="text_description"></div>
+                                <div class="component" id="select_type"></div>
+                                <div class="js-config-main-props-checkboxes">
+                                    <div class="component" id="checkbox_required"></div>
+                                    <div class="component" id="checkbox_nullable"></div>
                                 </div>
                             </div>
-                            <div class="component" id="checkbox_array_unique_items"></div>
-                        </div>
-                        <!-- Propriedades para o tipo String -->
-                        <div class="js-config-string-props boxshadow" id="js_dxBox_config_string_props"
-                            style="display: none;">
-                            <div class="js-config-string-props-regular-expression">
-                                <div class="component" id="checkbox_string_regular_expression"></div>
-                                <div class="component" id="text_string_regular_expression"></div>
+                            <!-- Propriedades para o tipo Object -->
+                            <div class="js-config-object-props boxshadow" id="js_dxBox_config_object_props"
+                                style="display: none;">
+                                <div class="component" id="checkbox_additional_properties"></div>
+                                <div class="object-pattern-keys">
+                                    <div class="component" id="checkbox_object_pattern_keys"></div>
+                                    <div class="component" id="text_object_pattern_keys"></div>
+                                </div>
                             </div>
-                            <div class="js-config-string-props-format">
-                                <div class="component" id="checkbox_string_format"></div>
-                                <div class="component" id="select_string_format"></div>
+                            <!-- Propriedades para o tipo Array -->
+                            <div class="js-config-array-props boxshadow" id="js_dxBox_config_array_props"
+                                style="display: none;">
+                                <div class="component" id="select_array_type"></div>
+                                <div class="js-config-array-props-min-max">
+                                    <div class="js-config-array-props-min">
+                                        <div class="component" id="checkbox_array_min"></div>
+                                        <div class="component" id="number_array_min"></div>
+                                    </div>
+                                    <div class="js-config-array-props-max">
+                                        <div class="component" id="checkbox_array_max"></div>
+                                        <div class="component" id="number_array_max"></div>
+                                    </div>
+                                </div>
+                                <div class="component" id="checkbox_array_unique_items"></div>
                             </div>
+                            <!-- Propriedades para o tipo String -->
+                            <div class="js-config-string-props boxshadow" id="js_dxBox_config_string_props"
+                                style="display: none;">
+                                <div class="js-config-string-props-regular-expression">
+                                    <div class="component" id="checkbox_string_regular_expression"></div>
+                                    <div class="component" id="text_string_regular_expression"></div>
+                                </div>
+                                <div class="js-config-string-props-format">
+                                    <div class="component" id="checkbox_string_format"></div>
+                                    <div class="component" id="select_string_format"></div>
+                                </div>
 
-                            <div class="js-config-string-props-length-less">
-                                <div class="component" id="checkbox_string_length_less"></div>
-                                <div class="component" id="number_string_length_less"></div>
+                                <div class="js-config-string-props-length-less">
+                                    <div class="component" id="checkbox_string_length_less"></div>
+                                    <div class="component" id="number_string_length_less"></div>
+                                </div>
+                                <div class="js-config-string-props-length-greater">
+                                    <div class="component" id="checkbox_string_length_greater"></div>
+                                    <div class="component" id="number_string_length_greater"></div>
+                                </div>
                             </div>
-                            <div class="js-config-string-props-length-greater">
-                                <div class="component" id="checkbox_string_length_greater"></div>
-                                <div class="component" id="number_string_length_greater"></div>
+                            <!-- Propriedades para o tipo number ou integer -->
+                            <div id="js_dxBox_config_numeric_props" class="js-config-numeric-props boxshadow"
+                                style="display: none;">
+                                <div class="js-config-numeric-props-multiples">
+                                    <div class="component" id="checkbox_numeric_multiple"></div>
+                                    <div class="component" id="number_numeric_multiple"></div>
+                                </div>
+                                <div class="js-config-numeric-props-greater">
+                                    <div class="component" id="select_numeric_greater"></div>
+                                    <div class="component" id="number_numeric_greater"></div>
+                                </div>
+                                <div class="js-config-numeric-props-less">
+                                    <div class="component" id="select_numeric_less"></div>
+                                    <div class="component" id="number_numeric_less"></div>
+                                </div>
                             </div>
-                        </div>
-                        <!-- Propriedades para o tipo number ou integer -->
-                        <div id="js_dxBox_config_numeric_props" class="js-config-numeric-props boxshadow"
-                            style="display: none;">
-                            <div class="js-config-numeric-props-multiples">
-                                <div class="component" id="checkbox_numeric_multiple"></div>
-                                <div class="component" id="number_numeric_multiple"></div>
+                            <!-- Propriedades para o tipo enum -->
+                            <div id="js_dxBox_config_enum_props" class="js-config-enum-props boxshadow"
+                                style="display: none;">
+                                <span style="margin: .5rem;">ENUM</span>
+                                <div class="js-config-enum-props-add">
+                                    <div id="button_enum_add_value"></div>
+                                    <div class="component" id="text_enum_add_value"></div>
+                                </div>
+                                <div id="list_enum_values" class="boxshadow"></div>
                             </div>
-                            <div class="js-config-numeric-props-greater">
-                                <div class="component" id="select_numeric_greater"></div>
-                                <div class="component" id="number_numeric_greater"></div>
-                            </div>
-                            <div class="js-config-numeric-props-less">
-                                <div class="component" id="select_numeric_less"></div>
-                                <div class="component" id="number_numeric_less"></div>
-                            </div>
-                        </div>
-                        <!-- Propriedades para o tipo enum -->
-                        <div id="js_dxBox_config_enum_props" class="js-config-enum-props boxshadow"
-                            style="display: none;">
-                            <span style="margin: .5rem;">ENUM</span>
-                            <div class="js-config-enum-props-add">
-                                <div id="button_enum_add_value"></div>
-                                <div class="component" id="text_enum_add_value"></div>
-                            </div>
-                            <div id="list_enum_values" class="boxshadow"></div>
                         </div>
                     </div>
                 </div>

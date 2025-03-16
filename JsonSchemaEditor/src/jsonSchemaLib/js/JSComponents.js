@@ -238,7 +238,7 @@ export class ConfigComponents {
                 disabled: true,
                 type: 'success',
                 template: `
-                    <span><img src="${icons.confirmFile.type},${icons.confirmFile.value}" width="65%" /></span>
+                    <span><img src="${icons.confirmFile.type},${icons.confirmFile.value}" width="50%" /></span>
                     <span>CONFIRMAR</span>
                 `,
                 focusStateEnabled: false,
@@ -264,8 +264,8 @@ export class ConfigComponents {
                 disabled: true,
                 type: "danger",
                 template: `
-                <span><img src="${icons.declineFile.type},${icons.declineFile.value}" width="65%"  /></span>
-                <span>CANCELAR</span>
+                    <span><img src="${icons.declineFile.type},${icons.declineFile.value}" width="50%"  /></span>
+                    <span>CANCELAR</span>
                 `,
                 focusStateEnabled: false,
                 onClick: (event) => {
@@ -806,6 +806,7 @@ export class ConfigComponents {
         $("#dxScroll_config").dxScrollView({
             direction: 'vertical'
         });
+
         // ==================================================================================================================== //
 
 
@@ -1233,11 +1234,11 @@ export class ViewComponents {
         this._componentInstanceModel.addFunction(new FunctionProps({ //show_hide_jsonView_treeview
             "functionDefinition": (itemData) => {
                 if (itemData.id == "treeView") {
-                    $("#treeView").show();
+                    $("#js_View_container_treeView").show();
                     $("#jsonRendererContainer").hide();
                 } else {
                     $("#jsonRendererContainer").show();
-                    $("#treeView").hide();
+                    $("#js_View_container_treeView").hide();
                 }
             },
             "tagName": "show_hide_jsonView_treeview"
