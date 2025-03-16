@@ -1,6 +1,6 @@
 .js-content {
-    display: flex;
-    flex-direction: column;
+    /* display: flex;
+    flex-direction: column; */
     width: 100%;
     height: 100%;
     background-color: #F8F9FA;
@@ -12,11 +12,21 @@
 }
 
 .js-header {
-    background-color: aqua;
-    height: 4.5rem;
-    margin: .5rem;
+    /* background-color: aqua; */
+    display: flex;
+    height: 75px;
+    /* 
+    max-height: 10vh; */
+    /* margin: .5rem; */
+
+}
+
+.js-header-container {
     display: flex;
     align-items: center;
+    width: 100%;
+    /* padding: 10px; */
+    margin: 5px;
 }
 
 .js-header-texts {
@@ -31,35 +41,70 @@
 
 .js-View-Config {
     display: flex;
-    flex-direction: row;
+    /* flex-direction: row; */
     flex: 1;
+    height: calc(100% - 75px);
+}
+
+.js-View-container-treeView {
+
+    /* height: calc(100%-500x); */
+    /* width: calc(100% - 100px); */
+    /* background-color: aqua; */
+
+    height: calc(100% - 45px);
 }
 
 .js-View {
-    background-color: rgb(190, 127, 127);
+    /* background-color: rgb(190, 127, 127); */
     width: 100%;
-    margin: 0 .5rem .5rem .5rem;
-    padding: .5rem;
+    height: 100%;
+    /* margin: 0 .5rem .5rem .5rem;
+    padding: .5rem; */
+}
+
+.js-View-container {
+    margin: 5px;
+    display: flex;
+    flex-direction: column;
+    height: calc(100% - 15px);
+    /* height: calc(100% - 100px) */
+}
+
+.js-View-container-tab {
+    display: flex;
+    height: 45px;
 }
 
 
 .js-Config {
-    margin: 0 .5rem .5rem 0;
+    /* margin: 0 .5rem .5rem 0; */
 }
 
 .js-Config-show {
-    width: 40rem;
-    max-width: 40rem;
+    width: 600px;
+    height: 100%;
+}
+
+.js-Config-container {
+    height: calc(100% - 15px);
+    margin: 5px;
 }
 
 .js-Config-hide {
     height: fit-content;
+
 }
 
-.js-header,
-.js-View,
-.dx-tabs-wrapper,
-.js-Config {
+.js-header-container,
+/* .js-View, */
+.js-View-container,
+.js-Config-container,
+/* .dx-tabs-wrapper, */
+#tabTreeViewJsonSchema
+
+/* .js-Config  */
+    {
     border-radius: .3rem;
     box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 2px, rgb(209, 213, 219) 0px 0px 0px 1px inset;
     background-color: #EEEEEE;
