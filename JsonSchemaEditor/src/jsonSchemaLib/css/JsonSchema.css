@@ -14,7 +14,7 @@
 .js-header {
     /* background-color: aqua; */
     display: flex;
-    height: 75px;
+    height: 100px;
     /* 
     max-height: 10vh; */
     /* margin: .5rem; */
@@ -33,9 +33,16 @@
     display: flex;
 }
 
+@media (max-width:1215px) {
+    .js-header-texts {
+        display: block;
+    }
+}
+
 .js-header-buttons {
     display: flex;
-    justify-content: end;
+
+    justify-content: center;
     width: 100%;
 }
 
@@ -43,7 +50,7 @@
     display: flex;
     /* flex-direction: row; */
     flex: 1;
-    height: calc(100% - 75px);
+    height: calc(100% - 100px);
 }
 
 .js-View-container-treeView {
