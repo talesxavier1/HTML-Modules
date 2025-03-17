@@ -11,23 +11,47 @@
     border-radius: .5rem;
 }
 
-#text_header_version,
+/* #text_header_version,
 #text_header_id {
     margin: 0 0 0 2rem;
-}
+} */
 
+#text_header_id,
 #text_header_version {
-    width: 10rem;
+    height: 30px;
+    width: 450px;
 }
 
-#text_header_id {
-    width: 20rem;
+@media (min-width:1215px) {
+
+    #text_header_id,
+    #text_header_version {
+        height: 40px;
+    }
 }
 
 #button_header_save_new_version,
 #button_header_select_version {
     margin-right: 1.5rem;
     width: auto;
+}
+
+#button_header_select_version_small_contant,
+#button_header_save_new_version_small_contant {
+    display: none;
+}
+
+@media (max-width: 730px) {
+
+    #button_header_select_version_small_contant,
+    #button_header_save_new_version_small_contant {
+        display: block;
+    }
+
+    #button_header_select_version_large_contant,
+    #button_header_save_new_version_large_contant {
+        display: none;
+    }
 }
 
 .dx-checkbox-container {

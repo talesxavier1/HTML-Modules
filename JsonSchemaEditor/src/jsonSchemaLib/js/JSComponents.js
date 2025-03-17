@@ -1136,8 +1136,21 @@ export class HeaderComponents {
         this._componentInstanceModel.addInstance(new InstanceProps({ //button_header_save_new_version
             "componentName": "dxButton",
             "instance": $('#button_header_save_new_version').dxButton({
-                stylingMode: 'contained',
-                text: 'Salvar em nova versão',
+                // stylingMode: 'contained',
+                // text: 'Salvar em nova versão',
+                template: () => {
+                    let value = `
+                        <div>
+                            <div id="button_header_save_new_version_small_contant">
+                                <i class="dx-icon-check" style="font-size:30px;"></i>
+                            </div>
+                            <div id="button_header_save_new_version_large_contant">
+                                SALVAR EM NOVA VERSÃO
+                            </div>
+                        </div>
+                    `
+                    return value
+                },
                 type: 'success',
                 onClick: async (event) => {
                     GlobalLoading.show("#js_content");
@@ -1151,9 +1164,22 @@ export class HeaderComponents {
         this._componentInstanceModel.addInstance(new InstanceProps({ //button_header_select_version
             "componentName": "dxButton",
             "instance": $('#button_header_select_version').dxButton({
-                stylingMode: 'contained',
-                text: 'Selecionar versão',
+                // stylingMode: 'contained',
+                // text: 'Selecionar versão',
                 type: 'default',
+                template: () => {
+                    let value = `
+                        <div>
+                            <div id="button_header_select_version_small_contant">
+                                <i class="dx-icon-importselected" style="font-size:35px;"></i>
+                            </div>
+                            <div id="button_header_select_version_large_contant">
+                                SELECIONAR VERSÃO
+                            </div>
+                        </div>
+                    `
+                    return value
+                },
                 onClick: async (event) => {
                     this._popUpVersoes.showHidePopUp(true);
                 }
