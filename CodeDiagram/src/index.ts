@@ -15,7 +15,7 @@ let splitter: Splitter;
 let diagram: Diagram;
 let optionsUI: OptionsUI;
 const main = async (): Promise<void> => {
-    let readOnly = true;
+    let readOnly = false;
     let mockProcessContext: ProcessContext = {
         "processID": "5818aaa6-32c6-4f9d-97de-78d855b129f2",
         "processVersionID": "e10b672b-1121-4459-a4e0-27bb93d10ffe",
