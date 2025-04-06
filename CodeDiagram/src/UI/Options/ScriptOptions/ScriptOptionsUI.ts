@@ -294,12 +294,15 @@ class ScriptEditor {
     private containerID: string;
 
     private monacoEditor: monaco.editor.IStandaloneCodeEditor | undefined;
+
     private _repaint() {
         if (!this.monacoEditor) { return }
         let $container = $(`#${this.containerID}`);
         this.monacoEditor.layout({ height: $container.height(), width: $container.width() });
     }
-    public repaint = this._repaint
+    public repaint = (() => {
+        this._repaint();
+    })
 
     private _asyncOnCompletedOperation?: (content: string | null) => void;
 
@@ -424,7 +427,7 @@ class ScriptEditor {
                     text: 'Salvar',
                     type: 'success',
                     width: 120,
-                    onClick: this._onSubmit,
+                    onClick: (() => this._onSubmit()),
                 }).dxButton("instance"),
             }));
         }
@@ -532,11 +535,14 @@ class ScriptArea {
             url = url.replace("{1}", JSON.stringify({ "pathInfo": [], "name": "" }));
             fetch(encodeURI(url), {
                 headers: {
-                    "processID": this.data.processContext.processID,
-                    "processVersionID": this.data.processContext.processVersionID,
-                    "packageID": this.data.ID,
-                    "packageVersionID": this.data.packageVersionID,
-                    "tempDirID": this.tempDirID ?? "",
+                    "strAPIContextModel": JSON.stringify({
+                        "processID": this.data.processContext.processID,
+                        "processVersionID": this.data.processContext.processVersionID,
+                        "packageID": this.data.ID,
+                        "packageVersionID": this.data.packageVersionID,
+                        "tempDirID": this.tempDirID ?? "",
+                        "assID": this.data.processContext.assID
+                    }),
                     "scriptModule": "UNIQUE_SCRIPT"
                 },
                 method: "GET"
@@ -567,11 +573,14 @@ class ScriptArea {
 
         let result = await fetch(encodeURI(url), {
             headers: {
-                "processID": this.data.processContext.processID,
-                "processVersionID": this.data.processContext.processVersionID,
-                "packageID": this.data.ID,
-                "packageVersionID": this.data.packageVersionID,
-                "tempDirID": this.tempDirID ?? ""
+                "strAPIContextModel": JSON.stringify({
+                    "processID": this.data.processContext.processID,
+                    "processVersionID": this.data.processContext.processVersionID,
+                    "packageID": this.data.ID,
+                    "packageVersionID": this.data.packageVersionID,
+                    "tempDirID": this.tempDirID ?? "",
+                    "assID": this.data.processContext.assID
+                })
             },
             method: "GET"
         });
@@ -615,11 +624,14 @@ class ScriptArea {
 
         let response = await fetch(encodeURI(`${this.fileManagerBaseEndPoint}/file-manager/`), {
             headers: {
-                "processID": this.data.processContext.processID,
-                "processVersionID": this.data.processContext.processVersionID,
-                "packageID": this.data.ID,
-                "packageVersionID": this.data.packageVersionID,
-                "tempDirID": this.tempDirID ?? "",
+                "strAPIContextModel": JSON.stringify({
+                    "processID": this.data.processContext.processID,
+                    "processVersionID": this.data.processContext.processVersionID,
+                    "packageID": this.data.ID,
+                    "packageVersionID": this.data.packageVersionID,
+                    "tempDirID": this.tempDirID ?? "",
+                    "assID": this.data.processContext.assID
+                }),
                 "arguments": JSON.stringify(argumentsPost),
                 "command": "SaveUniqueFileContent",
                 "Content-Type": `multipart/form-data; boundary=${boundary}`,
@@ -638,11 +650,14 @@ class ScriptArea {
 
         let response = await fetch(encodeURI(url), {
             headers: {
-                "processID": "28e27b2d-131e-41be-88a8-82fd149f3519",
-                "processVersionID": "f0c2e5eb-b72e-4623-93e0-f0e48590290e",
-                "packageID": this.data.ID,
-                "packageVersionID": this.data.packageVersionID,
-                "tempDirID": this.tempDirID ?? ""
+                "strAPIContextModel": JSON.stringify({
+                    "processID": this.data.processContext.processID,
+                    "processVersionID": this.data.processContext.processVersionID,
+                    "packageID": this.data.ID,
+                    "packageVersionID": this.data.packageVersionID,
+                    "tempDirID": this.tempDirID ?? "",
+                    "assID": this.data.processContext.assID
+                })
             },
             method: "POST"
         });
@@ -724,11 +739,14 @@ class ScriptFileManager {
         GlobalLoadIndicator.show("ScriptFileManager - clearTempDir");
         await fetch(encodeURI(url), {
             headers: {
-                "processID": "28e27b2d-131e-41be-88a8-82fd149f3519",
-                "processVersionID": "f0c2e5eb-b72e-4623-93e0-f0e48590290e",
-                "packageVersionID": this.data.packageVersionID,
-                "packageID": this.data.ID,
-                "tempDirID": this.tempDirID ?? ""
+                "strAPIContextModel": JSON.stringify({
+                    "processID": this.data.processContext.processID,
+                    "processVersionID": this.data.processContext.processVersionID,
+                    "packageID": this.data.ID,
+                    "packageVersionID": this.data.packageVersionID,
+                    "tempDirID": this.tempDirID ?? "",
+                    "assID": this.data.processContext.assID
+                })
             },
             method: "POST"
         }).catch((res) => {
@@ -745,11 +763,14 @@ class ScriptFileManager {
         GlobalLoadIndicator.show("ScriptFileManager - pubContent");
         let response = await fetch(encodeURI(url), {
             headers: {
-                "processID": "28e27b2d-131e-41be-88a8-82fd149f3519",
-                "processVersionID": "f0c2e5eb-b72e-4623-93e0-f0e48590290e",
-                "packageID": this.data.ID,
-                "packageVersionID": this.data.packageVersionID,
-                "tempDirID": this.tempDirID ?? ""
+                "strAPIContextModel": JSON.stringify({
+                    "processID": this.data.processContext.processID,
+                    "processVersionID": this.data.processContext.processVersionID,
+                    "packageID": this.data.ID,
+                    "packageVersionID": this.data.packageVersionID,
+                    "tempDirID": this.tempDirID ?? "",
+                    "assID": this.data.processContext.assID
+                })
             },
             method: "POST"
         });
@@ -778,11 +799,14 @@ class ScriptFileManager {
 
             fetch(encodeURI(url), {
                 headers: {
-                    "processID": this.data.processContext.processID,
-                    "processVersionID": this.data.processContext.processVersionID,
-                    "packageID": this.data.ID,
-                    "packageVersionID": this.data.packageVersionID,
-                    "tempDirID": this.tempDirID ?? ""
+                    "strAPIContextModel": JSON.stringify({
+                        "processID": this.data.processContext.processID,
+                        "processVersionID": this.data.processContext.processVersionID,
+                        "packageID": this.data.ID,
+                        "packageVersionID": this.data.packageVersionID,
+                        "tempDirID": this.tempDirID ?? "",
+                        "assID": this.data.processContext.assID
+                    })
                 },
                 method: "GET"
             }).then((response) => {
@@ -830,11 +854,14 @@ class ScriptFileManager {
         GlobalLoadIndicator.show("ScriptFileManager - updateFileContent");
         let response = await fetch(encodeURI(`${this.fileManagerBaseEndPoint}/file-manager/`), {
             headers: {
-                "processID": this.data.processContext.processID,
-                "processVersionID": this.data.processContext.processVersionID,
-                "packageID": this.data.ID,
-                "packageVersionID": this.data.packageVersionID,
-                "tempDirID": this.tempDirID ?? "",
+                "strAPIContextModel": JSON.stringify({
+                    "processID": this.data.processContext.processID,
+                    "processVersionID": this.data.processContext.processVersionID,
+                    "packageID": this.data.ID,
+                    "packageVersionID": this.data.packageVersionID,
+                    "tempDirID": this.tempDirID ?? "",
+                    "assID": this.data.processContext.assID
+                }),
                 "arguments": JSON.stringify(argumentsPost),
                 "command": "UpdateFileContent",
                 "Content-Type": `multipart/form-data; boundary=${boundary}`,
@@ -905,9 +932,14 @@ class ScriptFileManager {
         let result: Blob | null = await new Promise((resolve) => {
             let url = this.fileManagerBaseEndPoint + "/file-manager/Download";
             let headers: any = {
-                "processID": "28e27b2d-131e-41be-88a8-82fd149f3519",
-                "processVersionID": "f0c2e5eb-b72e-4623-93e0-f0e48590290e",
-                "packageID": this.data.ID,
+                "strAPIContextModel": JSON.stringify({
+                    "processID": this.data.processContext.processID,
+                    "processVersionID": this.data.processContext.processVersionID,
+                    "packageID": this.data.ID,
+                    "packageVersionID": this.data.packageVersionID,
+                    "tempDirID": this.tempDirID ?? "",
+                    "assID": this.data.processContext.assID
+                }),
                 "arguments": JSON.stringify({ "pathInfo": pathInfo, "name": name }),
                 "_": Utils.getGuid()
             }
@@ -954,11 +986,14 @@ class ScriptFileManager {
         const provider = new DevExpress.fileManagement.RemoteFileSystemProvider({
             endpointUrl: `${fileManagerBaseEndPoint}/file-manager/`,
             requestHeaders: {
-                "processID": this.data.processContext.processID,
-                "processVersionID": this.data.processContext.processVersionID,
-                "packageID": this.data.ID,
-                "packageVersionID": this.data.packageVersionID,
-                "tempDirID": this.tempDirID ? this.tempDirID : "",
+                "strAPIContextModel": JSON.stringify({
+                    "processID": this.data.processContext.processID,
+                    "processVersionID": this.data.processContext.processVersionID,
+                    "packageID": this.data.ID,
+                    "packageVersionID": this.data.packageVersionID,
+                    "tempDirID": this.tempDirID ?? "",
+                    "assID": this.data.processContext.assID
+                }),
                 "scriptModule": "FILE_MANAGER"
             },
             beforeAjaxSend: (options) => {

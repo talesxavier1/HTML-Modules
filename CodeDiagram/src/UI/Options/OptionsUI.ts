@@ -7,13 +7,14 @@ import { SenderOptionsUI } from "./SenderOptions/SenderOptionsUI";
 import { InstanceProps } from "../../Utils/dx-utils/InstanceProps";
 import { MulticastOutOptions } from "./MulticastOutModelOptions/MulticastOutOptions";
 import { NodeStore } from "../../Data/NodeStore";
+import { ProcessContext } from "../../models/ProcessContext";
 
 
 export class OptionsUI {
     private componentInstanceModel = new ComponentInstanceModel<Object>(new Object);
     private instanceUI?: TInstanceUI;
     private nodeStore: NodeStore;
-    private readonly: boolean
+    private readonly: boolean;
 
     private setInstanceUI = async (data: TDataSource) => {
 
