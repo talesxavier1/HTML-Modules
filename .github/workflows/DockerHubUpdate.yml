@@ -1,0 +1,28 @@
+name: Github_GHCR
+
+on:
+  push:
+    branches:
+      - dev
+      - desenv01
+
+jobs:
+  start-main:
+    runs-on: ubuntu-latest
+    env:
+      DOCKER_HUB_TOKEN: ${{secrets.DOCKER_HUB_TOKEN}}
+      DOCKER_HUB_USER: ${{secrets.DOCKER_HUB_USER}}
+
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v2
+
+      - name: Set up Docker
+        uses: docker/setup-buildx-action@v2
+
+      - name: Login Dockerhub
+        run: echo "${{env.DOCKER_HUB_TOKEN}}" | docker login -u ${{env.DOCKER_HUB_USER}} --password-stdin
+
+      - name: Build imageg and push in dockerhub
+        run: |
+          echo ">>>>>>>>>>>>>>>>>>>>>> ${{github.base_ref}}"
