@@ -25,4 +25,4 @@ jobs:
 
       - name: Build imageg and push in dockerhub
         run: |
-          echo ">>>>>>>>>>>>>>>>>>>>>> ${{github.base_ref}}"
+          echo ">>>>>>>>>>>>>>>>>>>>>> ${{github}}"
