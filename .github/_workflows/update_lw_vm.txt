@@ -39,6 +39,7 @@ jobs:
                     docker build --rm -f "DockerFile" -t image-typescripteditor:latest "."
                     docker save -o image-typescripteditor.tar image-typescripteditor:latest "."
                   fi
+                  
                 }
                 echo ">>>>>>>>>>>>>>>>>>>>>> ${{github.base_ref}}"
                 main ${{github.base_ref}} 
