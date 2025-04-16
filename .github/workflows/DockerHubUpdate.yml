@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - dev
-      - desenv01
+      - main
 
 jobs:
   start-main:
@@ -12,6 +12,8 @@ jobs:
     env:
       DOCKER_HUB_TOKEN: ${{secrets.DOCKER_HUB_TOKEN}}
       DOCKER_HUB_USER: ${{secrets.DOCKER_HUB_USER}}
+      RUN_NUMBER: ${{github.run_number}}
+      REF_NAME: ${{github.ref_name}}
 
     steps:
       - name: Check out the repository
@@ -21,23 +23,19 @@ jobs:
         uses: docker/setup-buildx-action@v2
 
       - name: Login Dockerhub
-        run: echo "${{ env.DOCKER_HUB_TOKEN }}" | docker login -u ${{env.DOCKER_HUB_USER}} --password-stdin
+        run: echo "${{env.DOCKER_HUB_TOKEN}}" | docker login -u ${{env.DOCKER_HUB_USER}} --password-stdin
 
-      - name: Build imageg and push in dockerhub
+      - name: Build image and push in dockerhub
         run: |
-          echo ">>>>>>>>>>>>>>>>>>>>>> ${{github.base_ref}}"
-          echo ">>>>>>>>>>>>>>>>>>>>>> ${{github.event}}"
-          echo ">>>>>>>>>>>>>>>>>>>>>> ${{github.event_name}}"
-          echo ">>>>>>>>>>>>>>>>>>>>>> ${{github.event_path}}"
-          echo ">>>>>>>>>>>>>>>>>>>>>> ${{github.run_number}}"
-          echo ">>>>>>>>>>>>>>>>>>>>>> ${{github.ref_type}}"
-          echo ">>>>>>>>>>>>>>>>>>>>>> ${{github.ref_name}}"
-          echo ">>>>>>>>>>>>>>>>>>>>>> ${{github.ref}}"
-          echo ">>>>>>>>>>>>>>>>>>>>>> ${{github.path}}"
-          echo ">>>>>>>>>>>>>>>>>>>>>> ${{github.action_repository}}"
-          echo ">>>>>>>>>>>>>>>>>>>>>> ${{github.action_ref}}"
-          echo ">>>>>>>>>>>>>>>>>>>>>> ${{github.action_path}}"
-          echo ">>>>>>>>>>>>>>>>>>>>>> ${{github.action}}"
+            echo "env.RUN_NUMBER >>>>>>>>>>>>>>>>>>>>>> ${{github.run_number}}"
+            echo "env.REF_NAME >>>>>>>>>>>>>>>>>>>>>> ${{github.ref_name}}"
+            if [ ${{env.REF_NAME}} == "dev" ]; then
+              docker build --rm -f 'DockerFile' -t '${{env.DOCKER_HUB_USER}}/image-html-modules-dev:latest' -t '${{env.DOCKER_HUB_USER}}/image-html-modules-dev:${{env.RUN_NUMBER}}' '.'
+              docker push -a ${{env.DOCKER_HUB_USER}}/image-html-modules-dev
+            elif [ ${{env.REF_NAME}} == "main" ]; then
+              docker build --rm -f 'DockerFile' -t '${{env.DOCKER_HUB_USER}}/image-html-modules-prod:latest' -t '${{env.DOCKER_HUB_USER}}/image-html-modules-prod:${{env.RUN_NUMBER}}' '.'
+              docker push -a ${{env.DOCKER_HUB_USER}}/image-html-modules-prod
+            fi
 
 
 
