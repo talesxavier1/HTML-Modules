@@ -2,12 +2,35 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Launch 2",
+            "name": "CodeDiagram",
             "port": 9222,
             "request": "launch",
             "type": "chrome",
             "url": "http://127.0.0.1:8080",
-            "webRoot": "${workspaceFolder}",
+            "webRoot": "${workspaceFolder}/CodeDiagram",
+            "protocol": "inspector",
+            "runtimeArgs": [
+                "--harmony",
+                "--no-deprecation"
+            ],
+            "sourceMaps": true,
+            "outFiles": [
+                "${workspaceFolder}/CodeDiagram"
+            ],
+            "skipFiles": [
+                "<anonymous>"
+            ]
+        },
+        {
+            "name": "JsonSchemaEditor",
+            "port": 9222,
+            "request": "launch",
+            "type": "chrome",
+            "url": "http://localhost:8080",
+            "webRoot": "${workspaceFolder}/JsonSchemaEditor",
+            "outFiles": [
+                "${workspaceFolder}/JsonSchemaEditor"
+            ],
         }
     ]
 }

@@ -1,0 +1,122 @@
+.js-content {
+    /* display: flex;
+    flex-direction: column; */
+    width: 100%;
+    height: 100%;
+    background-color: #F8F9FA;
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+    /* margin: 20px 20px 20px 20px; */
+    /* margin-top: 20px; */
+    /* margin-bottom: 20px; */
+
+}
+
+.js-header {
+    /* background-color: aqua; */
+    display: flex;
+    height: 100px;
+    /* 
+    max-height: 10vh; */
+    /* margin: .5rem; */
+
+}
+
+.js-header-container {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    /* padding: 10px; */
+    margin: 5px;
+}
+
+.js-header-texts {
+    display: flex;
+}
+
+@media (max-width:1215px) {
+    .js-header-texts {
+        display: block;
+    }
+}
+
+.js-header-buttons {
+    display: flex;
+
+    justify-content: center;
+    width: 100%;
+}
+
+.js-View-Config {
+    display: flex;
+    /* flex-direction: row; */
+    flex: 1;
+    height: calc(100% - 100px);
+}
+
+.js-View-container-treeView {
+
+    /* height: calc(100%-500x); */
+    /* width: calc(100% - 100px); */
+    /* background-color: aqua; */
+
+    height: calc(100% - 45px);
+}
+
+.js-View {
+    /* background-color: rgb(190, 127, 127); */
+    width: 100%;
+    height: 100%;
+    /* margin: 0 .5rem .5rem .5rem;
+    padding: .5rem; */
+}
+
+.js-View-container {
+    margin: 5px;
+    display: flex;
+    flex-direction: column;
+    height: calc(100% - 15px);
+    /* height: calc(100% - 100px) */
+}
+
+.js-View-container-tab {
+    display: flex;
+    height: 45px;
+}
+
+
+/* .js-Config {
+    margin: 0 .5rem .5rem 0;
+} */
+
+.js-Config-show {
+    width: 600px;
+    height: 100%;
+}
+
+.js-Config-container {
+    height: calc(100% - 15px);
+    margin: 5px;
+}
+
+.js-Config-hide {
+    height: fit-content;
+
+}
+
+.js-header-container,
+/* .js-View, */
+.js-View-container,
+.js-Config-container,
+/* .dx-tabs-wrapper, */
+#tabTreeViewJsonSchema
+
+/* .js-Config  */
+    {
+    border-radius: .3rem;
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 2px, rgb(209, 213, 219) 0px 0px 0px 1px inset;
+    background-color: #EEEEEE;
+}
+
+.dx-tab {
+    background-color: rgba(0, 0, 0, 0)
+}
