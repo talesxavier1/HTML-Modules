@@ -16,7 +16,7 @@ export class ShapeModel implements IShapeModel {
     containerKey?: string;
     processContext: ProcessContext;
 
-    constructor(shapeType: TShapeType, processContext: ProcessContext, ID?: string,) {
+    constructor(shapeType: TShapeType, processContext?: ProcessContext, ID?: string,) {
         this.ID = ID ? ID : Utils.getGuid();
         this.shapeType = shapeType;
         this.type = shapeType;

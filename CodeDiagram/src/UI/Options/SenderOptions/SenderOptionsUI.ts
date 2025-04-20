@@ -10,7 +10,7 @@ export class SenderOptionsUI implements IOptionUI {
     public optionsHTMLContainer: string;
 
 
-    getData = () => {
+    getData = async () => {
         let builtObject = this.componentInstanceModel.getBuiltObject();
         return {
             ...this.data,
@@ -18,7 +18,7 @@ export class SenderOptionsUI implements IOptionUI {
         } as SenderModel;
     };
 
-    distroyUI = () => {
+    distroyUI = async () => {
         this.componentInstanceModel.disposeAllInstances();
         this.hideShowHTMLContainer("HIDE");
     };

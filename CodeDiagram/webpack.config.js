@@ -12,7 +12,11 @@ module.exports = (env, argv) => {
 
     const config = {
         devServer: {
-            hot: false
+            hot: true,
+            static: {
+                directory: path.join(__dirname, 'src'),
+            },
+            compress: true
         },
         entry: {
             "main": ["@babel/polyfill", "./src/index.ts", "./src/index.css"],
@@ -32,17 +36,10 @@ module.exports = (env, argv) => {
                     test: /\.ts$/,
                     exclude: /node_modules/,
                     use: {
-                        loader: 'babel-loader',
+                        loader: 'ts-loader',
                         options: {
-                            presets: [
-                                '@babel/preset-env',
-                                '@babel/preset-typescript',
-                            ],
-                            plugins: ['@babel/plugin-proposal-class-properties'],
-                            sourceMaps: true,
-                            retainLines: true,
+                            transpileOnly: true // Mais rápido, remove checagens de tipo (use com eslint ou tsc separado se quiser manter tipo)
                         }
-
                     }
                 },
                 {
