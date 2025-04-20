@@ -9,6 +9,8 @@ import { TDiagramShapeClicked } from "../../Types/TDiagramShapeClicked";
 import { TDataSource } from "../../Types/TDataSource";
 import { GlobalLoadIndicator } from "../../UI/GlobalLoadIndicator/GlobalLoadIndicator";
 import { ProcessContext } from "../../models/ProcessContext";
+import { DiagramModules } from "../../Modules/DiagramModule";
+import { TShapeType } from "../../Types/TShapeType";
 declare const Swal: any;
 
 export class Diagram {
@@ -49,7 +51,7 @@ export class Diagram {
         return finalResult;
     }
 
-    private getParentShapes = (component: any, shapeKey: string): Array<Object> => {
+    private getParentShapes = (component: any, shapeKey: string): Array<TDataSource> => {
         let shapeProps = component.getItemByKey(shapeKey);
 
         let shapeConnectors = shapeProps.attachedConnectorIds.map((VALUE: string) => component.getItemById(VALUE));
@@ -61,13 +63,26 @@ export class Diagram {
         });
 
         parentShapes = parentShapes.map((VALUE: any) => {
-            return {
-                ...VALUE,
-                "dataItem": this._nodeStore.getByKey(VALUE.key)
-            }
+            return this._nodeStore.getByKey(VALUE.key)
         })
 
         return parentShapes;
+    }
+
+    private getParentShapesHierarchy = (component: any, shapeKey: string): DiagramModules.ShapeHierarchyModel => {
+        let result = new DiagramModules.ShapeHierarchyModel();
+        result.source = this._nodeStore.getByKey(shapeKey);
+
+        let children = this.getParentShapes(component, shapeKey);
+        for (let child of children) {
+            result.children.push(this.getParentShapesHierarchy(component, child.ID))
+        }
+        return result;
+    }
+
+    private verifyEndShape = (endShapeType: TShapeType, shapeHierarchy: DiagramModules.ShapeHierarchyModel): TDataSource => {
+        // debugger
+        return {} as TDataSource;
     }
 
     private onRequestEditOperation = (event: any) => {
@@ -483,19 +498,21 @@ export class Diagram {
             if (!result || result.type != "multicastOut") { return true }
             let toShape: MultcastOutModel = result as MultcastOutModel;
 
-            let lastFind: any = [];
-            do {
-                let key = lastFind.length > 0 ? lastFind[0].key : toShapeKey;
-                lastFind = this.getParentShapes(event.component, key);
-                if (lastFind.length > 0) {
-                    if (lastFind[0].type == "multicastIn") {
-                        if (lastFind[0].dataItem.trackName != toShape.trackNameOrigin) {
-                            return false;
-                        }
-                        return true;
-                    }
-                }
-            } while (lastFind.length > 0)
+            let parentShapesHierarchy = this.getParentShapesHierarchy(event.component, toShapeKey);
+            let aa = this.verifyEndShape("multicastIn", parentShapesHierarchy);
+            // let lastFind: any = [];
+            // do {
+            //     let key = lastFind.length > 0 ? lastFind[0].key : toShapeKey;
+            //     lastFind = this.getParentShapes(event.component, key);
+            //     if (lastFind.length > 0) {
+            //         if (lastFind[0].type == "multicastIn") {
+            //             if (lastFind[0].dataItem.trackName != toShape.trackNameOrigin) {
+            //                 return false;
+            //             }
+            //             return true;
+            //         }
+            //     }
+            // } while (lastFind.length > 0)
 
             return true;
         }
@@ -518,7 +535,7 @@ export class Diagram {
 
             let lastFind: any = [];
             do {
-                let key = lastFind.length > 0 ? lastFind[0].key : toShapeKey;
+                let key = lastFind.length > 0 ? lastFind[0].ID : toShapeKey;
                 lastFind = this.getParentShapes(event.component, key);
                 if (lastFind.length > 0) {
                     if (lastFind[0].type == "multicastIn") {

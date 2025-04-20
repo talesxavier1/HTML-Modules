@@ -539,7 +539,7 @@ class ScriptArea {
                         "processID": this.data.processContext.processID,
                         "processVersionID": this.data.processContext.processVersionID,
                         "packageID": this.data.ID,
-                        "packageVersionID": this.data.packageVersionID,
+                        "packageVersionID": this.data.packageVersionID ? this.data.packageVersionID : null,
                         "tempDirID": this.tempDirID ?? "",
                         "assID": this.data.processContext.assID
                     }),
@@ -577,7 +577,7 @@ class ScriptArea {
                     "processID": this.data.processContext.processID,
                     "processVersionID": this.data.processContext.processVersionID,
                     "packageID": this.data.ID,
-                    "packageVersionID": this.data.packageVersionID,
+                    "packageVersionID": this.data.packageVersionID ? this.data.packageVersionID : null,
                     "tempDirID": this.tempDirID ?? "",
                     "assID": this.data.processContext.assID
                 })
@@ -628,7 +628,7 @@ class ScriptArea {
                     "processID": this.data.processContext.processID,
                     "processVersionID": this.data.processContext.processVersionID,
                     "packageID": this.data.ID,
-                    "packageVersionID": this.data.packageVersionID,
+                    "packageVersionID": this.data.packageVersionID ? this.data.packageVersionID : null,
                     "tempDirID": this.tempDirID ?? "",
                     "assID": this.data.processContext.assID
                 }),
@@ -654,7 +654,7 @@ class ScriptArea {
                     "processID": this.data.processContext.processID,
                     "processVersionID": this.data.processContext.processVersionID,
                     "packageID": this.data.ID,
-                    "packageVersionID": this.data.packageVersionID,
+                    "packageVersionID": this.data.packageVersionID ? this.data.packageVersionID : null,
                     "tempDirID": this.tempDirID ?? "",
                     "assID": this.data.processContext.assID
                 })
@@ -743,7 +743,7 @@ class ScriptFileManager {
                     "processID": this.data.processContext.processID,
                     "processVersionID": this.data.processContext.processVersionID,
                     "packageID": this.data.ID,
-                    "packageVersionID": this.data.packageVersionID,
+                    "packageVersionID": this.data.packageVersionID ? this.data.packageVersionID : null,
                     "tempDirID": this.tempDirID ?? "",
                     "assID": this.data.processContext.assID
                 })
@@ -767,7 +767,7 @@ class ScriptFileManager {
                     "processID": this.data.processContext.processID,
                     "processVersionID": this.data.processContext.processVersionID,
                     "packageID": this.data.ID,
-                    "packageVersionID": this.data.packageVersionID,
+                    "packageVersionID": this.data.packageVersionID ? this.data.packageVersionID : null,
                     "tempDirID": this.tempDirID ?? "",
                     "assID": this.data.processContext.assID
                 })
@@ -803,7 +803,7 @@ class ScriptFileManager {
                         "processID": this.data.processContext.processID,
                         "processVersionID": this.data.processContext.processVersionID,
                         "packageID": this.data.ID,
-                        "packageVersionID": this.data.packageVersionID,
+                        "packageVersionID": this.data.packageVersionID ? this.data.packageVersionID : null,
                         "tempDirID": this.tempDirID ?? "",
                         "assID": this.data.processContext.assID
                     })
@@ -858,7 +858,7 @@ class ScriptFileManager {
                     "processID": this.data.processContext.processID,
                     "processVersionID": this.data.processContext.processVersionID,
                     "packageID": this.data.ID,
-                    "packageVersionID": this.data.packageVersionID,
+                    "packageVersionID": this.data.packageVersionID ? this.data.packageVersionID : null,
                     "tempDirID": this.tempDirID ?? "",
                     "assID": this.data.processContext.assID
                 }),
@@ -936,7 +936,7 @@ class ScriptFileManager {
                     "processID": this.data.processContext.processID,
                     "processVersionID": this.data.processContext.processVersionID,
                     "packageID": this.data.ID,
-                    "packageVersionID": this.data.packageVersionID,
+                    "packageVersionID": this.data.packageVersionID ? this.data.packageVersionID : null,
                     "tempDirID": this.tempDirID ?? "",
                     "assID": this.data.processContext.assID
                 }),
@@ -990,7 +990,7 @@ class ScriptFileManager {
                     "processID": this.data.processContext.processID,
                     "processVersionID": this.data.processContext.processVersionID,
                     "packageID": this.data.ID,
-                    "packageVersionID": this.data.packageVersionID,
+                    "packageVersionID": this.data.packageVersionID ? this.data.packageVersionID : null,
                     "tempDirID": this.tempDirID ?? "",
                     "assID": this.data.processContext.assID
                 }),
