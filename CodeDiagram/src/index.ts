@@ -196,6 +196,39 @@ const botoesSuporte = (diagram: Diagram) => {
             });
         }
     }).dxButton("instance");
+
+    $("#botao06").dxButton({
+        text: "LOG pipelineEditOperation true/false",
+        type: "danger",
+        onInitialized(e) {
+            localStorage.setItem("LOG_pipelineEditOperation", "false");
+        },
+        onClick: () => {
+            let log = localStorage.getItem("LOG_pipelineEditOperation") ?? "false";
+
+            let val = "";
+            if (log == "false") {
+                localStorage.setItem("LOG_pipelineEditOperation", "true");
+                val = "true";
+            } else {
+                localStorage.setItem("LOG_pipelineEditOperation", "false");
+                val = "false";
+            }
+
+            DevExpress.ui.notify({
+                message: `LOG_pipelineEditOperation ${val}`,
+                height: 45,
+                width: 550,
+                minWidth: 150,
+                type: "success",
+                displayTime: 1000,
+
+            }, {
+                position: "top right",
+                direction: "down-push"
+            });
+        }
+    }).dxButton("instance");
 }
 
 

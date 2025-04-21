@@ -12,6 +12,7 @@ import { ProcessContext } from "../../models/ProcessContext";
 import { DiagramModules } from "../../Modules/DiagramModule";
 import { TShapeType } from "../../Types/TShapeType";
 declare const Swal: any;
+declare const localStorage: any;
 
 export class Diagram {
     private _processContext: ProcessContext;
@@ -46,6 +47,9 @@ export class Diagram {
         let finalResult = true;
         for (let _function of functions) {
             let result = _function(event);
+            if (localStorage.getItem("LOG_pipelineEditOperation") == "true") {
+                console.log(`Function Name: ${_function.name} result: ${result}`);
+            }
             if (!result) { finalResult = false; break; }
         }
         return finalResult;
@@ -69,6 +73,17 @@ export class Diagram {
         return parentShapes;
     }
 
+    private getAllParentShapes = (component: any, shapeKey: string): Array<TDataSource> => {
+        let result: Array<TDataSource> = [];
+        result = this.getParentShapes(component, shapeKey);
+
+        for (let DATA of result) {
+            result = result.concat(this.getAllParentShapes(component, DATA.ID));
+        }
+
+        return result.flat();
+    }
+
     private getParentShapesHierarchy = (component: any, shapeKey: string): DiagramModules.ShapeHierarchyModel => {
         let result = new DiagramModules.ShapeHierarchyModel();
         result.source = this._nodeStore.getByKey(shapeKey);
@@ -78,11 +93,6 @@ export class Diagram {
             result.children.push(this.getParentShapesHierarchy(component, child.ID))
         }
         return result;
-    }
-
-    private verifyEndShape = (endShapeType: TShapeType, shapeHierarchy: DiagramModules.ShapeHierarchyModel): TDataSource => {
-        // debugger
-        return {} as TDataSource;
     }
 
     private onRequestEditOperation = (event: any) => {
@@ -378,13 +388,21 @@ export class Diagram {
 
         /* ========================================================== */
         // #region MultiCastOut
+
         /* Não permite incluir um multicastout sem ter um multcastin */
         const valid_e16b5ea1 = (event: any) => {
             if (event.operation != "addShape") { return true }
             if (event?.args?.shape?.type != "multicastOut") { return true }
 
+            let containerShape = event.component.getItemById(event.args.shape.containerId);
+            if (!containerShape || !containerShape.key) {
+                return false;
+            }
+
             let multiCastIn: Array<MulticastInModel> = (() => {
-                let query = this._nodeStore.store.createQuery().filter(["type", "multicastIn"]);
+                let query = this._nodeStore.store.createQuery()
+                    .filter(["type", "multicastIn"])
+                    .filter(["containerKey", containerShape.key]);
                 let result: any = [];
                 query.enumerate().done((VAL: Array<MulticastInModel>) => result = VAL)
                 return result;
@@ -415,6 +433,53 @@ export class Diagram {
             return true;
         }
         pipelineArray.push(valid_e16b5ea1);
+
+        /* Verifica se tem algum multicastOut no fluxo que está sendo conectado. */
+        const valid_cd98a243 = (event: any) => {
+            if (event.operation != "changeConnection") { return true; }
+
+            let toShapeKey = event?.args?.connector?.toKey;
+            let toShape = this._nodeStore.getByKey(toShapeKey);
+            if (!toShape) { return false; }
+
+            if (toShape.type != "multicastOut") { return true }
+
+            let parentShapes = this.getAllParentShapes(event.component, toShapeKey);
+
+            if (parentShapes.find(VALUE => VALUE.shapeType == "multicastOut")) {
+                return false;
+            }
+
+            return true;
+        }
+        pipelineArray.push(valid_cd98a243);
+
+        /* Verifica se existe multicastIn no fluxo */
+        /* Só pode ter um multicastIn no mesmo fluxo no multicastOut e ele deve estar associado. */
+        const valid_2501a499 = (event: any) => {
+            if (event.operation != "changeConnection") { return true; }
+
+            let toShapeKey = event?.args?.connector?.toKey;
+            let toShape = this._nodeStore.getByKey(toShapeKey);
+            if (!toShape) { return false; }
+
+            if (toShape.type != "multicastOut") { return true }
+
+            let parentShapes = this.getAllParentShapes(event.component, toShapeKey);
+
+            let multicastIn = parentShapes.filter(VALUE => VALUE.shapeType == "multicastIn") as Array<MulticastInModel>;
+            if (multicastIn.length != 1) {
+                return false;
+            }
+
+            if ((toShape as MultcastOutModel).trackNameOrigin != multicastIn[0].trackName) {
+                return false;
+            }
+
+            return true;
+        }
+        pipelineArray.push(valid_2501a499);
+
 
 
         /* Verifica se o multicastOut que está recebendo uma conexão já tem um Track name origin associado.  */
@@ -489,34 +554,39 @@ export class Diagram {
         */
 
 
+
+
         /* Não permite que um MultiCastOut receba a conexão de um fluxo que não seja do MultiCastIn associado */
-        const valid_2c8dde4a = (event: any) => {
-            if (event.operation != "changeConnection") { return true; }
+        // const valid_2c8dde4a = (event: any) => {
 
-            let toShapeKey = event?.args?.connector?.toKey;
-            let result = this._nodeStore.getByKey(toShapeKey);
-            if (!result || result.type != "multicastOut") { return true }
-            let toShape: MultcastOutModel = result as MultcastOutModel;
+        //     if (event.operation != "changeConnection") { return true; }
 
-            let parentShapesHierarchy = this.getParentShapesHierarchy(event.component, toShapeKey);
-            let aa = this.verifyEndShape("multicastIn", parentShapesHierarchy);
-            // let lastFind: any = [];
-            // do {
-            //     let key = lastFind.length > 0 ? lastFind[0].key : toShapeKey;
-            //     lastFind = this.getParentShapes(event.component, key);
-            //     if (lastFind.length > 0) {
-            //         if (lastFind[0].type == "multicastIn") {
-            //             if (lastFind[0].dataItem.trackName != toShape.trackNameOrigin) {
-            //                 return false;
-            //             }
-            //             return true;
-            //         }
-            //     }
-            // } while (lastFind.length > 0)
+        //     let toShapeKey = event?.args?.connector?.toKey;
+        //     let result = this._nodeStore.getByKey(toShapeKey);
+        //     if (!result || result.type != "multicastOut") { return true }
+        //     let toShape: MultcastOutModel = result as MultcastOutModel;
 
-            return true;
-        }
-        pipelineArray.push(valid_2c8dde4a);
+        //     return true;
+
+
+        //     // let aa = this.verifyEndShape("multicastIn", parentShapesHierarchy);
+        //     // let lastFind: any = [];
+        //     // do {
+        //     //     let key = lastFind.length > 0 ? lastFind[0].key : toShapeKey;
+        //     //     lastFind = this.getParentShapes(event.component, key);
+        //     //     if (lastFind.length > 0) {
+        //     //         if (lastFind[0].type == "multicastIn") {
+        //     //             if (lastFind[0].dataItem.trackName != toShape.trackNameOrigin) {
+        //     //                 return false;
+        //     //             }
+        //     //             return true;
+        //     //         }
+        //     //     }
+        //     // } while (lastFind.length > 0)
+
+        //     return true;
+        // }
+        // pipelineArray.push(valid_2c8dde4a);
 
         // #endregion
         /* ========================================================== */

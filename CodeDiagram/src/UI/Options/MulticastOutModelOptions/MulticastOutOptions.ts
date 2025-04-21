@@ -11,14 +11,14 @@ export class MulticastOutOptions implements IOptionUI {
     private data: MultcastOutModel;
     public optionsHTMLContainer: string;
 
-    getData = () => {
+    getData = async () => {
         return {
             ...this.data,
             ...this.componentInstanceModel.getBuiltObject()
         }
     };
 
-    distroyUI = () => {
+    distroyUI = async () => {
         this.componentInstanceModel.disposeAllInstances();
         this.hideShowHTMLContainer("HIDE");
     };
@@ -100,7 +100,9 @@ export class MulticastOutOptions implements IOptionUI {
                     if (this.data.trackNameOrigin) { return [{ "VALUE": this.data.trackNameOrigin }] }
 
                     let multiCastIn: Array<MulticastInModel> = (() => {
-                        let query = nodeStore.store.createQuery().filter(["type", "multicastIn"]);
+                        let query = nodeStore.store.createQuery()
+                            .filter(["type", "multicastIn"])
+                            .filter(["containerKey", this.data.containerKey]);
                         let result: Array<any> = [];
                         query.enumerate().done((values: Array<any>) => result = values);
                         return result;
@@ -112,8 +114,7 @@ export class MulticastOutOptions implements IOptionUI {
                             let result = 0;
                             let query = nodeStore.store.createQuery()
                                 .filter(["type", "=", "multicastOut"])
-                                .filter(["trackNameOrigin", "=", VALUE.trackName]);
-
+                                .filter(["trackNameOrigin", "=", VALUE.trackName])
                             query.count().done((VALUE: number) => result = VALUE);
 
                             return result == 0;
