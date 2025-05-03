@@ -46,3 +46,7 @@ html {
 .swal2-container {
     z-index: 1502;
 }
+
+body.swal2-height-auto {
+    height: 100px;
+}
