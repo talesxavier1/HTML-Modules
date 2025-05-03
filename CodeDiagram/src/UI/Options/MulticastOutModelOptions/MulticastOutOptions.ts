@@ -5,11 +5,14 @@ import { TDataSource } from "../../../Types/TDataSource";
 import { ComponentInstanceModel } from "../../../Utils/dx-utils/ComponentInstanceModel";
 import { NodeStore } from "../../../Data/NodeStore";
 import { MulticastInModel } from "models/MulticastInModel";
+declare const Swal: any;
 
 export class MulticastOutOptions implements IOptionUI {
     private componentInstanceModel = new ComponentInstanceModel<MultcastOutModel>(new MultcastOutModel());
     private data: MultcastOutModel;
+    private nodeStore: NodeStore;
     public optionsHTMLContainer: string;
+    private declare Swal: any;
 
     getData = async () => {
         return {
@@ -37,11 +40,60 @@ export class MulticastOutOptions implements IOptionUI {
         this.componentInstanceModel.repaintAllInstances();
     };
 
+    showTrackNameDialog() {
+        let trackNameOptions: Array<string> = (() => {
+            let multiCastIn: Array<MulticastInModel> = (() => {
+                let query = this.nodeStore.store.createQuery()
+                    .filter(["type", "multicastIn"])
+                    .filter(["containerKey", this.data.containerKey]);
+                let result: Array<any> = [];
+                query.enumerate().done((values: Array<any>) => result = values);
+                return result;
+            })();
+
+            let multiCastInSemOut: Array<MulticastInModel> = (() => {
+                if (multiCastIn.length == 0) { return [] }
+                return multiCastIn.filter(VALUE => {
+                    let result = 0;
+                    let query = this.nodeStore.store.createQuery()
+                        .filter(["type", "=", "multicastOut"])
+                        .filter(["trackNameOrigin", "=", VALUE.trackName])
+                    query.count().done((VALUE: number) => result = VALUE);
+
+                    return result == 0;
+                });
+            })();
+
+            let options: Array<string> = [];
+            multiCastInSemOut.forEach((VALUE: MulticastInModel) => {
+                options.push(VALUE.trackName)
+            });
+
+            return options;
+        })();
+
+        Swal.fire({
+            title: "Track name origin",
+            input: 'select',
+            inputOptions: trackNameOptions,
+            allowOutsideClick: true,
+            heightAuto: false,
+            preConfirm: (value: string) => {
+                this.data.trackNameOrigin = trackNameOptions[Number(value)];
+                this.componentInstanceModel.setInstanceValue("trackNameOrigin", trackNameOptions[Number(value)]);
+            }
+        });
+    }
+
 
     constructor(data: TDataSource, readonly: boolean = false, optionsHTMLContainer: string, nodeStore: NodeStore) {
         this.data = data as MultcastOutModel;
         this.optionsHTMLContainer = optionsHTMLContainer;
+        this.nodeStore = nodeStore;
         this.hideShowHTMLContainer("SHOW");
+        if (!this.data.trackNameOrigin) {
+            this.showTrackNameDialog();
+        }
 
         /* ID */
         this.componentInstanceModel.addInstance(new InstanceProps({
@@ -93,48 +145,14 @@ export class MulticastOutOptions implements IOptionUI {
 
         /* trackNameOrigin */
         this.componentInstanceModel.addInstance(new InstanceProps({
-            componentName: "dxSelectBox",
+            componentName: "dxTextBox",
             tagName: "trackNameOrigin",
-            instance: $('#multicastOut_options_trackNameOrigin').dxSelectBox({
-                dataSource: (() => {
-                    if (this.data.trackNameOrigin) { return [{ "VALUE": this.data.trackNameOrigin }] }
-
-                    let multiCastIn: Array<MulticastInModel> = (() => {
-                        let query = nodeStore.store.createQuery()
-                            .filter(["type", "multicastIn"])
-                            .filter(["containerKey", this.data.containerKey]);
-                        let result: Array<any> = [];
-                        query.enumerate().done((values: Array<any>) => result = values);
-                        return result;
-                    })();
-
-                    let multiCastInSemOut: Array<MulticastInModel> = (() => {
-                        if (multiCastIn.length == 0) { return [] }
-                        return multiCastIn.filter(VALUE => {
-                            let result = 0;
-                            let query = nodeStore.store.createQuery()
-                                .filter(["type", "=", "multicastOut"])
-                                .filter(["trackNameOrigin", "=", VALUE.trackName])
-                            query.count().done((VALUE: number) => result = VALUE);
-
-                            return result == 0;
-                        });
-                    })();
-
-                    let options: Array<{ VALUE: string }> = [];
-                    multiCastInSemOut.forEach((VALUE: MulticastInModel) => {
-                        options.push({ "VALUE": VALUE.trackName })
-                    });
-
-                    return options;
-                })(),
-                valueExpr: "VALUE",
-                displayExpr: "VALUE",
+            instance: $('#multicastOut_options_trackNameOrigin').dxTextBox({
                 value: this.data.trackNameOrigin ? this.data.trackNameOrigin : "",
                 label: "Track Name Origin",
-                readOnly: readonly || !!this.data.trackNameOrigin,
+                readOnly: true,
                 visible: true
-            }).dxSelectBox("instance")
+            }).dxTextBox("instance")
         }));
 
     }

@@ -99,8 +99,6 @@ export class Diagram {
         /* Adição dos shapes no box */
         if (event.operation == "addShapeFromToolbox") { return }
 
-        // console.log(event)
-
         /* connector sem toShape */
         if (event.args.connector && (!event.args.connector.toKey && !event.args.connector.fromKey)) { return }
         if (event.args.connector && !event.args.connectorPosition) { return }
@@ -389,7 +387,7 @@ export class Diagram {
         /* ========================================================== */
         // #region MultiCastOut
 
-        /* Não permite incluir um multicastout sem ter um multcastin */
+        /* Não permite incluir um multicastout sem ter um multcastIn */
         const valid_e16b5ea1 = (event: any) => {
             if (event.operation != "addShape") { return true }
             if (event?.args?.shape?.type != "multicastOut") { return true }
@@ -455,6 +453,8 @@ export class Diagram {
         pipelineArray.push(valid_cd98a243);
 
         /* Verifica se existe multicastIn no fluxo */
+        /* Verifica se o multicastOut que está recebendo uma conexão já tem um Track name origin associado.  */
+        /* Não permite que um MultiCastOut receba a conexão de um fluxo que não seja do MultiCastIn associado */
         /* Só pode ter um multicastIn no mesmo fluxo no multicastOut e ele deve estar associado. */
         const valid_2501a499 = (event: any) => {
             if (event.operation != "changeConnection") { return true; }
@@ -479,114 +479,6 @@ export class Diagram {
             return true;
         }
         pipelineArray.push(valid_2501a499);
-
-
-
-        /* Verifica se o multicastOut que está recebendo uma conexão já tem um Track name origin associado.  */
-        /* 
-        const valid_49840919 = (event: any) => {
-            if (event.operation != "changeConnection") { return true; }
-
-            let toShapeKey = event?.args?.connector?.toKey;
-            let result = this.nodeStore.getByKey(toShapeKey);
-            if (result?.type != "multicastOut") { return true }
-            let toShape = result as MultcastOutModel;
-
-            if (!toShape.trackNameOrigin) {
-                let multiCastIn: Array<MulticastInModel> = (() => {
-                    let query = this.nodeStore.store.createQuery().filter(["type", "multicastIn"]);
-                    let result: Array<any> = [];
-                    query.enumerate().done((values: Array<any>) => result = values);
-                    return result;
-                })();
-
-                let multiCastInSemOut = (() => {
-                    if (multiCastIn.length == 0) { return [] }
-                    return multiCastIn.filter(VALUE => {
-                        let result = 0;
-                        let query = this.nodeStore.store.createQuery()
-                            .filter(["type", "=", "multicastOut"])
-                            .filter(["trackNameOrigin", "=", VALUE.trackName]);
-
-                        query.count().done((VALUE: number) => result = VALUE);
-
-                        return result == 0;
-                    });
-                })();
-
-                let options: any = {};
-                multiCastInSemOut.forEach(VALUE => {
-                    options[VALUE.trackName] = VALUE.trackName;
-                });
-
-                Swal.fire({
-                    title: "Track name origin",
-                    input: 'select',
-                    inputOptions: options,
-                    allowOutsideClick: false,
-                    preConfirm: (value: string) => {
-                        let count = (() => {
-                            let result = 0;
-                            let query = this.nodeStore.store.createQuery()
-                                .filter(["type", "=", "multicastOut"])
-                                .filter(["trackNameOrigin", "=", value]);
-
-                            query.count().done((VALUE: number) => result = VALUE);
-                            return result;
-                        })();
-
-                        if (count > 0) {
-                            Swal.showValidationMessage(`Já existe um multicastOut para o multicastIn '${value}'`);
-                        }
-                        this.nodeStore.store.update(event.args.newShape.key, {
-                            ...toShape,
-                            trackNameOrigin: value
-                        });
-                    }
-                });
-
-                return false;
-            }
-
-            return true;
-        }
-        pipelineArray.push(valid_49840919);
-        */
-
-
-
-
-        /* Não permite que um MultiCastOut receba a conexão de um fluxo que não seja do MultiCastIn associado */
-        // const valid_2c8dde4a = (event: any) => {
-
-        //     if (event.operation != "changeConnection") { return true; }
-
-        //     let toShapeKey = event?.args?.connector?.toKey;
-        //     let result = this._nodeStore.getByKey(toShapeKey);
-        //     if (!result || result.type != "multicastOut") { return true }
-        //     let toShape: MultcastOutModel = result as MultcastOutModel;
-
-        //     return true;
-
-
-        //     // let aa = this.verifyEndShape("multicastIn", parentShapesHierarchy);
-        //     // let lastFind: any = [];
-        //     // do {
-        //     //     let key = lastFind.length > 0 ? lastFind[0].key : toShapeKey;
-        //     //     lastFind = this.getParentShapes(event.component, key);
-        //     //     if (lastFind.length > 0) {
-        //     //         if (lastFind[0].type == "multicastIn") {
-        //     //             if (lastFind[0].dataItem.trackName != toShape.trackNameOrigin) {
-        //     //                 return false;
-        //     //             }
-        //     //             return true;
-        //     //         }
-        //     //     }
-        //     // } while (lastFind.length > 0)
-
-        //     return true;
-        // }
-        // pipelineArray.push(valid_2c8dde4a);
 
         // #endregion
         /* ========================================================== */
@@ -741,7 +633,6 @@ export class Diagram {
                     await this._shapeClicked(e);
                     GlobalLoadIndicator.hide("Diagram - constructor - addInstance - InstanceProps - onItemClick ");
                 },
-
                 customShapes: this.customShapes.customShapes,
                 nodes: (() => {
                     if (this._readOnly == true) { return undefined }
